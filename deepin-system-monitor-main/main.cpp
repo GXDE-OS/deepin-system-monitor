@@ -32,6 +32,7 @@ using namespace common::init;
 
 int main(int argc, char *argv[])
 {
+    qputenv("D_DTK_SIZEMODE", "1");
     MLogger();   // 日志处理要放在app之前，否则QApplication
             // 内部可能进行了日志打印，导致环境变量设置不生效
 // 为了兼容性
