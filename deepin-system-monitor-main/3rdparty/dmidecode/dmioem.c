@@ -378,11 +378,11 @@ static int dmi_decode_hp(const struct dmi_header *h)
 			pr_attr("Device Sub-Instance", "%d", data[0x19]);
 			dmi_hp_203_bayenc("Bay", data[0x1A]);
 			dmi_hp_203_bayenc("Enclosure", data[0x1B]);
-			pr_attr("Device Path", "%s", dmi_string(h, data[0x1C]));
-			pr_attr("Structured Name", "%s", dmi_string(h, data[0x1D]));
-			pr_attr("Device Name", "%s", dmi_string(h, data[0x1E]));
+			pr_attr("Device Path", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x1C]));
+			pr_attr("Structured Name", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x1D]));
+			pr_attr("Device Name", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x1E]));
 			if (h->length < 0x22) break;
-			pr_attr("UEFI Location", "%s", dmi_string(h, data[0x1F]));
+			pr_attr("UEFI Location", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x1F]));
 			if (!(opt.flags & FLAG_QUIET))
 			{
 				if (WORD(data + 0x14) & 1)
@@ -392,8 +392,8 @@ static int dmi_decode_hp(const struct dmi_header *h)
 					pr_attr("Associated Real/Phys Handle", "N/A");
 			}
 			if (h->length < 0x24) break;
-			pr_attr("PCI Part Number", "%s", dmi_string(h, data[0x22]));
-			pr_attr("Serial Number", "%s", dmi_string(h, data[0x23]));
+			pr_attr("PCI Part Number", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x22]));
+			pr_attr("Serial Number", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x23]));
 			if (h->length < 0x28) break;
 			pr_attr("Segment Group Number", "0x%04x", WORD(data + 0x24));
 			pr_attr("PCI Device", "%02x:%02x.%x",
@@ -406,12 +406,12 @@ static int dmi_decode_hp(const struct dmi_header *h)
 			 */
 			pr_handle_name("%s ProLiant System/Rack Locator", company);
 			if (h->length < 0x0B) break;
-			pr_attr("Rack Name", "%s", dmi_string(h, data[0x04]));
-			pr_attr("Enclosure Name", "%s", dmi_string(h, data[0x05]));
-			pr_attr("Enclosure Model", "%s", dmi_string(h, data[0x06]));
-			pr_attr("Enclosure Serial", "%s", dmi_string(h, data[0x0A]));
+			pr_attr("Rack Name", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x04]));
+			pr_attr("Enclosure Name", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x05]));
+			pr_attr("Enclosure Model", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x06]));
+			pr_attr("Enclosure Serial", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x0A]));
 			pr_attr("Enclosure Bays", "%d", data[0x08]);
-			pr_attr("Server Bay", "%s", dmi_string(h, data[0x07]));
+			pr_attr("Server Bay", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x07]));
 			pr_attr("Bays Filled", "%d", data[0x09]);
 			break;
 
@@ -557,7 +557,7 @@ static int dmi_decode_hp(const struct dmi_header *h)
 			if (gen < G10P) {
 				pr_attr("A0 Bay Count", "%d", data[0x12]);
 				pr_attr("A2 Bay Count", "%d", data[0x13]);
-				pr_attr("Backplane Name", "%s", dmi_string(h, data[0x14]));
+				pr_attr("Backplane Name", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x14]));
 			}
 			break;
 
@@ -588,7 +588,7 @@ static int dmi_decode_hp(const struct dmi_header *h)
 			if (!(opt.flags & FLAG_QUIET))
 				pr_attr("Associated Handle", "0x%04X", WORD(data + 0x4));
 			pr_attr("Package Version", "0x%08X", DWORD(data + 0x6));
-			pr_attr("Version String", "%s", dmi_string(h, data[0x0A]));
+			pr_attr("Version String", "%s", dmi_string((const struct lscpu_dmi_header *)h, data[0x0A]));
 
 			if (DWORD(data + 0x0B))
 				dmi_print_memory_size("Image Size", QWORD(data + 0xB), 0);
@@ -641,7 +641,7 @@ static int dmi_decode_ibm_lenovo(const struct dmi_header *h)
 			 */
 
 			if (h->length != 0x16
-			 || strcmp(dmi_string(h, 1), "TVT-Enablement") != 0)
+			 || strcmp(dmi_string((const struct lscpu_dmi_header *)h, 1), "TVT-Enablement") != 0)
 				return 0;
 
 			pr_handle_name("ThinkVantage Technologies");
@@ -717,8 +717,8 @@ static int dmi_decode_ibm_lenovo(const struct dmi_header *h)
 				return 0;
 
 			pr_handle_name("ThinkPad Embedded Controller Program");
-			pr_attr("Version ID", "%s", dmi_string(h, 1));
-			pr_attr("Release Date", "%s", dmi_string(h, 2));
+			pr_attr("Version ID", "%s", dmi_string((const struct lscpu_dmi_header *)h, 1));
+			pr_attr("Release Date", "%s", dmi_string((const struct lscpu_dmi_header *)h, 2));
 			break;
 
 		default:
