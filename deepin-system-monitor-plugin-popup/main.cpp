@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "gui/mainwindow.h"
-#include "dde-dock/constants.h"
+#include "gxde-dock/constants.h"
 #include "application.h"
 #include "ddlog.h"
 

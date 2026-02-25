@@ -27,10 +27,10 @@ find_package(Qt5DBus REQUIRED)
 find_package(DtkWidget REQUIRED)
 
 pkg_check_modules(QGSettings REQUIRED gsettings-qt)
-pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
+pkg_check_modules(DdeDockInterface REQUIRED gxde-dock)
 
 if (DdeDockInterface_FOUND)
-    message("dde-dock founded: ${DdeDockInterface_VERSION}")
+    message("gxde-dock founded: ${DdeDockInterface_VERSION}")
     string(REGEX MATCH "^[0-9]" VERSION_MAJOR ${DdeDockInterface_VERSION})
     if (VERSION_MAJOR STREQUAL "6" OR VERSION_MAJOR STRGREATER "6")
         add_definitions(-DDDE_DOCK_MAJORV6)
@@ -73,7 +73,7 @@ add_custom_target(PLUGIN_QMFILES ALL DEPENDS ${APP_QM_FILES})
 
 INSTALL(FILES com.deepin.dde.dock.module.system-monitor.gschema.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/glib-2.0/schemas)
 #INSTALL(FILES com.deepin.system.monitor.plugin.gschema.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/glib-2.0/schemas)
-INSTALL(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION lib/dde-dock/plugins)
+INSTALL(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION lib/gxde-dock/plugins)
 INSTALL(FILES asserts/icons/deepin/builtin/actions/deepin-system-monitor_20px.svg
   DESTINATION ${CMAKE_INSTALL_DATADIR}/share/dde-dock/icons/dcc-setting
   RENAME deepin-system-monitor.svg

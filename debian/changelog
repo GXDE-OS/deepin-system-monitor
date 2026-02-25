@@ -1,8 +1,9 @@
-deepin-system-monitor (6.5.5gxde3) UNRELEASED; urgency=medium
+deepin-system-monitor (6.5.5gxde4) UNRELEASED; urgency=medium
 
   * 修复 Debian 13 构建出错的问题
+  * 适配 gxde-dock 插件
 
- -- gfdgd_xi <3025613752@qq.com>  Sat, 26 Apr 2025 22:08:44 +0800
+ -- gfdgd_xi <3025613752@qq.com>  Wed, 25 Feb 2026 09:12:33 +0800
 
 deepin-system-monitor (6.5.4) unstable; urgency=medium
 

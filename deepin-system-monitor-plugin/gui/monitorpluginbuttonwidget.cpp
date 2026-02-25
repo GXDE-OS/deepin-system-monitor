@@ -16,7 +16,7 @@
 //Dtk
 #include <DGuiApplicationHelper>
 #include <DStyle>
-#include "dde-dock/constants.h"
+#include "gxde-dock/constants.h"
 
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE

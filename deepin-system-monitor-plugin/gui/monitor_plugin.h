@@ -7,7 +7,7 @@
 #define MONITORPLUGIN_H
 
 //  smo-plugin
-#include <dde-dock/constants.h>
+#include <gxde-dock/constants.h>
 /* to void  //1070  and V23 exist same time */
 #ifdef DOCK_API_VERSION
 #if (DOCK_API_VERSION >= DOCK_API_VERSION_CHECK(2, 0, 0))
