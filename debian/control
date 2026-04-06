@@ -23,7 +23,7 @@ Build-Depends:
  libnl-3-dev,
  libnl-route-3-dev,
  libudev-dev,
- dde-tray-loader-dev | dde-dock-dev,
+ gxde-dock-dev,
  libgtest-dev,
  libgmock-dev,
  libpolkit-qt6-1-dev
