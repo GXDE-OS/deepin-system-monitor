@@ -14,7 +14,11 @@
 #include "gui/base/base_commandlink_button.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 #include <DPalette>
 #include <DStyle>
 #include <DFontSizeManager>
@@ -29,10 +33,12 @@
 
 DWIDGET_USE_NAMESPACE
 using namespace common;
+using namespace DDLog;
 
 CpuMonitor::CpuMonitor(QWidget *parent)
     : QWidget(parent)
 {
+    qCDebug(app) << "CpuMonitor constructor";
     int statusBarMaxWidth = common::getStatusBarMaxWidth();
     setFixedSize(statusBarMaxWidth, 240);
     waveformsRenderOffsetX = (statusBarMaxWidth - 140) / 2;
@@ -42,8 +48,13 @@ CpuMonitor::CpuMonitor(QWidget *parent)
         cpuPercents->append(0);
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     DApplicationHelper *dAppHelper = DApplicationHelper::instance();
     connect(dAppHelper, &DApplicationHelper::themeTypeChanged, this, &CpuMonitor::changeTheme);
+#else
+    DGuiApplicationHelper *dAppHelper = DGuiApplicationHelper::instance();
+    connect(dAppHelper, &DGuiApplicationHelper::themeTypeChanged, this, &CpuMonitor::changeTheme);
+#endif
     changeTheme(dAppHelper->themeType());
 
     m_cpuInfomodel = CPUInfoModel::instance();
@@ -69,37 +80,61 @@ CpuMonitor::CpuMonitor(QWidget *parent)
 
 CpuMonitor::~CpuMonitor()
 {
+    // qCDebug(app) << "CpuMonitor destructor";
     delete cpuPercents;
 }
 
 void CpuMonitor::onDetailInfoClicked()
 {
+    qCDebug(app) << "onDetailInfoClicked";
     setDetailButtonVisible(false);
     emit signalDetailInfoClicked();
 }
 
 void CpuMonitor::setDetailButtonVisible(bool visible)
 {
+    qCDebug(app) << "setDetailButtonVisible:" << visible;
     m_detailButton->setVisible(visible);
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void CpuMonitor::changeTheme(DApplicationHelper::ColorType themeType)
 {
+#else
+void CpuMonitor::changeTheme(DGuiApplicationHelper::ColorType themeType)
+{
+#endif
+    qCDebug(app) << "changeTheme with themeType:" << themeType;
     switch (themeType) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::LightType:
+        qCDebug(app) << "LightType";
+#else
+    case DGuiApplicationHelper::LightType:
+#endif
         ringBackgroundColor = "#000000";
         m_icon = QIcon(iconPathFromQrc("light/icon_cpu_light.svg"));
         break;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::DarkType:
+        qCDebug(app) << "DarkType";
+#else
+    case DGuiApplicationHelper::DarkType:
+#endif
         ringBackgroundColor = "#FFFFFF";
         m_icon = QIcon(iconPathFromQrc("dark/icon_cpu_light.svg"));
         break;
     default:
+        qCDebug(app) << "default theme type";
         break;
     }
 
     // init colors
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
     auto palette = dAppHelper->applicationPalette();
     textColor = palette.color(DPalette::Text);
 #ifndef THEME_FALLBACK_COLOR
@@ -113,9 +148,12 @@ void CpuMonitor::changeTheme(DApplicationHelper::ColorType themeType)
 
 void CpuMonitor::updateStatus()
 {
+    qCDebug(app) << "updateStatus";
     // 如果数据无效不更新
-    if (std::isnan(m_cpuInfomodel->cpuAllPercent()))
+    if (std::isnan(m_cpuInfomodel->cpuAllPercent())) {
+        qCWarning(app) << "cpuAllPercent is nan";
         return;
+    }
     cpuPercents->append(m_cpuInfomodel->cpuAllPercent());
 
     if (cpuPercents->size() > pointsNumber) {
@@ -135,6 +173,7 @@ void CpuMonitor::updateStatus()
         if (cpuMaxHeight < cpuRenderMaxHeight) {
             points.append(QPointF(i * 5 - 8, cpuPercents->at(i)));
         } else {
+            // qCDebug(app) << "cpuMaxHeight >= cpuRenderMaxHeight";
             points.append(
                 QPointF(i * 5 - 8, cpuPercents->at(i) * cpuRenderMaxHeight / cpuMaxHeight));
         }
@@ -147,6 +186,7 @@ void CpuMonitor::updateStatus()
 
 void CpuMonitor::changeFont(const QFont &font)
 {
+    qCDebug(app) << "changeFont";
     m_cpuUsageFont = font;
     m_cpuUsageFont.setBold(true);
     m_cpuUsageFont.setPointSizeF(m_cpuUsageFont.pointSizeF() + 3);
@@ -163,19 +203,26 @@ void CpuMonitor::changeFont(const QFont &font)
 
 void CpuMonitor::resizeEvent(QResizeEvent *event)
 {
+    // qCDebug(app) << "resizeEvent";
     QWidget::resizeEvent(event);
     resizeItemWidgetRect();
 }
 
 void CpuMonitor::resizeItemWidgetRect()
 {
+    // qCDebug(app) << "resizeItemWidgetRect";
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     m_detailButton->setFixedSize(m_detailButton->fontMetrics().width(m_detailButton->text()) + 16, m_detailButton->fontMetrics().height() + 4);
+#else
+    m_detailButton->setFixedSize(m_detailButton->fontMetrics().horizontalAdvance(m_detailButton->text()) + 16, m_detailButton->fontMetrics().height() + 4);
+#endif
     const QSize &detailtextSize =  m_detailButton->size();
     m_detailButton->setGeometry(this->width() / 2 - detailtextSize.width() / 2 - 4, this->height() - detailtextSize.height() + 3, detailtextSize.width(), detailtextSize.height());
 }
 
 void CpuMonitor::paintEvent(QPaintEvent *)
 {
+    // qCDebug(app) << "paintEvent";
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
@@ -232,12 +279,16 @@ void CpuMonitor::paintEvent(QPaintEvent *)
 
 void CpuMonitor::mouseReleaseEvent(QMouseEvent *ev)
 {
-    if (ev->button() == Qt::LeftButton)
+    // qCDebug(app) << "mouseReleaseEvent";
+    if (ev->button() == Qt::LeftButton) {
+        // qCDebug(app) << "mouseReleaseEvent left button";
         emit clicked("MSG_CPU");
+    }
 }
 
 void CpuMonitor::mouseMoveEvent(QMouseEvent *event)
 {
+    // qCDebug(app) << "mouseMoveEvent";
     Q_UNUSED(event);
     return;
 }

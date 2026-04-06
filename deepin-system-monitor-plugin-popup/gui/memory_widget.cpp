@@ -10,7 +10,11 @@
 #include "dbus/dbuscallmaininterface.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 #include <DPalette>
 #include <DStyleHelper>
 
@@ -35,8 +39,13 @@ MemoryWidget::MemoryWidget(QWidget *parent)
     setFixedSize(m_width, 153);
     setContentsMargins(0, 0, 0, 0);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
     connect(dAppHelper, &DApplicationHelper::themeTypeChanged, this, &MemoryWidget::changeTheme);
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+    connect(dAppHelper, &DGuiApplicationHelper::themeTypeChanged, this, &MemoryWidget::changeTheme);
+#endif
     changeTheme(dAppHelper->themeType());
 
     changeFont(DApplication::font());
@@ -53,9 +62,7 @@ void MemoryWidget::updateStatus()
 {
     QString memUsage, memTotal, memPercent, swapUsage, swapTotal, swapPercent;
     if (!DataDealSingleton::getInstance().readMemInfo(memUsage, memTotal, memPercent, swapUsage, swapTotal, swapPercent))
-        qCInfo(app) << "failed";
-    //    qCInfo(app)<<"swapUsage: "<<swapUsage;
-    //    qCInfo(app)<<"swapTotal: "<<swapTotal;
+        qCWarning(app) << "Failed to read memory information";
 
     m_memPercent = memPercent;
     m_swapPercent = swapPercent;
@@ -64,8 +71,10 @@ void MemoryWidget::updateStatus()
     if (strsMemUsage.size() == 2) {
         m_memUsage = strsMemUsage.at(0);
         m_memUsageUnit = strsMemUsage.at(1);
-    } else
+    } else {
+        qCWarning(app) << "Invalid memory usage format:" << memUsage;
         return;
+    }
 
     m_memTotal = memTotal;
     //去除字符串空格 bug #111050
@@ -80,8 +89,10 @@ void MemoryWidget::updateStatus()
     if (strsSwapUsage.size() == 2) {
         m_swapUsage = strsSwapUsage.at(0);
         m_swapUnit = strsSwapUsage.at(1);
-    } else
+    } else {
+        qCWarning(app) << "Invalid swap usage format:" << swapUsage;
         return;
+    }
 
     m_swapTotal = swapTotal;
     //去除字符串空格 bug #111050
@@ -94,17 +105,30 @@ void MemoryWidget::updateStatus()
     update();
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void MemoryWidget::changeTheme(DApplicationHelper::ColorType themeType)
 {
+#else
+void MemoryWidget::changeTheme(DGuiApplicationHelper::ColorType themeType)
+{
+#endif
     switch (themeType) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::LightType:
+#else
+    case DGuiApplicationHelper::ColorType::LightType:
+#endif
         numberColor.setRgb(0, 26, 46);
         m_titleTrans = Globals::TitleTransLight;
         m_contentTrans = Globals::contentTransLight;
         m_hoverTrans = Globals::hoverTransLight;
         m_icon = QIcon(QString(":/icons/deepin/builtin/light/icon_memory.png"));
         break;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::DarkType:
+#else
+    case DGuiApplicationHelper::ColorType::DarkType:
+#endif
         numberColor.setRgb(192, 198, 212);
         m_titleTrans = Globals::TitleTransDark;
         m_contentTrans = Globals::contentTransDark;
@@ -116,7 +140,11 @@ void MemoryWidget::changeTheme(DApplicationHelper::ColorType themeType)
     }
 
     // init colors
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
     auto palette = dAppHelper->applicationPalette();
 
     textColor = palette.color(DPalette::Text);
@@ -150,7 +178,11 @@ void MemoryWidget::paintEvent(QPaintEvent *e)
     QString strMemory = DApplication::translate("Memory.Widget", "Memory");
     painter.setFont(m_sectionFont);
     QFontMetrics fmTitle = painter.fontMetrics();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     int widthTitleTxt = fmTitle.width(strMemory);
+#else
+    int widthTitleTxt = fmTitle.horizontalAdvance(strMemory);
+#endif
     int heightTitleTxt = fmTitle.descent() + fmTitle.ascent();
     QRect netTitleRect(titleRect.x(), titleRect.y(), widthTitleTxt, heightTitleTxt);
     painter.drawText(titleRect, Qt::AlignHCenter | Qt::AlignVCenter, strMemory);
@@ -190,7 +222,6 @@ void MemoryWidget::paintEvent(QPaintEvent *e)
     QFontMetrics fmMem(m_memFont);
     QFontMetrics fmMemUnit(m_memUnitFont);
     QFontMetrics fmMemTxt(m_memTxtFont);
-    //    QFontMetrics fmMemTxt(m_memTxtFont);
 
     int letfsize = 36;
     int margin = 10;

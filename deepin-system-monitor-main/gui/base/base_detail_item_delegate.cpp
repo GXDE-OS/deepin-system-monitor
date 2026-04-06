@@ -4,10 +4,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "base_detail_item_delegate.h"
+#include "ddlog.h"
 
 #include <DPalette>
 #include <DStyle>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 
 #include <QHelpEvent>
 #include <QAbstractItemView>
@@ -15,6 +20,7 @@
 #include <QStyleOptionViewItem>
 #include <QPainterPath>
 
+using namespace DDLog;
 DWIDGET_USE_NAMESPACE
 
 #define SUMARY_ROW_BG_ALPH 0.03
@@ -24,21 +30,26 @@ const int margin = 10;
 BaseDetailItemDelegate::BaseDetailItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
 {
-
+    qCDebug(app) << "BaseDetailItemDelegate constructor";
 }
 
 BaseDetailItemDelegate::~BaseDetailItemDelegate()
 {
-
+    // qCDebug(app) << "BaseDetailItemDelegate destructor";
 }
 
 void BaseDetailItemDelegate::paint(QPainter *painter,
                                    const QStyleOptionViewItem &option,
                                    const QModelIndex &index) const
 {
+    // qCDebug(app) << "BaseDetailItemDelegate paint";
     QBrush background;
     QColor backgroundColor;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     if (DApplicationHelper::instance()->themeType() == Dtk::Gui::DGuiApplicationHelper::ColorType::LightType)
+#else
+    if (DGuiApplicationHelper::instance()->themeType() == Dtk::Gui::DGuiApplicationHelper::ColorType::LightType)
+#endif
     {
         backgroundColor = QColor(0, 0, 0);
         backgroundColor.setAlphaF(0);
@@ -64,14 +75,23 @@ void BaseDetailItemDelegate::paint(QPainter *painter,
 
     if (index.isValid())
     {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         const auto &ltextpalette = index.data(Qt::TextColorRole).value<QColor>();
+#else
+        const auto &ltextpalette = index.data(Qt::ForegroundRole).value<QColor>();
+#endif
         painter->setPen(ltextpalette);
 
         QString ltext = index.data().toString();
         QString rtext = index.data(Qt::UserRole).toString();
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         int rtmpW = painter->fontMetrics().width(rtext) + space;
         int ltmpW = painter->fontMetrics().width(ltext) + space;
+#else
+        int rtmpW = painter->fontMetrics().horizontalAdvance(rtext) + space;
+        int ltmpW = painter->fontMetrics().horizontalAdvance(ltext) + space;
+#endif
 
         int leftWidth = qMin(qMax(option.rect.width() - rtmpW - 2 * margin, 68), ltmpW);
         int rightWidth = qMin(option.rect.width() - leftWidth - 2 * margin, rtmpW);
@@ -79,7 +99,11 @@ void BaseDetailItemDelegate::paint(QPainter *painter,
         ltext = painter->fontMetrics().elidedText(ltext, Qt::ElideRight, leftWidth);
         painter->drawText(option.rect.adjusted(margin, 0, 0, 0), Qt::AlignLeft | Qt::AlignVCenter, ltext);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         const auto &rtextpalette = DApplicationHelper::instance()->applicationPalette();
+#else
+        const auto &rtextpalette = DGuiApplicationHelper::instance()->applicationPalette();
+#endif
         painter->setPen(rtextpalette.color(DPalette::TextTips));
 
         rtext = painter->fontMetrics().elidedText(rtext, Qt::ElideRight, rightWidth);
@@ -90,22 +114,32 @@ void BaseDetailItemDelegate::paint(QPainter *painter,
 
 QSize BaseDetailItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &) const
 {
+    // qCDebug(app) << "sizeHint";
     return QSize(option.rect.width(), 36);
 }
 
 bool BaseDetailItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
-    if (!e || !view)
+    qCDebug(app) << "helpEvent";
+    if (!e || !view) {
+        qCDebug(app) << "invalid event or view";
         return false;
+    }
 
     // only process tooltip events for now
     if (e->type() == QEvent::ToolTip) {
+        qCDebug(app) << "ToolTip event";
         QFontMetrics fm(option.font);
         QString ltext = index.data().toString();
         QString rtext = index.data(Qt::UserRole).toString();
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         int rtmpW = fm.width(rtext) + space;
         int ltmpW = fm.width(ltext) + space;
+#else
+        int rtmpW = fm.horizontalAdvance(rtext) + space;
+        int ltmpW = fm.horizontalAdvance(ltext) + space;
+#endif
 
         int leftWidth = qMin(qMax(option.rect.width() - rtmpW - 2 * margin, 68), ltmpW);
         int rightWidth = qMin(option.rect.width() - leftWidth - 2 * margin, rtmpW);
@@ -117,17 +151,21 @@ bool BaseDetailItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, c
         rightRect.setWidth(rightWidth);
 
         if (leftRect.contains(e->pos()) && leftWidth < ltmpW) {
+            qCDebug(app) << "show left tooltip";
             QToolTip::showText(e->globalPos(), QString("<div>%1</div>").arg(ltext.toHtmlEscaped()), view);
             return true;
         }
 
         if (rightRect.contains(e->pos()) && rightWidth < rtmpW) {
+            qCDebug(app) << "show right tooltip";
             QToolTip::showText(e->globalPos(), QString("<div>%1</div>").arg(rtext.toHtmlEscaped()), view);
             return true;
         }
 
-        if (!QStyledItemDelegate::helpEvent(e, view, option, index))
+        if (!QStyledItemDelegate::helpEvent(e, view, option, index)) {
+            qCDebug(app) << "hide tooltip";
             QToolTip::hideText();
+        }
 
         return true;
     }

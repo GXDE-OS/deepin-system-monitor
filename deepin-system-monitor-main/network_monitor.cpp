@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "network_monitor.h"
+#include "ddlog.h"
 
 #include "gui/ui_common.h"
 #include "common/common.h"
@@ -12,7 +13,11 @@
 #include "system/system_monitor.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 #include <DPalette>
 
 #include <QDebug>
@@ -31,6 +36,7 @@ const int pointsNumber = 30;
 NetworkMonitor::NetworkMonitor(QWidget *parent)
     : QWidget(parent)
 {
+    qCDebug(app) << "NetworkMonitor created";
     int statusBarMaxWidth = common::getStatusBarMaxWidth();
     setFixedWidth(statusBarMaxWidth);
     setFixedHeight(180);
@@ -45,8 +51,13 @@ NetworkMonitor::NetworkMonitor(QWidget *parent)
         uploadSpeeds->append(0);
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
     connect(dAppHelper, &DApplicationHelper::themeTypeChanged, this, &NetworkMonitor::changeTheme);
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+    connect(dAppHelper, &DGuiApplicationHelper::themeTypeChanged, this, &NetworkMonitor::changeTheme);
+#endif
     changeTheme(dAppHelper->themeType());
 
     connect(SystemMonitor::instance(), &SystemMonitor::statInfoUpdated, this, &NetworkMonitor::updateStatus);
@@ -58,17 +69,33 @@ NetworkMonitor::NetworkMonitor(QWidget *parent)
 
 NetworkMonitor::~NetworkMonitor()
 {
+    qCDebug(app) << "NetworkMonitor destroyed";
     delete downloadSpeeds;
     delete uploadSpeeds;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void NetworkMonitor::changeTheme(DApplicationHelper::ColorType themeType)
+#else
+void NetworkMonitor::changeTheme(DGuiApplicationHelper::ColorType themeType)
+#endif
 {
+    qCDebug(app) << "Changing theme, type:" << themeType;
     switch (themeType) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::LightType:
+#else
+    case DGuiApplicationHelper::LightType:
+#endif
+        qCDebug(app) << "Setting light theme icon";
         m_icon = QIcon(iconPathFromQrc("light/icon_network_light.svg"));
         break;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::DarkType:
+#else
+    case DGuiApplicationHelper::DarkType:
+#endif
+        qCDebug(app) << "Setting dark theme icon";
         m_icon = QIcon(iconPathFromQrc("dark/icon_network_light.svg"));
         break;
     default:
@@ -76,7 +103,11 @@ void NetworkMonitor::changeTheme(DApplicationHelper::ColorType themeType)
     }
 
     // init colors
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
     auto palette = dAppHelper->applicationPalette();
 #ifndef THEME_FALLBACK_COLOR
     ltextColor = palette.color(DPalette::TextTitle);
@@ -93,6 +124,7 @@ void NetworkMonitor::changeTheme(DApplicationHelper::ColorType themeType)
 
 void NetworkMonitor::getPainterPathByData(QList<double> *listData, QPainterPath &path, qreal maxVlaue)
 {
+    qCDebug(app) << "Getting painter path from data";
     qreal offsetX = 0;
     qreal distance = (this->width() - 2) * 1.0 / pointsNumber;
     int dataCount = listData->size();
@@ -111,6 +143,7 @@ void NetworkMonitor::getPainterPathByData(QList<double> *listData, QPainterPath 
 
 void NetworkMonitor::updateStatus()
 {
+    qCDebug(app) << "Updating network status";
     auto netInfo = DeviceDB::instance()->netInfo();
 
     m_totalRecvBytes = netInfo->totalRecvBytes();
@@ -122,6 +155,7 @@ void NetworkMonitor::updateStatus()
     downloadSpeeds->append(m_recvBps);
 
     if (downloadSpeeds->size() > pointsNumber + 1) {
+        qCDebug(app) << "Download speeds list is full, removing oldest";
         downloadSpeeds->pop_front();
     }
     double downloadMaxHeight = *std::max_element(downloadSpeeds->begin(), downloadSpeeds->end()) * 1.1;
@@ -130,6 +164,7 @@ void NetworkMonitor::updateStatus()
     uploadSpeeds->append(m_sentBps);
 
     if (uploadSpeeds->size() > pointsNumber + 1) {
+        qCDebug(app) << "Upload speeds list is full, removing oldest";
         uploadSpeeds->pop_front();
     }
     double uploadMaxHeight = *std::max_element(uploadSpeeds->begin(), uploadSpeeds->end()) * 1.1;
@@ -149,6 +184,7 @@ void NetworkMonitor::updateStatus()
 
 void NetworkMonitor::paintEvent(QPaintEvent *)
 {
+    // qCDebug(app) << "paintEvent";
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
@@ -310,6 +346,7 @@ void NetworkMonitor::paintEvent(QPaintEvent *)
 
 void NetworkMonitor::changeFont(const QFont &font)
 {
+    qCDebug(app) << "Changing font";
     m_sectionFont = font;
     m_sectionFont.setPointSizeF(m_sectionFont.pointSizeF() + 12);
     m_contentFont = font;
@@ -321,12 +358,16 @@ void NetworkMonitor::changeFont(const QFont &font)
 
 void NetworkMonitor::mouseReleaseEvent(QMouseEvent *ev)
 {
-    if (ev->button() == Qt::LeftButton)
+    // qCDebug(app) << "Mouse release event";
+    if (ev->button() == Qt::LeftButton) {
+        // qCDebug(app) << "Left button clicked, emitting signal";
         emit clicked("MSG_NET");
+    }
 }
 
 void NetworkMonitor::mouseMoveEvent(QMouseEvent *event)
 {
+    // qCDebug(app) << "Mouse move event";
     Q_UNUSED(event);
     return;
 }

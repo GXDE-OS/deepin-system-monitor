@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "sys_info.h"
+#include "ddlog.h"
 
 #include "common/time_period.h"
 #include "common/sample.h"
@@ -38,6 +39,7 @@ using namespace common::alloc;
 using namespace common::core;
 using namespace common::error;
 using namespace core::system;
+using namespace DDLog;
 DCORE_USE_NAMESPACE
 
 #define PROC_PATH_FILE_NR "/proc/sys/fs/file-nr"
@@ -51,12 +53,15 @@ namespace system {
 SysInfo::SysInfo()
     : d(new SysInfoPrivate())
 {
+    qCDebug(app) << "SysInfo created";
     d->loadAvg = std::make_shared<struct load_avg_t>();
 }
+
 SysInfo::SysInfo(const SysInfo &other)
     : d(other.d)
 {
 }
+
 SysInfo &SysInfo::operator=(const SysInfo &rhs)
 {
     if (this == &rhs)
@@ -65,9 +70,10 @@ SysInfo &SysInfo::operator=(const SysInfo &rhs)
     d = rhs.d;
     return *this;
 }
+
 SysInfo::~SysInfo()
 {
-
+    // qCDebug(app) << "SysInfo destroyed";
 }
 
 SysInfo *SysInfo::instance()
@@ -78,9 +84,11 @@ SysInfo *SysInfo::instance()
 
 bool SysInfo::readSockStat(SockStatMap &statMap)
 {
+    qCDebug(app) << "Reading socket statistics...";
     bool ok {true};
 
     auto parseSocks = [](int family, int proto, const char *proc, SockStatMap & statMap) -> bool {
+        qCDebug(app) << "Parsing socket stats from" << proc;
         bool ok {true};
         FILE *fp {};
         const size_t BLEN = 4096;
@@ -92,10 +100,12 @@ bool SysInfo::readSockStat(SockStatMap &statMap)
         QByteArray fmtbuf {};
         uint64_t cchash[2] {};
         QString patternA {}, patternB {};
+        int count = 0;
 
         errno = 0;
         if (!(fp = fopen(proc, "r")))
         {
+            qCWarning(app) << "Failed to open" << proc << ":" << strerror(errno);
             return !ok;
         }
 
@@ -120,6 +130,7 @@ bool SysInfo::readSockStat(SockStatMap &statMap)
             if (ino == 0) {
                 continue;
             }
+            count++;
 
             stat->ino = ino;
             stat->sa_family = family;
@@ -171,7 +182,7 @@ bool SysInfo::readSockStat(SockStatMap &statMap)
                 }
 
             } else {
-                // unexpected here
+                qCWarning(app) << "Unexpected socket family:" << stat->sa_family;
             }
 
             fmtbuf = patternA.toLocal8Bit();
@@ -190,10 +201,12 @@ bool SysInfo::readSockStat(SockStatMap &statMap)
         }
         if (ferror(fp))
         {
+            qCWarning(app) << "Error reading from" << proc << ":" << strerror(errno);
             ok = !ok;
         }
         fclose(fp);
 
+        qCDebug(app) << "Parsed" << count << "socket entries from" << proc;
         return ok;
     };
 
@@ -204,11 +217,13 @@ bool SysInfo::readSockStat(SockStatMap &statMap)
     ok = parseSocks(AF_INET6, IPPROTO_TCP, PROC_PATH_SOCK_TCP6, statMap) && ok;
     ok = parseSocks(AF_INET6, IPPROTO_UDP, PROC_PATH_SOCK_UDP6, statMap) && ok;
 
+    qCDebug(app) << "Finished reading socket statistics. Total entries:" << statMap.size() << "Success:" << ok;
     return ok;
 }
 
 void SysInfo::readSysInfo()
 {
+    qCDebug(app) << "Reading dynamic system info...";
     d->nfds = read_file_nr();
     d->nprocs = read_processes();
     d->nthrs = read_threads();
@@ -216,10 +231,12 @@ void SysInfo::readSysInfo()
     read_uptime(d->uptime);
     read_btime(d->btime);
     read_loadavg(d->loadAvg);
+    qCDebug(app) << "Dynamic system info read:" << "nfds=" << d->nfds << "nprocs=" << d->nprocs << "nthrs=" << d->nthrs;
 }
 
 void SysInfo::readSysInfoStatic()
 {
+    qCDebug(app) << "Reading static system info...";
     d->uid = getuid();
     d->euid = geteuid();
     d->gid = getgid();
@@ -237,6 +254,7 @@ void SysInfo::readSysInfoStatic()
     d->hostname = read_hostname();
     d->arch = read_arch();
     d->version = read_version();
+    qCDebug(app) << "Static system info read:" << "user=" << d->user_name << "host=" << d->hostname << "arch=" << d->arch;
 }
 
 quint32 SysInfo::read_file_nr()
@@ -255,12 +273,12 @@ quint32 SysInfo::read_file_nr()
             if (nm == 1)
                 return file_nr;
 
-            print_errno(errno, QString("read %1 failed").arg(PROC_PATH_FILE_NR));
+            qCWarning(app) << "Failed to read file descriptor count from" << PROC_PATH_FILE_NR << ":" << strerror(errno);
             return 0;
         } // ::if(fgets)
     } // ::if(fopen)
 
-    print_errno(errno, QString("open %1 failed").arg(PROC_PATH_FILE_NR));
+    qCWarning(app) << "Failed to open" << PROC_PATH_FILE_NR << ":" << strerror(errno);
     return 0;
 }
 
@@ -307,11 +325,13 @@ QString SysInfo::read_arch()
 {
     QString buffer {};
 
-    struct utsname os {
-    };
+    struct utsname os {};
     auto rc = uname(&os);
-    if (!rc)
+    if (!rc) {
         buffer = os.machine;
+    } else {
+        qCWarning(app) << "Failed to get system architecture:" << strerror(errno);
+    }
 
     return buffer;
 }
@@ -347,11 +367,11 @@ void SysInfo::read_uptime(struct timeval &uptime)
             }
         } // ::if(gets)
 
-        print_errno(errno, QString("read %1 failed").arg(PROC_PATH_UPTIME));
+        qCWarning(app) << "Failed to read uptime from" << PROC_PATH_UPTIME << ":" << strerror(errno);
         return;
     } // ::if(fopen)
 
-    print_errno(errno, QString("open %1 failed").arg(PROC_PATH_UPTIME));
+    qCWarning(app) << "Failed to open" << PROC_PATH_UPTIME << ":" << strerror(errno);
 }
 
 void SysInfo::read_btime(struct timeval &btime)
@@ -376,11 +396,11 @@ void SysInfo::read_btime(struct timeval &btime)
             } // ::if(cmp)
         } // ::while
 
-        print_errno(errno, QString("read %1 failed").arg(PROC_PATH_STAT));
+        qCWarning(app) << "Failed to read boot time from" << PROC_PATH_STAT << ":" << strerror(errno);
         return;
     } // ::if(fopen)
 
-    print_errno(errno, QString("open %1 failed").arg(PROC_PATH_STAT));
+    qCWarning(app) << "Failed to open" << PROC_PATH_STAT << ":" << strerror(errno);
 }
 
 void SysInfo::read_loadavg(LoadAvg &loadAvg)
@@ -396,7 +416,11 @@ void SysInfo::read_loadavg(LoadAvg &loadAvg)
         */
 
         // 分割数据 取前3
-        QStringList cpuStatus =  QString(lineData).split(" ", QString::SkipEmptyParts);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+        QStringList cpuStatus = QString(lineData).split(" ", QString::SkipEmptyParts);
+#else
+        QStringList cpuStatus = QString(lineData).split(" ", Qt::SkipEmptyParts);
+#endif
 
         if (cpuStatus.size() > 3) {
             loadAvg->lavg_1m = cpuStatus[0].toFloat();
@@ -407,7 +431,7 @@ void SysInfo::read_loadavg(LoadAvg &loadAvg)
         }
     }
 
-    print_errno(errno, QString("call sysinfo failed"));
+    qCWarning(app) << "Failed to read load average:" << strerror(errno);
 }
 
 } // namespace system

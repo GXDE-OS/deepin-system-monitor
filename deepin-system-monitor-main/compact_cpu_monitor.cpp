@@ -14,7 +14,11 @@
 #include "gui/base/base_commandlink_button.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 #include <DPalette>
 #include <DStyleHelper>
 #include <DFontSizeManager>
@@ -28,6 +32,7 @@
 
 DWIDGET_USE_NAMESPACE
 using namespace common;
+using namespace DDLog;
 
 // additonPoses to align with the cpu text
 const int additionCPUPosX = 3;
@@ -41,6 +46,7 @@ const int additionCPUPoxY = 3;
 CompactCpuMonitor::CompactCpuMonitor(QWidget *parent)
     : QWidget(parent)
 {
+    qCDebug(app) << "CompactCpuMonitor constructor";
     int statusBarMaxWidth = common::getStatusBarMaxWidth();
     setFixedWidth(statusBarMaxWidth);
     setFixedHeight(160);
@@ -91,21 +97,27 @@ CompactCpuMonitor::CompactCpuMonitor(QWidget *parent)
             this, &CompactCpuMonitor::changeFont);
 }
 
-CompactCpuMonitor::~CompactCpuMonitor() {}
+CompactCpuMonitor::~CompactCpuMonitor() {
+    // qCDebug(app) << "CompactCpuMonitor destructor";
+}
 
 void CompactCpuMonitor::onDetailInfoClicked()
 {
+    qCDebug(app) << "onDetailInfoClicked";
     setDetailButtonVisible(false);
     emit signalDetailInfoClicked();
 }
 
 void CompactCpuMonitor::updateStatus()
 {
+    qCDebug(app) << "updateStatus";
     totalCpuPercent = m_cpuInfomodel->cpuAllPercent();
 
     // 增加判断，如果返回的值是非数，则不更新界面，也不保存数据
-    if (std::isnan(totalCpuPercent))
+    if (std::isnan(totalCpuPercent)) {
+        qCWarning(app) << "totalCpuPercent is nan";
         return;
+    }
 
     // 将cpuPercents 和传过来最新的cPercents做对比，arm开核关核时，对应的系统监视器会出现飞线或波形图不动的情况
     QList<int> appendIndex;
@@ -113,11 +125,13 @@ void CompactCpuMonitor::updateStatus()
 
     // 更新追加，各个独立CPU占用曲线数据
     if(cpulist.size() < cpuPercents.size() - 1) {
+        qCDebug(app) << "cpu core removed";
         for(int i = cpulist.size(); i < cpuPercents.size() - 1; i++) {
             cpuPercents[i].append(0.0);
             appendIndex.append(i);
         }
     } else if (cpulist.size() > cpuPercents.size() - 1){
+        qCDebug(app) << "cpu core added";
         QList<qreal> addPointList;
         for (int j = 0; j < pointsNumber; j++) {
             addPointList.append(0);
@@ -163,17 +177,24 @@ void CompactCpuMonitor::updateStatus()
 
 void CompactCpuMonitor::setDetailButtonVisible(bool visible)
 {
+    // qCDebug(app) << "setDetailButtonVisible:" << visible;
     m_detailButton->setVisible(visible);
 }
 
 void CompactCpuMonitor::resizeEvent(QResizeEvent *event)
 {
+    // qCDebug(app) << "resizeEvent";
     QWidget::resizeEvent(event);
 }
 
 void CompactCpuMonitor::resizeItemRect()
 {
+    // qCDebug(app) << "resizeItemRect";
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     m_detailButton->setFixedSize(m_detailButton->fontMetrics().width(m_detailButton->text()) + 12, m_detailButton->fontMetrics().height() + 4);
+#else
+    m_detailButton->setFixedSize(m_detailButton->fontMetrics().horizontalAdvance(m_detailButton->text()) + 12, m_detailButton->fontMetrics().height() + 4);
+#endif
     const QSize &detailtextSize = m_detailButton->size();
     m_detailButton->setGeometry(this->width() - detailtextSize.width() + additionCPUPosX, additionCPUPoxY, detailtextSize.width(), detailtextSize.height());
 }
@@ -183,7 +204,11 @@ void CompactCpuMonitor::paintEvent(QPaintEvent *)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
 
     // init colors
     auto palette = dAppHelper->applicationPalette();
@@ -208,11 +233,20 @@ void CompactCpuMonitor::paintEvent(QPaintEvent *)
     QString cpuText = DApplication::translate("Process.Graph.View", "CPU");
     QString cpuStatText = QString::number(totalCpuPercent, 'f', 1).append('%');
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QRect cpuRect(pointerRadius * 2 + spacing - 2, 0, fm.width(cpuText), fm.height() + 4);
+#else
+    QRect cpuRect(pointerRadius * 2 + spacing - 2, 0, fm.horizontalAdvance(cpuText), fm.height() + 4);
+#endif
     QRect sectionRect(0, cpuRect.y() + qCeil((cpuRect.height() - pointerRadius) / 2.),
                       pointerRadius, pointerRadius);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QRect statRect(cpuRect.x() + cpuRect.width() + spacing, cpuRect.y(), fmStat.width(cpuStatText),
                    fmStat.height() + 4);
+#else
+    QRect statRect(cpuRect.x() + cpuRect.width() + spacing, cpuRect.y(), fmStat.horizontalAdvance(cpuStatText),
+                   fmStat.height() + 4);
+#endif
 
     m_detailButton->setText(m_detailButton->fontMetrics().elidedText(m_detailText, Qt::ElideRight, this->width() - statRect.right() - 2 * spacing));
     resizeItemRect();
@@ -331,6 +365,7 @@ void CompactCpuMonitor::paintEvent(QPaintEvent *)
 
 void CompactCpuMonitor::changeFont(const QFont &font)
 {
+    // qCDebug(app) << "changeFont";
     m_cpuFont = font;
     m_cpuFont.setWeight(QFont::Medium);
     m_cpuFont.setPointSizeF(m_cpuFont.pointSizeF() - 1);

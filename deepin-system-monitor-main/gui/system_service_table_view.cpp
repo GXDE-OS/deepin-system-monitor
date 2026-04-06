@@ -1,6 +1,4 @@
-﻿
-
-// Copyright (C) 2019 ~ 2021 Uniontech Software Technology Co.,Ltd.
+﻿// Copyright (C) 2019 ~ 2021 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -14,6 +12,7 @@
 #include "common/error_context.h"
 #include "settings.h"
 #include "toolbar.h"
+#include "ddlog.h"
 
 #include "model/system_service_sort_filter_proxy_model.h"
 #include "model/system_service_table_model.h"
@@ -24,7 +23,12 @@
 #include "service/system_service_entry.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#include <DPaletteHelper>
+#endif
 #include <DFontSizeManager>
 #include <DHeaderView>
 #include <DLabel>
@@ -38,6 +42,7 @@
 #include <QShortcut>
 #include <QDebug>
 
+using namespace DDLog;
 DWIDGET_USE_NAMESPACE
 
 // service table view backup setting key
@@ -50,6 +55,7 @@ static bool defer_initialized {false};
 SystemServiceTableView::SystemServiceTableView(DWidget *parent)
     : BaseTableView(parent)
 {
+    qCDebug(app) << "SystemServiceTableView created";
     // install event handler for service table to handle key events
     installEventFilter(this);
 
@@ -61,6 +67,7 @@ SystemServiceTableView::SystemServiceTableView(DWidget *parent)
 
     // load backup settings
     bool settingsLoaded = loadSettings();
+    qCDebug(app) << "Settings loaded:" << settingsLoaded;
 
     // initialize ui components & connections
     initUI(settingsLoaded);
@@ -72,6 +79,7 @@ SystemServiceTableView::SystemServiceTableView(DWidget *parent)
 // destructor
 SystemServiceTableView::~SystemServiceTableView()
 {
+    qCDebug(app) << "SystemServiceTableView destroyed";
     // backup settings when quit
     saveSettings();
 }
@@ -79,40 +87,49 @@ SystemServiceTableView::~SystemServiceTableView()
 // backup service table view settings
 void SystemServiceTableView::saveSettings()
 {
+    qCDebug(app) << "Saving system service table view settings";
     Settings *s = Settings::instance();
     if (s) {
         QByteArray buf = header()->saveState();
         s->setOption(kSettingsOption_ServiceTableHeaderState, buf.toBase64());
         s->flush();
+        qCDebug(app) << "Settings saved successfully";
     }
 }
 
 // load service table view settings from backup storage
 bool SystemServiceTableView::loadSettings()
 {
+    qCDebug(app) << "Loading system service table view settings";
     Settings *s = Settings::instance();
     if (s) {
         QVariant opt = s->getOption(kSettingsOption_ServiceTableHeaderState);
         if (opt.isValid()) {
             QByteArray buf = QByteArray::fromBase64(opt.toByteArray());
             header()->restoreState(buf);
+            qCDebug(app) << "Settings loaded successfully";
             return true;
         }
     }
+    qCDebug(app) << "No settings found";
     return false;
 }
 
 // show service table header context menu
 void SystemServiceTableView::displayHeaderContextMenu(const QPoint &p)
 {
+    qCDebug(app) << "Displaying header context menu";
     m_headerContextMenu->popup(mapToGlobal(p));
 }
 
 // show service table context menu
 void SystemServiceTableView::displayTableContextMenu(const QPoint &p)
 {
-    if (selectedIndexes().size() == 0)
+    qCDebug(app) << "Displaying table context menu";
+    if (selectedIndexes().size() == 0) {
+        qCDebug(app) << "No item selected";
         return;
+    }
 
     QPoint point = mapToGlobal(p);
     // when popup context menu for items, take table header height into consideration
@@ -123,11 +140,15 @@ void SystemServiceTableView::displayTableContextMenu(const QPoint &p)
 // start service handler
 void SystemServiceTableView::startService()
 {
+    qCDebug(app) << "Starting service";
     // no selected item, do nothing
-    if (!m_selectedSName.isValid())
+    if (!m_selectedSName.isValid()) {
+        qCDebug(app) << "No service selected for starting";
         return;
+    }
 
     auto sname = m_selectedSName.toString();
+    qCDebug(app) << "Starting service:" << sname;
 
     // request service sub name if origin service name ends  with '@'
     if (sname.endsWith('@')) {
@@ -143,10 +164,14 @@ void SystemServiceTableView::startService()
         if (dialog.result() == QMessageBox::Ok) {
             // no service sub name given, do nothing
             auto subName = dialog.getServiceSubName();
-            if (subName.isEmpty())
+            if (subName.isEmpty()) {
+                qCDebug(app) << "No sub name provided for service:" << sname;
                 return;
+            }
             sname = sname.append(subName);
+            qCDebug(app) << "Using sub name:" << subName << "for service:" << sname;
         } else {  // cancel clicked
+            qCDebug(app) << "User cancelled sub name input for service:" << sname;
             return;
         }
     }
@@ -160,7 +185,10 @@ void SystemServiceTableView::startService()
         refreshServiceStatus(sname);
         // show error dialog when error occurred
         if (watcher->result()) {
+            qCWarning(app) << "Failed to start service:" << sname << "-" << watcher->result().getErrorName() << "-" << watcher->result().getErrorMessage();
             Q_EMIT mgr->errorOccurred(watcher->result());
+        } else {
+            qCDebug(app) << "Service started successfully:" << sname;
         }
         // reset global background task state
         gApp->backgroundTaskStateChanged(Application::kTaskFinished);
@@ -179,12 +207,15 @@ void SystemServiceTableView::startService()
 // stop service handler
 void SystemServiceTableView::stopService()
 {
+    qCDebug(app) << "Stopping service";
     // no selected item, do nothing
     if (!m_selectedSName.isValid()) {
+        qCDebug(app) << "No service selected for stopping";
         return;
     }
 
     auto sname = m_selectedSName.toString();
+    qCDebug(app) << "Stopping service:" << sname;
 
     // service id syntax: xxx@, requires service sub name from user if origin service name ends with '@'
     if (sname.endsWith('@')) {
@@ -200,10 +231,14 @@ void SystemServiceTableView::stopService()
         if (dialog.result() == QMessageBox::Ok) {
             auto subName = dialog.getServiceSubName();
             // no service sub name given, do nothing
-            if (subName.isEmpty())
+            if (subName.isEmpty()) {
+                qCDebug(app) << "No sub name provided for service:" << sname;
                 return;
+            }
             sname = sname.append(subName);
+            qCDebug(app) << "Using sub name:" << subName << "for service:" << sname;
         } else {
+            qCDebug(app) << "User cancelled sub name input for service:" << sname;
             return;
         }
     }
@@ -217,7 +252,10 @@ void SystemServiceTableView::stopService()
         refreshServiceStatus(sname);
         // show error dialog when error occurred
         if (watcher->result()) {
+            qCWarning(app) << "Failed to stop service:" << sname << "-" << watcher->result().getErrorName() << "-" << watcher->result().getErrorMessage();
             Q_EMIT mgr->errorOccurred(watcher->result());
+        } else {
+            qCDebug(app) << "Service stopped successfully:" << sname;
         }
         // reset global background task state
         gApp->backgroundTaskStateChanged(Application::kTaskFinished);
@@ -236,15 +274,19 @@ void SystemServiceTableView::stopService()
 // restart service handler
 void SystemServiceTableView::restartService()
 {
+    qCDebug(app) << "Restarting service";
     // no selected item, do nothing
     if (!m_selectedSName.isValid()) {
+        qCDebug(app) << "No service selected for restarting";
         return;
     }
 
     auto sname = m_selectedSName.toString();
+    qCDebug(app) << "Restarting service:" << sname;
 
     // service id syntax: xxx@, requires service sub name from user if origin service name ends with '@'
     if (sname.endsWith('@')) {
+        qCDebug(app) << "Service name ends with '@', requires sub name input";
         ServiceNameSubInputDialog dialog(this);
         dialog.setTitle(
             DApplication::translate("Service.Instance.Name.Dialog", "Service instance name"));
@@ -255,12 +297,17 @@ void SystemServiceTableView::restartService()
         dialog.setMessage(desc);
         dialog.exec();
         if (dialog.result() == QMessageBox::Ok) {
+            qCDebug(app) << "User provided sub name for service:" << sname;
             auto subName = dialog.getServiceSubName();
             // no service sub name given, do nothing
-            if (subName.isEmpty())
+            if (subName.isEmpty()) {
+                qCDebug(app) << "No sub name provided for service:" << sname;
                 return;
+            }
             sname = sname.append(subName);
+            qCDebug(app) << "Using sub name:" << subName << "for service:" << sname;
         } else {
+            qCDebug(app) << "User cancelled sub name input for service:" << sname;
             return;
         }
     }
@@ -274,7 +321,10 @@ void SystemServiceTableView::restartService()
         refreshServiceStatus(sname);
         // show error dialog when error occurred
         if (watcher->result()) {
+            qCWarning(app) << "Failed to restart service:" << sname << "-" << watcher->result().getErrorName() << "-" << watcher->result().getErrorMessage();
             Q_EMIT mgr->errorOccurred(watcher->result());
+        } else {
+            qCDebug(app) << "Service restarted successfully:" << sname;
         }
         // reset global background task state
         gApp->backgroundTaskStateChanged(Application::kTaskFinished);
@@ -293,12 +343,15 @@ void SystemServiceTableView::restartService()
 // set service startup mode handler
 void SystemServiceTableView::setServiceStartupMode(bool autoStart)
 {
+    qCDebug(app) << "Setting startup mode for service:" << m_selectedSName.toString() << "to auto:" << autoStart;
     // no selected item, do nothing
     if (!m_selectedSName.isValid()) {
+        qCDebug(app) << "No service selected for setting startup mode";
         return;
     }
 
     auto sname = m_selectedSName.toString();
+    qCDebug(app) << "Setting startup mode for service:" << sname << "to auto:" << autoStart;
 
     auto *mgr = ServiceManager::instance();
     Q_ASSERT(mgr != nullptr);
@@ -309,7 +362,10 @@ void SystemServiceTableView::setServiceStartupMode(bool autoStart)
         refreshServiceStatus(sname);
         // show error dialog when error occurred
         if (watcher->result()) {
+            qCWarning(app) << "Failed to set startup mode for service:" << sname << "-" << watcher->result().getErrorName() << "-" << watcher->result().getErrorMessage();
             Q_EMIT mgr->errorOccurred(watcher->result());
+        } else {
+            qCDebug(app) << "Startup mode set successfully for service:" << sname;
         }
         // reset global background task state
         gApp->backgroundTaskStateChanged(Application::kTaskFinished);
@@ -328,6 +384,7 @@ void SystemServiceTableView::setServiceStartupMode(bool autoStart)
 // adjust search result tip label's visibility & positon
 void SystemServiceTableView::adjustInfoLabelVisibility()
 {
+    qCDebug(app) << "Adjusting search result tip label's visibility & position";
     setUpdatesEnabled(false);
     // show label only when proxy model is empty, and spinner is not running
     m_noMatchingResultLabel->setVisible(!m_proxyModel->rowCount() &&
@@ -343,6 +400,7 @@ void SystemServiceTableView::adjustInfoLabelVisibility()
 // refresh servcie status if service gets updated
 void SystemServiceTableView::refreshServiceStatus(const QString sname)
 {
+    qCDebug(app) << "Refreshing service status for:" << sname;
     auto *mgr = ServiceManager::instance();
     Q_ASSERT(mgr != nullptr);
 
@@ -353,6 +411,7 @@ void SystemServiceTableView::refreshServiceStatus(const QString sname)
 
     // if service's active state is in none final state, start a timer to pull new state Periodically
     if (!isFinalState(entry.getActiveState().toLocal8Bit())) {
+        qCDebug(app) << "Service active state is not final";
         auto *timer = new CustomTimer(mgr, this);
         timer->start(o.path());
     }
@@ -361,7 +420,12 @@ void SystemServiceTableView::refreshServiceStatus(const QString sname)
 // filter service on specific pattern
 void SystemServiceTableView::search(const QString &pattern)
 {
+    qCDebug(app) << "Searching for service:" << pattern;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     m_proxyModel->setFilterRegExp(QRegExp(pattern, Qt::CaseInsensitive));
+#else
+    m_proxyModel->setFilterRegularExpression(QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption));
+#endif
 
     // adjust search result tip label's position & visibility
     adjustInfoLabelVisibility();
@@ -370,8 +434,10 @@ void SystemServiceTableView::search(const QString &pattern)
 // resize event handler
 void SystemServiceTableView::resizeEvent(QResizeEvent *event)
 {
+    // qCDebug(app) << "SystemServiceTableView resized";
     // move spinner to center while resizing
     if (m_spinner) {
+        // qCDebug(app) << "Resizing spinner";
         m_spinner->move(rect().center() - m_spinner->rect().center());
     }
     // adjust search result tip label's position & visibility
@@ -384,7 +450,9 @@ void SystemServiceTableView::resizeEvent(QResizeEvent *event)
 void SystemServiceTableView::selectionChanged(const QItemSelection &selected,
                                               const QItemSelection &deselected)
 {
+    qCDebug(app) << "Selection changed, selected:" << selected.size() << "deselected:" << deselected.size();
     if (selected.size() <= 0) {
+        qCDebug(app) << "No service selected";
         return;
     }
 
@@ -392,6 +460,7 @@ void SystemServiceTableView::selectionChanged(const QItemSelection &selected,
     m_selectedSName = selected.indexes()
                       .value(SystemServiceTableModel::kSystemServiceNameColumn)
                       .data();
+    qCDebug(app) << "Selected service changed to:" << m_selectedSName.toString();
 
     BaseTableView::selectionChanged(selected, deselected);
 }
@@ -399,6 +468,7 @@ void SystemServiceTableView::selectionChanged(const QItemSelection &selected,
 // initialize ui components
 void SystemServiceTableView::initUI(bool settingsLoaded)
 {
+    qCDebug(app) << "Initializing system service table view";
     setAccessibleName("SystemServiceTableView");
 
     // search result tip label instance
@@ -406,7 +476,11 @@ void SystemServiceTableView::initUI(bool settingsLoaded)
         new DLabel(DApplication::translate("Common.Search", "No search results"), this);
     DFontSizeManager::instance()->bind(m_noMatchingResultLabel, DFontSizeManager::T4);
     // set text color
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto palette = DApplicationHelper::instance()->palette(m_noMatchingResultLabel);
+#else
+    auto palette = DPaletteHelper::instance()->palette(m_noMatchingResultLabel);
+#endif
     QColor labelColor = palette.color(DPalette::PlaceholderText);
     palette.setColor(DPalette::Text, labelColor);
     m_noMatchingResultLabel->setPalette(palette);
@@ -441,6 +515,7 @@ void SystemServiceTableView::initUI(bool settingsLoaded)
     // set service table default style when backup settings can not be loaded
     if (!settingsLoaded)
     {
+        qCDebug(app) << "No settings loaded, setting default table style";
         setColumnWidth(SystemServiceTableModel::kSystemServiceNameColumn, 200);
         setColumnHidden(SystemServiceTableModel::kSystemServiceNameColumn, false);
         setColumnWidth(SystemServiceTableModel::kSystemServiceLoadStateColumn, 100);
@@ -540,7 +615,11 @@ void SystemServiceTableView::initUI(bool settingsLoaded)
 
     // spinner instance
     m_spinner = new DSpinner(this);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto pa = DApplicationHelper::instance()->applicationPalette();
+#else
+    auto pa = DGuiApplicationHelper::instance()->applicationPalette();
+#endif
     // set spinner color
     QBrush hlBrush = pa.color(DPalette::Active, DPalette::Highlight);
     pa.setColor(DPalette::Highlight, hlBrush.color());
@@ -552,17 +631,31 @@ void SystemServiceTableView::initUI(bool settingsLoaded)
 // initialize connections
 void SystemServiceTableView::initConnections()
 {
+    qCDebug(app) << "Initializing system service table view connections";
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
     Q_ASSERT(dAppHelper != nullptr);
     // change search result tip label text color when theme type changed
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     connect(dAppHelper, &DApplicationHelper::themeTypeChanged, this, [ = ]() {
         auto palette = DApplicationHelper::instance()->applicationPalette();
+#else
+    connect(dAppHelper, &DGuiApplicationHelper::themeTypeChanged, this, [ = ]() {
+        auto palette = DGuiApplicationHelper::instance()->applicationPalette();
+#endif
         if (m_noMatchingResultLabel) {
             QColor labelColor = palette.color(DPalette::PlaceholderText);
             palette.setColor(DPalette::Text, labelColor);
             m_noMatchingResultLabel->setPalette(palette);
         }
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         auto pa = DApplicationHelper::instance()->applicationPalette();
+#else
+        auto pa = DGuiApplicationHelper::instance()->applicationPalette();
+#endif
         // set spinner color
         QBrush hlBrush = pa.color(DPalette::Active, DPalette::Highlight);
         pa.setColor(DPalette::Highlight, hlBrush.color());
@@ -759,7 +852,9 @@ void SystemServiceTableView::initConnections()
 
 void SystemServiceTableView::onLoadServiceDataList()
 {
+    qCDebug(app) << "Loading service data list";
     if (!defer_initialized) {
+        qCDebug(app) << "Loading initial service data list";
         ServiceManager::instance()->updateServiceList();
         defer_initialized = true;
     }
@@ -768,6 +863,7 @@ void SystemServiceTableView::onLoadServiceDataList()
 // size hint for column to help calculate prefered section width while user double clicked section's gripper
 int SystemServiceTableView::sizeHintForColumn(int column) const
 {
+    qCDebug(app) << "Getting size hint for column" << column;
     int margin = 10;
     return std::max(header()->sizeHintForColumn(column) + margin * 2,
                     BaseTableView::sizeHintForColumn(column) + margin * 2);
@@ -776,10 +872,14 @@ int SystemServiceTableView::sizeHintForColumn(int column) const
 // refresh service list handler
 void SystemServiceTableView::refresh()
 {
+    qCDebug(app) << "Refreshing service list";
     // while already in processing state, do nothing
-    if (m_loading)
+    if (m_loading) {
+        qCDebug(app) << "Already loading, skipping refresh";
         return;
+    }
 
+    qCDebug(app) << "Refreshing service list";
     // reset model & select service's name
     m_model->reset();
     m_selectedSName.clear();
@@ -790,6 +890,7 @@ void SystemServiceTableView::refresh()
 // event filter
 bool SystemServiceTableView::eventFilter(QObject *obj, QEvent *event)
 {
+    // qCDebug(app) << "Event filter for system service table view";
     if (obj == this) {
         // handle key press event for service table view
         if (event->type() == QEvent::KeyPress) {

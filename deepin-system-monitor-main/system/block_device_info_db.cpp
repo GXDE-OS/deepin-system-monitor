@@ -95,23 +95,31 @@ get_child(struct udev *udev, struct udev_device *parent, const char *subsystem)
 BlockDeviceInfoDB::BlockDeviceInfoDB()
     : m_deviceList {}
 {
+    qCDebug(app) << "BlockDeviceInfoDB constructor";
 }
 
 BlockDeviceInfoDB::~BlockDeviceInfoDB()
 {
+    // qCDebug(app) << "BlockDeviceInfoDB destructor";
 }
 
 void BlockDeviceInfoDB::readDiskInfo()
 {
+    qCDebug(app) << "Starting to read disk info";
     QDir dir(SYSFS_PATH_BLOCK);
     if (!dir.exists()) {
+        qCWarning(app) << "Block device directory does not exist:" << SYSFS_PATH_BLOCK;
         return;
     }
 
     QFileInfoList list = dir.entryInfoList();
     //获取实体磁盘
     for (int i = 0; i < list.size(); ++i) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QString t_link = list.at(i).readLink();
+#else
+        QString t_link = list.at(i).readSymLink();
+#endif
         if (list[i].fileName() != "." && list[i].fileName() != ".." && !list[i].fileName().contains("ram") && !list[i].fileName().contains("loop") && !t_link.contains("virtual")) {
             int index = -1;
             //  查找当前的device是否存在
@@ -122,12 +130,14 @@ void BlockDeviceInfoDB::readDiskInfo()
                 }
             }
             if (index == -1) {   // 不存在的话将该disk存储起来
+                qCDebug(app) << "Adding new physical disk:" << list[i].fileName();
                 BlockDevice bd;
                 if (bd.readDeviceSize(list[i].fileName()) > 0) {
                     bd.setDeviceName(list[i].fileName().toLocal8Bit());
                     m_deviceList << bd;
                 }
             } else {
+                qCDebug(app) << "Updating existing physical disk:" << list[i].fileName();
                 m_deviceList[index].setDeviceName(list[i].fileName().toLocal8Bit());   // 更新disk数据
             }
         }
@@ -135,7 +145,11 @@ void BlockDeviceInfoDB::readDiskInfo()
 
     //获取虚拟磁盘
     for (int i = 0; i < list.size(); ++i) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QString t_link = list.at(i).readLink();
+#else
+        QString t_link = list.at(i).readSymLink();
+#endif
         if (list[i].fileName() != "." && list[i].fileName() != ".." && !list[i].fileName().contains("ram") && !list[i].fileName().contains("loop") && t_link.contains("virtual")) {
             int index = -1;
             //  查找当前的device是否存在
@@ -146,12 +160,14 @@ void BlockDeviceInfoDB::readDiskInfo()
                 }
             }
             if (index == -1) {   // 不存在的话将该disk存储起来
+                qCDebug(app) << "Adding new virtual disk:" << list[i].fileName();
                 BlockDevice bd;
                 if (bd.readDeviceSize(list[i].fileName()) > 0) {
                     bd.setDeviceName(list[i].fileName().toLocal8Bit());
                     m_deviceList << bd;
                 }
             } else {
+                qCDebug(app) << "Updating existing virtual disk:" << list[i].fileName();
                 m_deviceList[index].setDeviceName(list[i].fileName().toLocal8Bit());   // 更新disk数据
             }
         }
@@ -166,9 +182,11 @@ void BlockDeviceInfoDB::readDiskInfo()
             }
         }
         if (!isFind) {
+            qCDebug(app) << "Removing device that no longer exists:" << m_deviceList[i].deviceName();
             m_deviceList.removeAt(i);
         }
     }
+    qCDebug(app) << "Finished reading disk info";
 }
 
 //static void enum_block()
@@ -258,6 +276,7 @@ void BlockDeviceInfoDB::readDiskInfo()
 
 void BlockDeviceInfoDB::update()
 {
+    qCDebug(app) << "Updating BlockDeviceInfoDB";
     readDiskInfo();
 
     // TODO: enum device in /sys/block => phy & virtual

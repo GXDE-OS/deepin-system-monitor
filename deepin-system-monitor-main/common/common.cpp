@@ -7,6 +7,7 @@
 #include "stack_trace.h"
 #include "hash.h"
 #include "helper.hpp"
+#include "ddlog.h"
 
 #include <QPainter>
 #include <QString>
@@ -14,10 +15,13 @@
 #include <QDesktopServices>
 #include <QApplication>
 
+using namespace DDLog;
+
 namespace common {
 
 void displayShortcutHelpDialog(const QRect &rect)
 {
+    // qCDebug(app) << "displayShortcutHelpDialog at rect:" << rect;
     QPoint pos(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 
     QJsonObject shortcutObj;
@@ -137,6 +141,7 @@ void displayShortcutHelpDialog(const QRect &rect)
 
 int getStatusBarMaxWidth()
 {
+    // qCDebug(app) << "getStatusBarMaxWidth";
     // TODO: use more elegent way to calc bar width
     return 280;
 }
@@ -146,6 +151,7 @@ void drawLoadingRing(QPainter &painter, int centerX, int centerY, int radius, in
                      double foregroundOpacity, QColor backgroundColor, double backgroundOpacity,
                      double percent)
 {
+    // qCDebug(app) << "drawLoadingRing";
     drawRing(painter, centerX, centerY, radius, penWidth, loadingAngle, rotationAngle,
              backgroundColor, backgroundOpacity);
     drawRing(painter, centerX, centerY, radius, penWidth, int(loadingAngle * percent), rotationAngle,
@@ -155,6 +161,7 @@ void drawLoadingRing(QPainter &painter, int centerX, int centerY, int radius, in
 void drawRing(QPainter &painter, int centerX, int centerY, int radius, int penWidth,
               int loadingAngle, int rotationAngle, QColor color, double opacity)
 {
+    // qCDebug(app) << "drawRing";
     QRect drawingRect;
 
     drawingRect.setX(centerX - radius + penWidth);
@@ -176,17 +183,36 @@ void drawRing(QPainter &painter, int centerX, int centerY, int radius, int penWi
 
 bool startWithHanzi(const QString &text)
 {
-    if (text.isEmpty())
+    // qCDebug(app) << "startWithHanzi check text:" << text;
+    if (text.isEmpty()) {
+        qCDebug(app) << "Empty text provided to startWithHanzi check";
         return false;
+    }
 
     return text.at(0).script() == QChar::Script_Han;
 }
 
 void openFilePathItem(const QString &path)
 {
+    qCDebug(app) << "Attempting to open file path:" << path;
     bool result = QProcess::startDetached(QString("dde-file-manager --show-item \"%1\"").arg(path));
     if (!result) {
-        QDesktopServices::openUrl(QUrl(path));
+        qCDebug(app) << "dde-file-manager launch failed, trying alternative methods";
+        QUrl displayUrl = QUrl::fromLocalFile(path);
+        QDBusInterface interface(QStringLiteral("org.freedesktop.FileManager1"),
+                                        QStringLiteral("/org/freedesktop/FileManager1"),
+                                        QStringLiteral("org.freedesktop.FileManager1"));
+        if (interface.isValid()) {
+            QStringList list;
+            list << displayUrl.toString();
+            qCDebug(app) << "Using DBus interface to show items";
+            interface.call("ShowItems", list, "");
+        } else {
+            qCDebug(app) << "Using QDesktopServices to open URL";
+            QDesktopServices::openUrl(displayUrl);
+        }
+    } else {
+        qCDebug(app) << "Successfully launched dde-file-manager";
     }
 }
 
@@ -201,14 +227,17 @@ int specialComType = -1;
 
 void WaylandSearchCentered()
 {
+    // qCDebug(app) << "WaylandSearchCentered";
     WaylandCentered = false;
 }
 
 static void init_shell_list()
 {
+    // qCDebug(app) << "init_shell_list";
     FILE *fp;
     fp = fopen("/etc/shells", "r");
     if (fp) {
+        // qCDebug(app) << "open /etc/shells success";
         char buf[128] {};
         char *s;
         while ((s = fgets(buf, 128, fp))) {
@@ -217,16 +246,20 @@ static void init_shell_list()
                 if (sh.endsWith('\n'))
                     sh.chop(1);
                 if (!shellList.contains(sh)) {
+                    // qCDebug(app) << "add shell:" << sh;
                     shellList << sh;
                 }
             }
         }
         fclose(fp);
+    } else {
+        qCWarning(app) << "Failed to open /etc/shells";
     }
 }
 
 static void init_script_list()
 {
+    // qCDebug(app) << "init_script_list";
     // fill scripting lang list (!!far from complete)
     scriptList << "/usr/bin/python";
     scriptList << "/usr/bin/perl";
@@ -236,16 +269,19 @@ static void init_script_list()
 
 static void init_path_list()
 {
+    // qCDebug(app) << "init_path_list";
     // fill environment path
     auto paths = qgetenv("PATH");
     auto list = paths.split(':');
-    if (list.size() > 0)
+    if (list.size() > 0) {
         for (auto path : list)
             pathList << path;
-    else {
+        qCDebug(app) << "Added paths from environment:" << pathList;
+    } else {
         // use default path
         pathList << "/bin";
         pathList << "/usr/bin";
+        qCDebug(app) << "Using default paths:" << pathList;
     }
 }
 
@@ -254,10 +290,11 @@ unsigned long HZ;
 
 static void get_HZ()
 {
+    // qCDebug(app) << "get_HZ";
     long ticks;
 
     if ((ticks = sysconf(_SC_CLK_TCK)) == -1) {
-        perror("sysconf");
+        qCWarning(app) << "Failed to get system clock ticks:" << strerror(errno);
     }
 
     HZ = ulong(ticks);
@@ -265,12 +302,13 @@ static void get_HZ()
 
 static void get_kb_shift()
 {
+    // qCDebug(app) << "get_kb_shift";
     int shift = 0;
     long size;
 
     /* One can also use getpagesize() to get the size of a page */
     if ((size = sysconf(_SC_PAGESIZE)) == -1) {
-        perror("sysconf");
+        qCWarning(app) << "Failed to get page size:" << strerror(errno);
     }
 
     size >>= 10; /* Assume that a page has a minimum size of 1 kB */
@@ -285,6 +323,7 @@ static void get_kb_shift()
 
 void global_init()
 {
+    // qCDebug(app) << "global_init";
     util::installCrashHandler();
     util::common::init_seed();
 
@@ -299,6 +338,7 @@ void global_init()
 
 QString format::formatHz(quint32 freq, format::HzUnit base, int prec)
 {
+    // qCDebug(app) << "formatHz with freq:" << freq << "base:" << base << "prec:" << prec;
     int u = base;
     qreal v = freq;
 
@@ -313,9 +353,12 @@ QString format::formatHz(quint32 freq, format::HzUnit base, int prec)
 //内存、磁盘统一单位
 QString format::formatUnit_memory_disk(QVariant size, format::SizeUnit base, int prec, bool isSpeed)
 {
+    // qCDebug(app) << "formatUnit_memory_disk with size:" << size << "base:" << base << "prec:" << prec << "isSpeed:" << isSpeed;
     int u = base;
-    if (!size.canConvert(QMetaType::Double))
+    if (!size.canConvert(QMetaType::Double)) {
+        qCWarning(app) << "Invalid size value type";
         return {};
+    }
     qreal v = size.toReal();
 
     while (v > 1024. && u <= EB) {
@@ -323,18 +366,24 @@ QString format::formatUnit_memory_disk(QVariant size, format::SizeUnit base, int
         u++;
     }
 
+    QString result;
     if (isSpeed) {
-        return QString("%1 %2%3").arg(v, 0, 'f', prec).arg(UnitSuffixother[u]).arg("/s");
+        result = QString("%1 %2%3").arg(v, 0, 'f', prec).arg(UnitSuffixother[u]).arg("/s");
+    } else {
+        result = QString("%1 %2").arg(v, 0, 'f', prec).arg(UnitSuffixother[u]);
     }
-    return QString("%1 %2").arg(v, 0, 'f', prec).arg(UnitSuffixother[u]);
+    return result;
 }
 
 //网络统一单位
 QString format::formatUnit_net(QVariant size, format::SizeUnit base, int prec, bool isSpeed)
 {
+    // qCDebug(app) << "formatUnit_net with size:" << size << "base:" << base << "prec:" << prec << "isSpeed:" << isSpeed;
     int u = base;
-    if (!size.canConvert(QMetaType::Double))
+    if (!size.canConvert(QMetaType::Double)) {
+        qCWarning(app) << "Invalid size value type";
         return {};
+    }
     qreal v = size.toReal();
 
     while (v > 1024. && u <= EB) {
@@ -342,11 +391,13 @@ QString format::formatUnit_net(QVariant size, format::SizeUnit base, int prec, b
         u++;
     }
 
+    QString result;
     if (isSpeed) {
-        return QString("%1 %2%3").arg(v, 0, 'f', prec).arg(UnitSuffixnet[u]).arg("/s");
+        result = QString("%1 %2%3").arg(v, 0, 'f', prec).arg(UnitSuffixnet[u]).arg("/s");
+    } else {
+        result = QString("%1 %2").arg(v, 0, 'f', prec).arg(UnitSuffixnet[u]);
     }
-    //统一单位
-    return QString("%1 %2").arg(v, 0, 'f', prec).arg(UnitSuffixnet[u]);
+    return result;
 }
 
 // ::format::formatUnit

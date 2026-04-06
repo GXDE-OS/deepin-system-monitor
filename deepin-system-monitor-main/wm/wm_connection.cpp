@@ -13,32 +13,38 @@ namespace wm {
 
 WMConnection::WMConnection(const QByteArray &display)
 {
+    qCDebug(app) << "Creating WMConnection for display:" << (display.isEmpty() ? "default" : display.constData());
     m_conn = XConnection(xcb_connect(display.isEmpty() ? nullptr : display.constData(), &m_screenNumber));
     auto *conn = m_conn.get();
     if (conn && xcb_connection_has_error(conn)) {
-        qCDebug(app) << "Unable to connect to X server";
+        qCWarning(app) << "Failed to connect to X server:" << xcb_connection_has_error(conn);
+        m_conn.reset(); // clear the connection
         return;
     }
+    qCDebug(app) << "XCB connection successful, screen number:" << m_screenNumber;
     m_atoms.initialize(conn);
 
     m_setup = xcb_get_setup(conn);
     auto iter = xcb_setup_roots_iterator(m_setup);
     auto screenCount = xcb_setup_roots_length(m_setup);
     if (screenCount < m_screenNumber) {
-        qCDebug(app) << QString("Unable to access to screen %1, max is %2").arg(m_screenNumber).arg(screenCount - 1);
+        qCWarning(app) << "Requested screen" << m_screenNumber << "is out of range (max:" << screenCount - 1 << ")";
         return;
     }
 
     // get the screen we want from a list of screens in linked list structure
-    for (int i = 0; i < m_screenNumber; i++)
+    for (int i = 0; i < m_screenNumber; i++) {
         xcb_screen_next(&iter);
+    }
     m_screen = iter.data;
 
     m_root = m_screen->root;
+    qCDebug(app) << "Found screen" << m_screenNumber << "with root window ID:" << m_root;
 }
 
 WMConnection::~WMConnection()
 {
+    qCDebug(app) << "Destroying WMConnection";
 }
 
 }   // namespace wm

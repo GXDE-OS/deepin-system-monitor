@@ -9,7 +9,11 @@
 #include "dbus/dbuscallmaininterface.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 #include <DPalette>
 #include <DStyleHelper>
 
@@ -39,8 +43,13 @@ CpuWidget::CpuWidget(QWidget *parent)
         downloadSpeeds->append(0);
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
     connect(dAppHelper, &DApplicationHelper::themeTypeChanged, this, &CpuWidget::changeTheme);
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+    connect(dAppHelper, &DGuiApplicationHelper::themeTypeChanged, this, &CpuWidget::changeTheme);
+#endif
     changeTheme(dAppHelper->themeType());
 
     initConnection();
@@ -67,38 +76,35 @@ void CpuWidget::getPainterPathByData(QList<double> *listData, QPainterPath &path
     qreal distance = (this->width() - cpuTxtWidth - 10) * 1.0 / pointsNumber;
     int dataCount = listData->size();
 
-    if (maxVlaue < 0.000001)
+    if (maxVlaue < 0.000001) {
+        qCDebug(app) << "Adjusting max value from" << maxVlaue << "to 1";
         maxVlaue = 1;
+    }
 
     for (int i = 0; i < dataCount - 1; i++) {
         //sp 为线段的起始点，ep 为线段的终点
         //c1，c2 为贝塞尔曲线的控制点
         QPointF sp = QPointF(offsetX, 20 * listData->at(i) / maxVlaue);
-        ;
         QPointF ep = QPointF(offsetX + distance, 20 * listData->at(i + 1) / maxVlaue);
-        ;
-
         offsetX += distance;
 
         QPointF c1 = QPointF((sp.x() + ep.x()) / 2.0, sp.y());
         QPointF c2 = QPointF((sp.x() + ep.x()) / 2.0, ep.y());
         path.cubicTo(c1, c2, ep);
-
-        //       qCInfo(app)<<"sp,  x:"<<offsetX<< "Y:"<< 20 * listData->at(i) / maxVlaue;
     }
 }
 
 void CpuWidget::updateStatus()
 {
     if (!DataDealSingleton::getInstance().readCpuPer(m_cpuPer))
-        qCInfo(app) << "false: " << m_cpuPer;
+        qCWarning(app) << "Failed to read CPU percentage: " << m_cpuPer;
 
     // Init download path.
     downloadSpeeds->append(m_cpuPer);
-
     if (downloadSpeeds->size() > pointsNumber + 1) {
         downloadSpeeds->pop_front();
     }
+
     double downloadMaxHeight = *std::max_element(downloadSpeeds->begin(), downloadSpeeds->end()) * 1.1;
 
     QPainterPath tmpDownloadpath;
@@ -108,16 +114,28 @@ void CpuWidget::updateStatus()
     update();
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void CpuWidget::changeTheme(DApplicationHelper::ColorType themeType)
+#else
+void CpuWidget::changeTheme(DGuiApplicationHelper::ColorType themeType)
+#endif
 {
     switch (themeType) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::LightType:
+#else
+    case DGuiApplicationHelper::ColorType::LightType:
+#endif
         m_titleTrans = Globals::TitleTransLight;
         m_contentTrans = Globals::contentTransLight;
         m_hoverTrans = Globals::hoverTransLight;
         m_icon = QIcon(QString(":/icons/deepin/builtin/light/icon_cpu.png"));
         break;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::DarkType:
+#else
+    case DGuiApplicationHelper::ColorType::DarkType:
+#endif
         m_titleTrans = Globals::TitleTransDark;
         m_contentTrans = Globals::contentTransDark;
         m_hoverTrans = Globals::hoverTransDark;
@@ -128,7 +146,11 @@ void CpuWidget::changeTheme(DApplicationHelper::ColorType themeType)
     }
 
     // init colors
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
     auto palette = dAppHelper->applicationPalette();
 #ifndef THEME_FALLBACK_COLOR
     ltextColor = palette.color(DPalette::TextTitle);
@@ -170,8 +192,11 @@ void CpuWidget::paintEvent(QPaintEvent *e)
     //标题
     QString cpuTitle = DApplication::translate("Cpu.Widget", "CPU");
     painter.setFont(m_TitleFont);
-    //    QFontMetrics fmTitle = painter.fontMetrics();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     int widthTitle = fmTitleContent.width(cpuTitle);
+#else
+    int widthTitle = fmTitleContent.horizontalAdvance(cpuTitle);
+#endif
     int heightTitle = fmTitleContent.descent() + fmTitleContent.ascent();
     QRect cpuTitleRect(titleRect.x(), titleRect.y(), widthTitle, heightTitle);
     painter.drawText(titleRect, Qt::AlignHCenter | Qt::AlignVCenter, cpuTitle);
@@ -222,7 +247,6 @@ void CpuWidget::paintEvent(QPaintEvent *e)
     //走势图
     QPainterPath framePath;
     QRect chartRect(separatorRect1.x(), separatorRect1.y(), contentRect.width() - cpuTxtWidth - 10, sepheight * 2);
-    //    framePath.addRect(chartRect);
 
     QColor Color { "#004EEF" };
     QBrush recvBrush(Color);

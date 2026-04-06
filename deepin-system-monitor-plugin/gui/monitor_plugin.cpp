@@ -10,14 +10,12 @@
 #include <QDBusConnectionInterface>
 #include <DGuiApplicationHelper>
 #include <DApplication>
-#include <DApplicationHelper>
 #include <DDBusSender>
 #include <QIcon>
 #include <DApplication>
-#include <QGSettings>
 #include <QPainter>
 #include <QFile>
-
+#include <QRegularExpression>
 namespace constantVal {
 const QString PLUGIN_STATE_KEY = "enable";
 }
@@ -33,7 +31,7 @@ MonitorPlugin::MonitorPlugin(QObject *parent)
 #endif
 {
     connect(m_refershTimer, &QTimer::timeout, this, &MonitorPlugin::udpateTipsInfo);
-    qCInfo(app) << __FUNCTION__ << __LINE__ << "[-MonitorPlugin-]";
+    qCInfo(app) << "MonitorPlugin initialized";
 }
 
 const QString MonitorPlugin::pluginName() const
@@ -68,20 +66,20 @@ void MonitorPlugin::init(PluginProxyInterface *proxyInter)
     QIcon fallbackIcon = QIcon::fromTheme(DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? "dsm_pluginicon_dark" : "dsm_pluginicon_light");
     m_quickPanelWidget->setIcon(QIcon::fromTheme(plugIcon, fallbackIcon));
     connect(m_quickPanelWidget, &QuickPanelWidget::clicked, this, &MonitorPlugin::onClickQuickPanel);
-    qCInfo(app) << __FUNCTION__ << __LINE__ << "[-MonitorPlugin-] QUICKPANEL20";
+    qCInfo(app) << "Quick panel widget setup completed - QUICKPANEL20";
     QDBusConnection::sessionBus().connect("com.deepin.SystemMonitorPluginPopup", "/com/deepin/SystemMonitorPluginPopup", "com.deepin.SystemMonitorPluginPopup", "sysMonPopVisibleChanged", this, SLOT(onSysMonPopVisibleChanged(bool)));
 #endif
 
     calcCpuRate(m_totalCPU, m_availableCPU);
     calcNetRate(m_down, m_upload);
 #ifdef DDE_DOCK_NEW_VERSION
-    qCInfo(app) << __FUNCTION__ << __LINE__ << "[-MonitorPlugin-] V23";
+    qCInfo(app) << "DDE Dock new version detected - V23";
 #endif
 }
 
 QWidget *MonitorPlugin::itemWidget(const QString &itemKey)
 {
-    qCInfo(app) << __FUNCTION__ << __LINE__ << "[-MonitorPlugin-]" << itemKey;
+    qCDebug(app) << "Getting item widget for key:" << itemKey;
 #ifdef DDE_DOCK_NEW_VERSION
 //    if (itemKey == "system-monitor")
 //        return m_itemWidget;
@@ -101,14 +99,18 @@ void MonitorPlugin::pluginStateSwitched()
 {
 #ifndef DDE_DOCK_NEW_VERSION
     const bool disabledNew = !pluginIsDisable();
+    qCInfo(app) << "Plugin state switched, new state:" << (disabledNew ? "enabled" : "disabled");
     m_proxyInter->saveValue(this, "disabled", disabledNew);
     if (disabledNew) {
+        qCDebug(app) << "Removing plugin item";
         m_proxyInter->itemRemoved(this, pluginName());
     } else {
         if (!m_pluginLoaded) {
+            qCDebug(app) << "Plugin not loaded, loading now";
             loadPlugin();
             return;
         }
+        qCDebug(app) << "Adding plugin item";
         m_proxyInter->itemAdded(this, pluginName());
     }
 #endif
@@ -140,8 +142,6 @@ const QString MonitorPlugin::itemCommand(const QString &itemKey)
         openSystemMonitor();
     }
     return "";
-
-    //    return "dbus-send --print-reply --dest=com.deepin.SystemMonitorPluginPopup /com/deepin/SystemMonitorPluginPopup com.deepin.SystemMonitorPluginPopup.showOrHideDeepinSystemMonitorPluginPopupWidget";
 }
 
 void MonitorPlugin::displayModeChanged(const Dock::DisplayMode displayMode)
@@ -286,8 +286,10 @@ void MonitorPlugin::udpateTipsInfo()
 
 void MonitorPlugin::loadPlugin()
 {
-    if (m_pluginLoaded)
+    if (m_pluginLoaded) {
+        qCDebug(app) << "Plugin already loaded";
         return;
+    }
 
     m_pluginLoaded = true;
 
@@ -299,8 +301,10 @@ void MonitorPlugin::loadPlugin()
 
     connect(m_dataTipsLabel.get(), &SystemMonitorTipsWidget::visibleChanged, this, [=](bool visible) {
         if (!visible) {
+            qCDebug(app) << "Tips widget hidden, stopping refresh timer";
             m_refershTimer->stop();
         } else {
+            qCDebug(app) << "Tips widget shown, starting refresh timer";
             udpateInfo();
             m_dataTipsLabel->setSystemMonitorTipsText(QStringList() << "..."
                                                                     << "..."
@@ -322,13 +326,19 @@ void MonitorPlugin::calcCpuRate(qlonglong &totalCPU, qlonglong &availableCPU)
     totalCPU = availableCPU = 0;
     bool ok = false;
     QFile file("/proc/stat");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qCWarning(app) << "Failed to open /proc/stat";
         return;
+    }
 
     QTextStream stream(&file);
     QString line = stream.readLine();
     if (!line.isNull()) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QStringList list = line.split(QRegExp("\\s{1,}"));
+#else
+        QStringList list = line.split(QRegularExpression("\\s{1,}"));
+#endif
         for (auto v = list.begin() + 1; v != list.end(); ++v)
             totalCPU += (*v).toLongLong(&ok);
         if (list.size() > 4)
@@ -343,14 +353,20 @@ void MonitorPlugin::calcMemRate(qlonglong &memory, qlonglong &memoryAll)
     memory = memoryAll = 0;
     bool ok = false;
     QFile file("/proc/meminfo");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qCWarning(app) << "Failed to open /proc/meminfo";
         return;
+    }
 
     QTextStream stream(&file);
     qlonglong buff[16] = { 0 };
     for (int i = 0; i <= 15; ++i) {
         QString line = stream.readLine();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QStringList list = line.split(QRegExp("\\s{1,}"));
+#else
+        QStringList list = line.split(QRegularExpression("\\s{1,}"));
+#endif
         if (list.size() >= 2) {
             buff[i] = list.at(1).toLongLong(&ok);
         }
@@ -365,8 +381,10 @@ void MonitorPlugin::calcMemRate(qlonglong &memory, qlonglong &memoryAll)
 void MonitorPlugin::calcNetRate(qlonglong &netDown, qlonglong &netUpload)
 {
     QFile file("/proc/net/dev");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qCWarning(app) << "Failed to open /proc/net/dev";
         return;
+    }
 
     qlonglong down = 0;
     qlonglong upload = 0;
@@ -376,8 +394,11 @@ void MonitorPlugin::calcNetRate(qlonglong &netDown, qlonglong &netUpload)
     line = stream.readLine();
     while (!line.isNull()) {
         line = line.trimmed();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QStringList list = line.split(QRegExp("\\s{1,}"));   // match number >= 1 space character
-
+#else
+        QStringList list = line.split(QRegularExpression("\\s{1,}"));
+#endif
         if (!list.isEmpty()) {
             down = list.at(1).toLongLong();
             upload = list.at(9).toLongLong();
@@ -444,7 +465,7 @@ double MonitorPlugin::autoRateUnits(qlonglong speed, RateUnit &unit)
         sp = static_cast<double>(speed / qPow(2, 40) * 1.0);
     } else {
         unit = RateUnknow;
-        qCDebug(app) << "本设备网络速率单位传输超过 TB, 或者低于 0 Byte.";
+        qCWarning(app) << "Network rate exceeds TB or is below 0 Byte";
         sp = -1;
     }
 
@@ -464,16 +485,16 @@ void MonitorPlugin::openSystemMonitor()
 
         QDBusMessage reply = QDBusConnection::sessionBus().call(message);
         if (reply.type() != QDBusMessage::ReplyMessage) {
-            qCWarning(app) << "Launch deepin-system-monitor main process error:" << reply.errorMessage();
+            qCWarning(app) << "Failed to launch deepin-system-monitor main process:" << reply.errorMessage();
             return;
         }
+        qCDebug(app) << "Successfully launched deepin-system-monitor main process";
     };
     launchProcessByAM();
-    //QString cmd("qdbus com.deepin.SystemMonitorMain /com/deepin/SystemMonitorMain com.deepin.SystemMonitorMain.slotRaiseWindow");
     QString cmd("gdbus call -e -d  com.deepin.SystemMonitorMain -o /com/deepin/SystemMonitorMain -m com.deepin.SystemMonitorMain.slotRaiseWindow");
     QTimer::singleShot(200, this, [=]() { QProcess::startDetached(cmd); });
 #ifdef USE_API_QUICKPANEL20
-    qCInfo(app) << __FUNCTION__ << __LINE__ << "[-MonitorPlugin-] right ClickQuickPanel";
+    qCDebug(app) << "Requesting to hide applet";
     m_proxyInter->requestSetAppletVisible(this, pluginName(), false);
 #endif
 }
@@ -489,7 +510,7 @@ MonitorPlugin::~MonitorPlugin()
 
 void MonitorPlugin::onClickQuickPanel()
 {
-    qCInfo(app) << __FUNCTION__ << __LINE__ << "[-MonitorPlugin-] ClickQuickPanel";
+    qCInfo(app) << "Quick panel clicked";
     m_proxyInter->requestSetAppletVisible(this, pluginName(), false);
 
     // Task 30767: 暂时调整为打开系统监视器，隐藏系统监视器插件
@@ -504,6 +525,7 @@ void MonitorPlugin::onSysMonPopVisibleChanged(bool visible)
         qCWarning(app) << "Message callback function is nullptr";
         return;
     }
+    qCDebug(app) << "System monitor popup visibility changed to:" << visible;
     QJsonObject msg;
     msg[Dock::MSG_TYPE] = Dock::MSG_ITEM_ACTIVE_STATE;
     msg[Dock::MSG_DATA] = visible;

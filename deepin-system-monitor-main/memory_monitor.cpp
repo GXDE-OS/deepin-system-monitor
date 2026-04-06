@@ -12,7 +12,11 @@
 #include "system/system_monitor.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 #include <DPalette>
 #include <DStyle>
 
@@ -22,17 +26,24 @@
 #include <QPropertyAnimation>
 #include <QPainterPath>
 #include <QMouseEvent>
+#include "ddlog.h"
 
 DWIDGET_USE_NAMESPACE
 
 using namespace common;
 using namespace common::format;
 using namespace core::system;
+using namespace DDLog;
 
 MemoryMonitor::MemoryMonitor(QWidget *parent)
     : QWidget(parent)
 {
+    qCDebug(app) << "MemoryMonitor constructor";
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
 
     int statusBarMaxWidth = common::getStatusBarMaxWidth();
     setFixedWidth(statusBarMaxWidth);
@@ -40,7 +51,11 @@ MemoryMonitor::MemoryMonitor(QWidget *parent)
 
     setFixedHeight(160);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     connect(dAppHelper, &DApplicationHelper::themeTypeChanged, this, &MemoryMonitor::changeTheme);
+#else
+    connect(dAppHelper, &DGuiApplicationHelper::themeTypeChanged, this, &MemoryMonitor::changeTheme);
+#endif
     m_themeType = dAppHelper->themeType();
     changeTheme(m_themeType);
 
@@ -58,36 +73,57 @@ MemoryMonitor::MemoryMonitor(QWidget *parent)
     connect(dynamic_cast<QGuiApplication *>(DApplication::instance()), &DApplication::fontChanged, this, &MemoryMonitor::changeFont);
 }
 
-MemoryMonitor::~MemoryMonitor() {}
+MemoryMonitor::~MemoryMonitor()
+{
+    // qCDebug(app) << "MemoryMonitor destructor";
+}
 
 void MemoryMonitor::onStatInfoUpdated()
 {
+    qCDebug(app) << "MemoryMonitor onStatInfoUpdated";
     m_animation->start();
 }
 
 void MemoryMonitor::onAnimationFinished()
 {
+    qCDebug(app) << "MemoryMonitor onAnimationFinished";
     m_lastMemPercent = (m_memInfo->memTotal() - m_memInfo->memAvailable()) * 1. / m_memInfo->memTotal();
     m_lastSwapPercent = (m_memInfo->swapTotal() - m_memInfo->swapFree()) * 1. / m_memInfo->swapTotal();
 }
 
 void MemoryMonitor::onValueChanged()
 {
+    qCDebug(app) << "MemoryMonitor onValueChanged";
     update();
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void MemoryMonitor::changeTheme(DApplicationHelper::ColorType themeType)
+#else
+void MemoryMonitor::changeTheme(DGuiApplicationHelper::ColorType themeType)
+#endif
 {
+    qCDebug(app) << "MemoryMonitor changeTheme, themeType:" << themeType;
     m_themeType = themeType;
 
     switch (m_themeType) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::LightType:
+#else
+    case DGuiApplicationHelper::LightType:
+#endif
+        qCDebug(app) << "Light theme selected";
         memoryBackgroundColor = "#000000";
         swapBackgroundColor = "#000000";
 
         m_icon = QIcon(iconPathFromQrc("light/icon_memory_light.svg"));
         break;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case DApplicationHelper::DarkType:
+#else
+    case DGuiApplicationHelper::DarkType:
+#endif
+        qCDebug(app) << "Dark theme selected";
         memoryBackgroundColor = "#FFFFFF";
         swapBackgroundColor = "#FFFFFF";
 
@@ -96,7 +132,11 @@ void MemoryMonitor::changeTheme(DApplicationHelper::ColorType themeType)
     }
 
     // init colors
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
     auto palette = dAppHelper->applicationPalette();
 
 #ifndef THEME_FALLBACK_COLOR
@@ -113,6 +153,7 @@ void MemoryMonitor::changeTheme(DApplicationHelper::ColorType themeType)
 
 void MemoryMonitor::changeFont(const QFont &font)
 {
+    qCDebug(app) << "MemoryMonitor changeFont";
     m_titleFont = font;
     m_titleFont.setPointSizeF(m_titleFont.pointSizeF() + 12);
     m_contentFont = font;
@@ -127,6 +168,7 @@ void MemoryMonitor::changeFont(const QFont &font)
 
 void MemoryMonitor::paintEvent(QPaintEvent *)
 {
+    // qCDebug(app) << "paintEvent";
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
@@ -166,12 +208,14 @@ void MemoryMonitor::paintEvent(QPaintEvent *)
     QString swapTitle = "";
     QString swapContent = "";
     if (m_memInfo->swapTotal() == 0) {
+        // qCDebug(app) << "Swap not enabled";
         // After the memory and swap space text, add a space before the brackets
         swapTitle = QString("%1 (%2)")
                     .arg(DApplication::translate("Process.Graph.View", "Swap"))
                     .arg(DApplication::translate("Process.Graph.View", "Not enabled"));
         swapContent = "";
     } else {
+        // qCDebug(app) << "Swap enabled";
         // After the memory and swap space text, add a space before the brackets
         swapTitle = QString("%1 (%2%)")
                     .arg(DApplication::translate("Process.Graph.View", "Swap"))
@@ -229,6 +273,7 @@ void MemoryMonitor::paintEvent(QPaintEvent *)
 
     //未启用交换空间时，不显示交换空间数据
     if (m_memInfo->swapTotal()) {
+        // qCDebug(app) << "Swap enabled";
         painter.setFont(m_subContentFont);
         painter.setPen(QPen(summaryColor));
         painter.drawText(swapStatRect, Qt::AlignLeft | Qt::AlignVCenter, swapContent);
@@ -265,12 +310,16 @@ void MemoryMonitor::paintEvent(QPaintEvent *)
 
 void MemoryMonitor::mouseReleaseEvent(QMouseEvent *ev)
 {
-    if (ev->button() == Qt::LeftButton)
+    // qCDebug(app) << "MemoryMonitor mouseReleaseEvent";
+    if (ev->button() == Qt::LeftButton) {
+        // qCDebug(app) << "Left button released";
         emit clicked("MSG_MEM");
+    }
 }
 
 void MemoryMonitor::mouseMoveEvent(QMouseEvent *event)
 {
+    // qCDebug(app) << "MemoryMonitor mouseMoveEvent";
     Q_UNUSED(event);
     return;
 }

@@ -24,13 +24,20 @@
 #include "common/eventlogutils.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#include <DPaletteHelper>
+#endif
 #include <DFontSizeManager>
 #include <DLabel>
 #include <DStackedWidget>
 
 #include <QDebug>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QDesktopWidget>
+#endif
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QKeyEvent>
@@ -63,6 +70,7 @@ static const char *loadingText = QT_TRANSLATE_NOOP("Process.Loading", "Loading")
 ProcessPageWidget::ProcessPageWidget(DWidget *parent)
     : DFrame(parent)
 {
+    qCDebug(app) << "ProcessPageWidget created";
     // initialize global settings
     m_settings = Settings::instance();
     // initialize ui components
@@ -71,13 +79,21 @@ ProcessPageWidget::ProcessPageWidget(DWidget *parent)
 }
 
 // destructor
-ProcessPageWidget::~ProcessPageWidget() {}
+ProcessPageWidget::~ProcessPageWidget()
+{
+    qCDebug(app) << "ProcessPageWidget destroyed";
+}
 
 // initialize ui components
 void ProcessPageWidget::initUI()
 {
+    qCDebug(app) << "Initializing ProcessPageWidget UI";
     // global app helper instance
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#else
     auto *dAppHelper = DApplicationHelper::instance();
+#endif
     // global palette
     auto palette = dAppHelper->applicationPalette();
 
@@ -115,7 +131,11 @@ void ProcessPageWidget::initUI()
     // text aligment
     m_procViewMode->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     // change text color to text title style
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto pam = DApplicationHelper::instance()->palette(m_procViewMode);
+#else
+    auto pam = DPaletteHelper::instance()->palette(m_procViewMode);
+#endif
     palette.setColor(DPalette::Text, palette.color(DPalette::TextTitle));
     m_procViewMode->setPalette(palette);
 
@@ -126,13 +146,22 @@ void ProcessPageWidget::initUI()
     m_procViewModeSummary->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_procViewModeSummary->setElideMode(Qt::ElideRight);
     // change text color to text tips style
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto pa = DApplicationHelper::instance()->palette(m_procViewModeSummary);
+#else
+    auto pa = DPaletteHelper::instance()->palette(m_procViewModeSummary);
+#endif
     palette.setColor(DPalette::Text, palette.color(DPalette::TextTips));
     m_procViewModeSummary->setPalette(palette);
 
     // change icon type when theme changed
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     connect(dAppHelper, &DApplicationHelper::themeTypeChanged, this,
             &ProcessPageWidget::changeIconTheme);
+#else
+    connect(dAppHelper, &DGuiApplicationHelper::themeTypeChanged, this,
+            &ProcessPageWidget::changeIconTheme);
+#endif
 
     auto *modeButtonGroup = new DButtonBox(tw);
     modeButtonGroup->setFixedWidth(30 * 3);
@@ -226,6 +255,7 @@ void ProcessPageWidget::initUI()
     int index = vindex.toInt();
     switch (index) {
     case kFilterCurrentUser: {
+        qCDebug(app) << "ProcessPageWidget initConnections: kFilterCurrentUser";
         //        //打开时也显示loading
         //        m_loadingAndProcessTB->setCurrentWidget(m_spinnerWidget);
         // show my process view
@@ -237,6 +267,7 @@ void ProcessPageWidget::initUI()
         m_procBtnCheckedType = USER_PROCESS;
     } break;
     case kNoFilter: {
+        qCDebug(app) << "ProcessPageWidget initConnections: kNoFilter";
         //        //打开时也显示loading
         //        m_loadingAndProcessTB->setCurrentWidget(m_spinnerWidget);
         // show all process view
@@ -248,6 +279,7 @@ void ProcessPageWidget::initUI()
         m_procBtnCheckedType = ALL_PROCESSS;
     } break;
     default: {
+        qCDebug(app) << "ProcessPageWidget initConnections: default";
         //        //打开时也显示loading
         //        m_loadingAndProcessTB->setCurrentWidget(m_spinnerWidget);
         // show my application view by default
@@ -268,6 +300,7 @@ void ProcessPageWidget::initUI()
 
 void ProcessPageWidget::initConnections()
 {
+    qCDebug(app) << "Initializing ProcessPageWidget connections";
     auto *mainWindow = gApp->mainWindow();
     // kill application signal triggered, show application kill preview widget
     // connect(mainWindow, &MainWindow::killProcessPerformed, this,
@@ -290,16 +323,29 @@ void ProcessPageWidget::initConnections()
     // Note: do not update on non-GUI thread.
     connect(monitor, &SystemMonitor::appAndProcCountUpdate, this, &ProcessPageWidget::onAppAndProcCountUpdated);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
     // change text color dynamically on theme type change, if not do this way, text color wont synchronize with theme type
     connect(dAppHelper, &DApplicationHelper::themeTypeChanged, this, [=]() {
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+    connect(dAppHelper, &DGuiApplicationHelper::themeTypeChanged, this, [=]() {
+#endif
         if (m_procViewMode) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             auto palette = DApplicationHelper::instance()->applicationPalette();
+#else
+            auto palette = DGuiApplicationHelper::instance()->applicationPalette();
+#endif
             palette.setColor(DPalette::Text, palette.color(DPalette::TextTitle));
             m_procViewMode->setPalette(palette);
         }
         if (m_procViewModeSummary) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             auto palette = DApplicationHelper::instance()->applicationPalette();
+#else
+            auto palette = DGuiApplicationHelper::instance()->applicationPalette();
+#endif
             palette.setColor(DPalette::Text, palette.color(DPalette::TextTips));
             m_procViewModeSummary->setPalette(palette);
         }
@@ -308,6 +354,7 @@ void ProcessPageWidget::initConnections()
 
 void ProcessPageWidget::onLoadLeftDataWidgetDelay()
 {
+    qCDebug(app) << "ProcessPageWidget onLoadLeftDataWidgetDelay";
     // compact view instance
     m_compactView = new MonitorCompactView(m_views);
     connect(m_compactView, &MonitorCompactView::signalDetailInfoClicked, m_rightStackView, &DetailViewStackedWidget::onDetailInfoClicked);
@@ -325,6 +372,7 @@ void ProcessPageWidget::onLoadLeftDataWidgetDelay()
 
 void ProcessPageWidget::onDetailWidgetChanged(int index)
 {
+    qCDebug(app) << "ProcessPageWidget onDetailWidgetChanged, index:" << index;
     QWidget *curDetailWidget = m_rightStackView->widget(index);
     if (m_compactView)
         m_compactView->setDetailButtonVisible(m_processWidget == curDetailWidget);
@@ -335,8 +383,10 @@ void ProcessPageWidget::onDetailWidgetChanged(int index)
 // event filter
 bool ProcessPageWidget::eventFilter(QObject *obj, QEvent *event)
 {
+    // qCDebug(app) << "ProcessPageWidget eventFilter";
     // filter key press events for process show mode buttons, move focus ether way
     if (event->type() == QEvent::KeyPress) {
+        qCDebug(app) << "ProcessPageWidget eventFilter: KeyPress";
         if (obj == m_appButton) {
             auto *kev = dynamic_cast<QKeyEvent *>(event);
             if (kev->key() == Qt::Key_Right) {
@@ -366,11 +416,13 @@ bool ProcessPageWidget::eventFilter(QObject *obj, QEvent *event)
 
 void ProcessPageWidget::switchProcessPage()
 {
+    qCDebug(app) << "ProcessPageWidget switchProcessPage";
     m_rightStackView->onSwitchProcessPage();
 }
 
 void ProcessPageWidget::switchCurrentNoFilterPage()
 {
+    qCDebug(app) << "ProcessPageWidget switchCurrentNoFilterPage";
     m_procTable->switchDisplayMode(kNoFilter);
     m_allProcButton->setChecked(true);
     m_procViewMode->setText(DApplication::translate("Process.Show.Mode", allProcText));
@@ -380,15 +432,24 @@ void ProcessPageWidget::switchCurrentNoFilterPage()
 // paint event handler
 void ProcessPageWidget::paintEvent(QPaintEvent *)
 {
+    // qCDebug(app) << "ProcessPageWidget paintEvent";
     QPainter painter(this);
 
     QPainterPath path;
     path.addRect(QRectF(rect()));
     painter.setOpacity(1);
 
-    DApplicationHelper *dAppHelper = DApplicationHelper::instance();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
     DPalette palette = dAppHelper->applicationPalette();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QColor bgColor = palette.color(DPalette::Background);
+#else
+    QColor bgColor = palette.color(DPalette::Window);
+#endif
 
     //    // 显示0.1s
     //    QTimer::singleShot(NORMAL_PERFORMANCE_CPU_LOADING_TIME, this, [ = ]() {m_loadingAndProcessTB->setCurrentWidget(m_procTable);});
@@ -397,6 +458,7 @@ void ProcessPageWidget::paintEvent(QPaintEvent *)
 // create application kill preview widget
 void ProcessPageWidget::createWindowKiller()
 {
+    qCDebug(app) << "ProcessPageWidget createWindowKiller";
     // application kill preview instace
     m_xwkillPreview = new XWinKillPreviewWidget();
     // handle left mouse button click event inside the preview widget, popup process kill confirm dialog
@@ -408,6 +470,7 @@ void ProcessPageWidget::createWindowKiller()
 
 void ProcessPageWidget::onAppAndProcCountUpdated(int appCount, int procCount)
 {
+    qCDebug(app) << "ProcessPageWidget onAppAndProcCountUpdated, appCount:" << appCount << "procCount:" << procCount;
     const QString &buf = DApplication::translate("Process.Summary", kProcSummaryTemplateText);
     m_procViewModeSummary->setText(buf.arg(appCount).arg(procCount));
 }
@@ -415,11 +478,16 @@ void ProcessPageWidget::onAppAndProcCountUpdated(int appCount, int procCount)
 // change icon theme when theme changed
 void ProcessPageWidget::changeIconTheme(DGuiApplicationHelper::ColorType themeType)
 {
+    qCDebug(app) << "ProcessPageWidget changeIconTheme, themeType:" << themeType;
     QIcon appIcon;
     QIcon myProcIcon;
     QIcon allProcIcon;
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     if (themeType == DApplicationHelper::LightType) {
+#else
+    if (themeType == DGuiApplicationHelper::LightType) {
+#endif
         // light theme icon
         appIcon.addFile(iconPathFromQrc("light/app_normal.svg"), {}, QIcon::Normal, QIcon::Off);
         appIcon.addFile(iconPathFromQrc("light/app_highlight.svg"), {}, QIcon::Normal, QIcon::On);
@@ -429,7 +497,11 @@ void ProcessPageWidget::changeIconTheme(DGuiApplicationHelper::ColorType themeTy
 
         allProcIcon.addFile(iconPathFromQrc("light/all_normal.svg"), {}, QIcon::Normal, QIcon::Off);
         allProcIcon.addFile(iconPathFromQrc("light/all_highlight.svg"), {}, QIcon::Normal, QIcon::On);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     } else if (themeType == DApplicationHelper::DarkType) {
+#else
+    } else if (themeType == DGuiApplicationHelper::DarkType) {
+#endif
         // dark theme icon
         appIcon.addFile(iconPathFromQrc("dark/app_normal_dark.svg"), {}, QIcon::Normal, QIcon::Off);
         appIcon.addFile(iconPathFromQrc("dark/app_highlight.svg"), {}, QIcon::Normal, QIcon::On);
@@ -454,6 +526,7 @@ void ProcessPageWidget::changeIconTheme(DGuiApplicationHelper::ColorType themeTy
 // popup application kill confirm dialog
 void ProcessPageWidget::popupKillConfirmDialog(pid_t pid)
 {
+    qCDebug(app) << "ProcessPageWidget popupKillConfirmDialog, pid:" << pid;
     QString title = DApplication::translate("Kill.Process.Dialog", "End process");
     QString description = DApplication::translate("Kill.Process.Dialog",
                                                   "Force ending this application may cause data "
@@ -468,6 +541,7 @@ void ProcessPageWidget::popupKillConfirmDialog(pid_t pid)
                      DDialog::ButtonWarning);
     dialog.exec();
     if (dialog.result() == QMessageBox::Ok) {
+        qCDebug(app) << "ProcessPageWidget popupKillConfirmDialog, result: Ok";
         QString name = m_procTable->getProcessName(pid);
         QJsonObject obj {
             { "tid", EventLogUtils::ProcessKilled },
@@ -483,17 +557,20 @@ void ProcessPageWidget::popupKillConfirmDialog(pid_t pid)
 // show application kill preview widget
 void ProcessPageWidget::showWindowKiller()
 {
+    qCDebug(app) << "ProcessPageWidget showWindowKiller";
     gApp->mainWindow()->showMinimized();
     createWindowKiller();
 }
 
 void ProcessPageWidget::switchDisplayMode(int mode)
 {
+    qCDebug(app) << "ProcessPageWidget switchDisplayMode, mode:" << mode;
     m_views->setCurrentIndex(mode);
 }
 
 void ProcessPageWidget::onAllProcButtonClicked()
 {
+    qCDebug(app) << "ProcessPageWidget onAllProcButtonClicked";
     //若已选中，再次点击不会加载数据
     if (m_procBtnCheckedType != ALL_PROCESSS) {
         PERF_PRINT_BEGIN("POINT-04", QString("switch(%1->%2)").arg(m_procViewMode->text()).arg(DApplication::translate("Process.Show.Mode", allProcText)));
@@ -514,6 +591,7 @@ void ProcessPageWidget::onAllProcButtonClicked()
 
 void ProcessPageWidget::onUserProcButtonClicked()
 {
+    qCDebug(app) << "ProcessPageWidget onUserProcButtonClicked";
     //   qCInfo(app) << CPUPerformance << "CPUPerformance";
     //若已选中，再次点击不会加载数据
     if (m_procBtnCheckedType != USER_PROCESS) {
@@ -535,6 +613,7 @@ void ProcessPageWidget::onUserProcButtonClicked()
 
 void ProcessPageWidget::onAppButtonClicked()
 {
+    qCDebug(app) << "ProcessPageWidget onAppButtonClicked";
     //若已选中，再次点击不会加载数据
     if (m_procBtnCheckedType != MY_APPS) {
         PERF_PRINT_BEGIN("POINT-04", QString("switch(%1->%2)").arg(m_procViewMode->text()).arg(DApplication::translate("Process.Show.Mode", appText)));

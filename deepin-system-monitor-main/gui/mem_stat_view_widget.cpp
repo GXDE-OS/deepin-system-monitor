@@ -8,18 +8,25 @@
 #include "common/common.h"
 #include "system/device_db.h"
 #include "system/mem.h"
+#include "ddlog.h"
 
 #include <QPainter>
 #include <QtMath>
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 
+using namespace DDLog;
 using namespace common::format;
 using namespace core::system;
 
 MemStatViewWidget::MemStatViewWidget(QWidget *parent) : QWidget(parent)
 {
+    qCDebug(app) << "MemStatViewWidget constructor";
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_memChartWidget = new ChartViewWidget(ChartViewWidget::ChartViewTypes::MEM_CHART, this);
@@ -33,11 +40,13 @@ MemStatViewWidget::MemStatViewWidget(QWidget *parent) : QWidget(parent)
 
 void MemStatViewWidget::fontChanged(const QFont &font)
 {
+    qCDebug(app) << "MemStatViewWidget fontChanged";
     m_font = font;
 }
 
 void MemStatViewWidget::onModelUpdate()
 {
+    qCDebug(app) << "MemStatViewWidget onModelUpdate";
     // After memory size text, add a space before the brackets
     QString memoryDetail = QString("%1 (%2)")
                            .arg(tr("Size"))
@@ -51,11 +60,14 @@ void MemStatViewWidget::onModelUpdate()
 
 void MemStatViewWidget::updateWidgetGeometry()
 {
+    qCDebug(app) << "MemStatViewWidget updateWidgetGeometry";
     int avgWidth = this->width();
     if (m_memInfo->swapTotal() > 0) {
+        qCDebug(app) << "Swap detected, adjusting layout for two charts";
         avgWidth = this->width() / 2 - 10;
         m_swapChartWidget->setVisible(true);
     } else {
+        qCDebug(app) << "No swap detected, using layout for one chart";
         m_swapChartWidget->setVisible(false);
     }
 
@@ -66,12 +78,14 @@ void MemStatViewWidget::updateWidgetGeometry()
 
 void MemStatViewWidget::resizeEvent(QResizeEvent *event)
 {
+    // qCDebug(app) << "MemStatViewWidget resizeEvent";
     QWidget::resizeEvent(event);
     updateWidgetGeometry();
 }
 
 void MemStatViewWidget::paintEvent(QPaintEvent *event)
 {
+    // qCDebug(app) << "MemStatViewWidget paintEvent";
     QWidget::paintEvent(event);
     QPainter painter(this);
     QFont font = DApplication::font();
@@ -79,7 +93,11 @@ void MemStatViewWidget::paintEvent(QPaintEvent *event)
     painter.setFont(font);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
     auto palette = dAppHelper->applicationPalette();
     painter.setPen(palette.color(DPalette::TextTips));
 
@@ -87,13 +105,22 @@ void MemStatViewWidget::paintEvent(QPaintEvent *event)
     int sectionSize = 6;
 
     QString memory = DApplication::translate("Process.Graph.Title", "Memory");
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QRect memtitleRect(sectionSize + spacing, 0, painter.fontMetrics().width(memory), painter.fontMetrics().height());
+#else
+    QRect memtitleRect(sectionSize + spacing, 0, painter.fontMetrics().horizontalAdvance(memory), painter.fontMetrics().height());
+#endif
     painter.drawText(memtitleRect, Qt::AlignLeft | Qt::AlignVCenter, memory);
 
     QString swap = DApplication::translate("Process.Graph.View", "Swap");
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QRect swaptitleRect(sectionSize + memtitleRect.right() + 2 * spacing, memtitleRect.y(), painter.fontMetrics().width(swap), painter.fontMetrics().height());
+#else
+    QRect swaptitleRect(sectionSize + memtitleRect.right() + 2 * spacing, memtitleRect.y(), painter.fontMetrics().horizontalAdvance(swap), painter.fontMetrics().height());
+#endif
     if (m_memInfo->swapTotal() > 0)
     {
+        // qCDebug(app) << "Swap detected, drawing swap title";
         painter.drawText(swaptitleRect, Qt::AlignLeft | Qt::AlignVCenter, swap);
         painter.setPen(Qt::NoPen);
         painter.setBrush(swapColor);
@@ -103,5 +130,4 @@ void MemStatViewWidget::paintEvent(QPaintEvent *event)
     painter.setPen(Qt::NoPen);
     painter.setBrush(memoryColor);
     painter.drawEllipse(0, memtitleRect.y() + qCeil((memtitleRect.height() - sectionSize) / 2.0), sectionSize, sectionSize);
-
-    }
+}

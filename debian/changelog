@@ -1,9 +1,226 @@
-deepin-system-monitor (6.5.5gxde4) UNRELEASED; urgency=medium
+deepin-system-monitor (6.5.38gxde1) UNRELEASED; urgency=medium
 
   * 修复 Debian 13 构建出错的问题
   * 适配 gxde-dock 插件
 
  -- gfdgd_xi <3025613752@qq.com>  Wed, 25 Feb 2026 09:12:33 +0800
+
+deepin-system-monitor (6.5.38) unstable; urgency=medium
+
+  * fix: handle failure in resolving executable path for process ID
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 05 Feb 2026 19:59:05 +0800
+
+deepin-system-monitor (6.5.37) unstable; urgency=medium
+
+  * chore: Update compiler flags for security enhancements
+
+ -- wangrong <wangrong@uniontech.com>  Thu, 27 Nov 2025 10:41:18 +0800
+
+deepin-system-monitor (6.5.36) unstable; urgency=medium
+
+  * refactor: Service safety rectification
+  * fix: Fix service security issues
+
+ -- wangrong <wangrong@uniontech.com>  Thu, 06 Nov 2025 21:02:06 +0800
+
+deepin-system-monitor (6.5.35) unstable; urgency=medium
+
+  * Update version to 6.5.35.
+  * Fix can not get dconfig value issue.
+
+ -- re2zero <yangwu@uniontech.com>  Tue, 14 Oct 2025 13:21:46 +0800
+
+deepin-system-monitor (6.5.34) unstable; urgency=medium
+
+  * Update version to 6.5.34.
+  * fix: Add XDG_DATA_HOME to XDG_DATA_DIRS
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 10 Oct 2025 14:18:19 +0800
+
+deepin-system-monitor (6.5.33) unstable; urgency=medium
+
+  * fix: Fix coredump issue
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 18 Sep 2025 19:36:33 +0800
+
+deepin-system-monitor (6.5.32) unstable; urgency=medium
+
+  * Update version to 6.5.32.
+  * feat: Change the detail for CPU processor.
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 05 Sep 2025 15:25:51 +0800
+
+deepin-system-monitor (6.5.31) unstable; urgency=medium
+
+  * Update version to 6.5.31.
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 29 Aug 2025 11:38:09 +0800
+
+deepin-system-monitor (6.5.30) unstable; urgency=medium
+
+  * Update version to 6.5.30.
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Thu, 21 Aug 2025 16:57:59 +0800
+
+deepin-system-monitor (6.5.29) unstable; urgency=medium
+
+  * chore: Add Lao language translations in policy files
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 14 Aug 2025 16:47:11 +0800
+
+deepin-system-monitor (6.5.28) unstable; urgency=medium
+
+  * chore: Add support for Lao language translation
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Wed, 13 Aug 2025 14:32:08 +0800
+
+deepin-system-monitor (6.5.27) unstable; urgency=medium
+
+  * chore: Add new Lao translation file
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 07 Aug 2025 15:41:03 +0800
+
+deepin-system-monitor (6.5.26) unstable; urgency=medium
+
+  * feat: add average CPU frequency calculation and display.
+
+ -- Wang Yu <wangyu@uniontch.com>  Thu, 31 Jul 2025 19:10:03 +0800
+
+deepin-system-monitor (6.5.25) unstable; urgency=medium
+
+  * chore: New version 6.5.25
+  * fix: Corrected string formatting in system protection settings
+
+ -- re2zero <yangwu@uniontech.com>  Thu, 31 Jul 2025 16:03:22 +0800
+
+deepin-system-monitor (6.5.24) unstable; urgency=medium
+
+  * chore: New version 6.5.24
+  * chore: add more logs.
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 11 Jul 2025 14:13:09 +0800
+
+deepin-system-monitor (6.5.23) unstable; urgency=medium
+
+  * chore: Update deepin-manual resources
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Wed, 09 Jul 2025 17:13:09 +0800
+
+deepin-system-monitor (6.5.22) unstable; urgency=medium
+
+  * chore: New version 6.5.22 
+
+ -- liuzheng <liuzheng@uniontech.com>  Thu, 03 Jul 2025 14:15:20 +0800
+
+deepin-system-monitor (6.5.21) unstable; urgency=medium
+
+  * chore: New version 6.5.21.
+
+ -- xiepengfei <xiepengfei@uniontech.com>  Tue, 01 Jul 2025 19:42:43 +0800
+
+deepin-system-monitor (6.5.20) unstable; urgency=medium
+
+  * chore: New version 6.5.20.
+
+ -- xiepengfei <xiepengfei@uniontech.com>  Fri, 27 Jun 2025 18:13:36 +0800
+
+deepin-system-monitor (6.5.19) unstable; urgency=medium
+
+  * fix: Update deepin-manual resources
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Mon, 23 Jun 2025 14:35:35 +0800
+
+deepin-system-monitor (6.5.18) unstable; urgency=medium
+
+  * chore: New version 6.5.18.
+
+ -- xiepengfei <xiepengfei@uniontech.com>  Mon, 23 Jun 2025 12:05:33 +0800
+
+deepin-system-monitor (6.5.17) unstable; urgency=medium
+
+  * chore: Update CMakeLists.txt with additional compile flags
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Wed, 18 Jun 2025 17:30:37 +0800
+
+deepin-system-monitor (6.5.16) unstable; urgency=medium
+
+  * Add compile flags
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Wed, 18 Jun 2025 15:40:58 +0800
+
+deepin-system-monitor (6.5.15) unstable; urgency=medium
+
+  * update dman's resources
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Wed, 18 Jun 2025 13:35:54 +0800
+
+deepin-system-monitor (6.5.14) unstable; urgency=medium
+
+  * Fix high dpi dislpay issue.
+  * Update version to 6.5.14.
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 15 May 2025 13:02:48 +0800
+
+deepin-system-monitor (6.5.13) unstable; urgency=medium
+
+  * Fix abnormal display of tray icon on high DPI screens.
+  * Fix tray icon and shortcut help bar icon size.
+  * Update version to 6.5.13.  
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 08 May 2025 14:59:41 +0800
+
+deepin-system-monitor (6.5.12) unstable; urgency=medium
+
+  * Update version to 6.5.12
+
+ -- renbin <renbin@uniontech.com>  Tue, 29 Apr 2025 17:53:28 +0800
+
+deepin-system-monitor (6.5.11) unstable; urgency=medium
+
+  * Resolve dock tray icon display issue in high DPI
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Fri, 25 Apr 2025 09:35:58 +0800
+
+deepin-system-monitor (6.5.10) unstable; urgency=medium
+
+  * chore: update translations.
+
+ -- renbin <renbin@uniontech.com>  Thu, 17 Apr 2025 10:35:41 +0800
+
+deepin-system-monitor (6.5.9) unstable; urgency=medium
+
+  * [deepin-system-monitor] Updates for project Deepin System Monitor (#404)
+  * fix: adjust layout spacing and add Hebrew translation (#406)
+  * chore: update desktop file
+
+ -- renbin <renbin@uniontech.com>  Wed, 02 Apr 2025 16:09:33 +0800
+
+deepin-system-monitor (6.5.8) unstable; urgency=medium
+
+  * chore: New version 6.5.8.
+
+ -- Wang Yu <wangyu@uniontch.com>  Thu, 06 Mar 2025 19:04:25 +0800
+
+deepin-system-monitor (6.5.7) unstable; urgency=medium
+
+  * fix: optimize gdbus call process in system monitor (#394)
+  * fix: optimize window kill process in KDE environment (#395)
+
+ -- renbin <renbin@uniontech.com>  Thu, 20 Feb 2025 19:34:23 +0800
+
+deepin-system-monitor (6.5.6) unstable; urgency=medium
+
+  * chore: New version 6.5.6.
+
+ -- xiepengfei <xiepengfei@uniontech.com>  Fri, 14 Feb 2025 09:19:27 +0800
+
+deepin-system-monitor (6.5.5) unstable; urgency=medium
+
+  * New version 6.5.5
+  * support Qt6
+
+ -- Wang Yu <wangyu@uniontch.com>  Mon, 20 Jan 2025 13:09:03 +0800
 
 deepin-system-monitor (6.5.4) unstable; urgency=medium
 

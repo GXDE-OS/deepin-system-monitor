@@ -12,9 +12,7 @@ set(APP_RESOURCES ${APP_RES_ROOT}/${PROJECT_NAME}.qrc)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ")
-set(CMAKE_CXX_FLAGS "-Wl,--as-need -fPIE")
-set(CMAKE_EXE_LINKER_FLAGS "-pie")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wl,--as-needed -fPIE")
 
 set(MAIN_APP_DIR ${CMAKE_SOURCE_DIR}/deepin-system-monitor-main)
 
@@ -31,31 +29,17 @@ check_symbol_exists(syscall "unistd.h" HAVE_SYS_CALL)
 check_symbol_exists(SYS_getrandom "sys/syscall.h" HAVE_SYS_CALL)
 include(FindPkgConfig)
 
-find_package(Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt5 COMPONENTS Gui REQUIRED)
-find_package(Qt5 COMPONENTS X11Extras REQUIRED)
-find_package(Qt5 COMPONENTS DBus REQUIRED)
-find_package(Qt5 COMPONENTS Concurrent REQUIRED)
-find_package(Qt5 COMPONENTS LinguistTools REQUIRED)
+find_package(${QT_NS} COMPONENTS Core Widgets Gui DBus Concurrent LinguistTools REQUIRED)
 
-find_package(DtkCore REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DtkWidget REQUIRED)
-find_package(Qt5Svg REQUIRED)
+find_package(${DTK_NS} COMPONENTS Core Gui Widget REQUIRED)
+
 find_library(LIB_XCB NAMES xcb REQUIRED)
 find_library(LIB_XEXT NAMES Xext REQUIRED)
 find_library(LIB_ICCCM NAMES xcb-icccm REQUIRED)
 find_package(ICU COMPONENTS i18n uc REQUIRED)
 
-#安全测试加固编译参数
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -z relro -z now -z noexecstack -pie")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -z relro -z now -z noexecstack -pie")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -fstack-protector-all")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -fstack-protector-all")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wl,-Map=deepin-system-monitor-pluign-popup.map")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wl,-Map=deepin-system-monitor-popup.map")
-#pkg_check_modules(QGSettings REQUIRED gsettings-qt)
 
 #pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
 
@@ -67,8 +51,6 @@ pkg_search_module(LIB_UDEV REQUIRED libudev)
 include_directories(${LIB_NL3_INCLUDE_DIRS})
 include_directories(${LIB_NL3_ROUTE_INCLUDE_DIRS})
 include_directories(${LIB_UDEV_INCLUDE_DIRS})
-
-#include_directories(${QGSettings_INCLUDE_DIRS})
 
 include_directories(${DtkGui_INCLUDE_DIRS})
 include_directories(${DtkCore_INCLUDE_DIRS})
@@ -243,6 +225,7 @@ SET(CPP_PROCESS
     ${MAIN_APP_DIR}/process/process_name.cpp
     ${MAIN_APP_DIR}/process/process_name_cache.cpp
     ${MAIN_APP_DIR}/process/process_controller.cpp
+    ${MAIN_APP_DIR}/process/system_service_client.cpp
 )
 set(APP_HPP
     ${CMAKE_HOME_DIRECTORY}/config.h
@@ -278,24 +261,17 @@ add_executable(${PROJECT_NAME}
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-#    ${Qt5Widgets_INCLUDE_DIRS}
-    ${DtkWidget_INCLUDE_DIRS}
-    ${DtkCore_INCLUDE_DIRS}
-    ${DtkGui_INCLUDE_DIRS}
     ${DdeDockInterface_INCLUDE_DIRS}
-    Dtk::Core
 )
 target_link_libraries(${PROJECT_NAME}
-    Qt5::Core
-    Qt5::Widgets
-    Qt5::Gui
-    Qt5::DBus
-    Qt5::Concurrent
-    Qt5::X11Extras
-    Qt5::Svg
-    dtkcore
-    dtkwidget
-    dtkgui
+    ${QT_NS}::Core
+    ${QT_NS}::Widgets
+    ${QT_NS}::Gui
+    ${QT_NS}::DBus
+    ${QT_NS}::Concurrent
+    ${DTK_NS}::Core
+    ${DTK_NS}::Gui
+    ${DTK_NS}::Widget
     ICU::i18n
     ICU::uc
     ${LIB_XCB}
@@ -305,14 +281,16 @@ target_link_libraries(${PROJECT_NAME}
     ${LIB_NL3_ROUTE_LIBRAIES}
     ${LIB_UDEV_LIBRARIES}
     ${LIB_DDEDOCK}
-#    gsettings-qt
-    Dtk::Core
 )
 
 
 #生成qm
 file(GLOB APP_TS_FILES LIST_DIRECTORIES false translations/*.ts)
-qt5_add_translation(APP_QM_FILES ${APP_TS_FILES})
+if (QT_VERSION_MAJOR LESS 6)
+    qt5_add_translation(APP_QM_FILES ${APP_TS_FILES})
+else()
+    qt6_add_translation(APP_QM_FILES ${APP_TS_FILES})
+endif()
 add_custom_target(POPUP_QMFILES ALL DEPENDS ${APP_QM_FILES})
 
 #

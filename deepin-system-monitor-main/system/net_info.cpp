@@ -6,10 +6,12 @@
 #include "net_info.h"
 #include "common/common.h"
 #include "system/sys_info.h"
+#include "ddlog.h"
 
 #include <QScopedArrayPointer>
 
 using namespace common::error;
+using namespace DDLog;
 
 namespace core {
 namespace system {
@@ -18,12 +20,12 @@ namespace system {
 
 NetInfo::NetInfo()
 {
-
+    qCDebug(app) << "NetInfo constructor";
 }
 
 NetInfo::~NetInfo()
 {
-
+    // qCDebug(app) << "NetInfo destructor";
 }
 
 qreal NetInfo::recvBps()
@@ -48,6 +50,7 @@ qulonglong NetInfo::totalSentBytes()
 
 void NetInfo::resdNetInfo()
 {
+    qCDebug(app) << "Reading network info...";
     // 时间间隔
     timevalList[kLastStat] = timevalList[kCurrentStat];
     timevalList[kCurrentStat] = SysInfo::instance()->uptime();
@@ -64,9 +67,10 @@ void NetInfo::resdNetInfo()
     int rc;
 
     if ((fp = fopen(PROC_PATH_NET, "r")) == nullptr) {
-        print_errno(errno, QString("open %1 failed").arg(PROC_PATH_NET));
+        qCWarning(app) << "Failed to open" << PROC_PATH_NET << ":" << strerror(errno);
         return;
     }
+    qCDebug(app) << "Parsing" << PROC_PATH_NET;
 
     while (fgets(line.data(), bsiz, fp)) {
         char *pos, *start;
@@ -81,6 +85,7 @@ void NetInfo::resdNetInfo()
         rc = sscanf(start, "%16s", stat->iface);
         if (rc != 1)
             continue;
+        // qCDebug(app) << "Parsing stats for interface:" << stat->iface;
 
         unsigned long long rx_packets; // received packets
         unsigned long long tx_packets; // transmitted packets
@@ -97,8 +102,10 @@ void NetInfo::resdNetInfo()
                     &stat->tx_bytes,
                     &tx_packets,
                     &tx_compressed);
-        if (rc != 7)
+        if (rc != 7) {
+            qCWarning(app) << "Failed to parse stats for interface:" << stat->iface;
             continue;
+        }
 
         statSum->rx_bytes += stat->rx_bytes;
         statSum->tx_bytes += stat->tx_bytes;
@@ -108,8 +115,9 @@ void NetInfo::resdNetInfo()
     b = !ferror(fp) && b;
     fclose(fp);
     if (!b) {
-        print_errno(errno, QString("read %1 failed").arg(PROC_PATH_NET));
+        qCWarning(app) << "Failed to read network statistics from" << PROC_PATH_NET << ":" << strerror(errno);
     }
+    qCDebug(app) << "Finished parsing" << PROC_PATH_NET;
 
     m_netStat[kLastStat] = m_netStat[kCurrentStat];
     m_netStat[kCurrentStat] = statSum;
@@ -123,9 +131,12 @@ void NetInfo::resdNetInfo()
         prxb = m_netStat[kLastStat]->rx_bytes;
         ptxb = m_netStat[kLastStat]->tx_bytes;
     }
+    qCDebug(app) << "Current bytes: rx=" << crxb << "tx=" << ctxb;
+    qCDebug(app) << "Previous bytes: rx=" << prxb << "tx=" << ptxb;
     if(m_netStat[kLastStat].isNull()){
         m_recvBps = 1;   // Bps
         m_sentBps = 1;
+        qCDebug(app) << "First run, setting bps to 1";
         return ;
     }
     // receive increment between interval
@@ -145,6 +156,7 @@ void NetInfo::resdNetInfo()
     m_totalSentBytes = ctxb;
     m_recvBps = rxdiff / interval;   // Bps
     m_sentBps = txdiff / interval;
+    qCDebug(app) << "Calculated network IO: Recv=" << m_recvBps << "B/s, Sent=" << m_sentBps << "B/s";
 }
 
 } // namespace system

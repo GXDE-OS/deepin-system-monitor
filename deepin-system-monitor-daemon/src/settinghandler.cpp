@@ -26,9 +26,11 @@ const static int MaxAlarmInterval = 60;
 SettingHandler::SettingHandler(QObject *parent)
     : QObject(parent), mSettings(nullptr), mBackend(nullptr)
 {
+    qCDebug(app) << "SettingHandler constructor";
     QString orgName = qApp->organizationName();
     if (orgName.isEmpty()) {
         orgName = "deepin";
+        qCInfo(app) << "Using default organization name: deepin";
     }
 
     //配置文件路径: ~/.config/deepin/deepin-system-monitor/protection.conf
@@ -37,6 +39,7 @@ SettingHandler::SettingHandler(QObject *parent)
                                     .arg(orgName)
                                     .arg("deepin-system-monitor");
 
+    qCDebug(app) << "Loading settings from:" << strConfigPath;
     mBackend = new Dtk::Core::QSettingBackend(strConfigPath);
     mSettings = DSettings::fromJsonFile(":/resources/settings.json");
 
@@ -49,38 +52,47 @@ SettingHandler::SettingHandler(QObject *parent)
     auto keys = mValueRange.keys();
 
     foreach (auto it, keys) {
-        qCDebug(app) << __FUNCTION__ << __LINE__ << "，key: " << it << ", range: " << mValueRange[it];
+        qCDebug(app) << "Key:" << it << "Range:" << mValueRange[it];
     }
 
     if (mSettings != nullptr) {
         mSettings->setBackend(mBackend);
+        qCInfo(app) << "Settings handler initialized successfully";
+    } else {
+        qCWarning(app) << "mSettings is null!";
     }
 }
 
 SettingHandler::~SettingHandler()
 {
+    qCDebug(app) << "Cleaning up settings handler";
     if (mSettings != nullptr) {
+        qCDebug(app) << "delete mSettings";
         mSettings->deleteLater();
     }
 
     if (mBackend != nullptr) {
+        qCDebug(app) << "delete mBackend";
         mBackend->deleteLater();
     }
 }
 
 bool SettingHandler::isCompelted()
 {
+    qCDebug(app) << "isCompelted";
     return (mBackend != nullptr && mSettings != nullptr);
 }
 
 QVariant SettingHandler::getOptionValue(const QString key)
 {
+    qCDebug(app) << "getOptionValue with key:" << key;
     if (isCompelted() && mSettings->keys().contains(key)) {
+        qCDebug(app) << "get option value success";
         return mSettings->getOption(key);
     } else {
-        qCWarning(app) << __FUNCTION__ << __LINE__ << QString("can not find conf[%1]!").arg(key)
-                   << ", compeletd:" << isCompelted()
-                   << ", avalid keys:" << mSettings->keys();
+        qCWarning(app) << "Failed to get option value for" << key
+                       << "Completion status:" << isCompelted()
+                       << "Available keys:" << mSettings->keys();
     }
 
     return QVariant();
@@ -88,15 +100,17 @@ QVariant SettingHandler::getOptionValue(const QString key)
 
 bool SettingHandler::changedOptionValue(const QString key, const QVariant value)
 {
+    qCDebug(app) << "changedOptionValue with key:" << key << "value:" << value;
     if (isCompelted() && mSettings->keys().contains(key)) {
         auto opt = mSettings->option(key);
         opt->setValue(value);
         mSettings->sync();
+        qCInfo(app) << "Successfully changed option" << key << "to" << value;
         return true;
     } else {
-        qCWarning(app) << __FUNCTION__ << __LINE__ << QString("change conf[%1,%2] fail !").arg(key).arg(value.toString())
-                   << ", compeletd:" << isCompelted()
-                   << ", avalid keys:" << mSettings->keys();
+        qCWarning(app) << "Failed to change option" << key << "to" << value
+                       << "Completion status:" << isCompelted()
+                       << "Available keys:" << mSettings->keys();
     }
 
     return false;
@@ -104,28 +118,34 @@ bool SettingHandler::changedOptionValue(const QString key, const QVariant value)
 
 bool SettingHandler::isVaildValue(const QString key, const QVariant value)
 {
+    qCDebug(app) << "isVaildValue with key:" << key << "value:" << value;
     if (mValueRange.contains(key) && value.type() >= QVariant::Bool && value.type() <= QVariant::Double) {
         QPair<double, double> range = mValueRange[key];
         double valueD = value.toDouble();
-        if (valueD < range.first || valueD > range.second) {
-            return false;
-        } else {
-            return true;
-        }
+        bool valid = (valueD >= range.first && valueD <= range.second);
+        qCDebug(app) << "Value validation for" << key << ":" << valueD 
+                     << "Range:" << range << "Valid:" << valid;
+        return valid;
     }
+    qCDebug(app) << "no need to check value validation";
     return true;
 }
 
 QPair<double, double> SettingHandler::getValueRange(const QString key)
 {
+    qCDebug(app) << "getValueRange with key:" << key;
     QPair<double, double> range(0, 0);
     if (mValueRange.contains(key)) {
         range = mValueRange[key];
+        qCDebug(app) << "Retrieved value range for" << key << ":" << range;
+    } else {
+        qCDebug(app) << "No value range defined for" << key;
     }
     return range;
 }
 
 QList<QString> SettingHandler::itemKeys()
 {
+    qCDebug(app) << "itemKeys";
     return mSettings->keys();
 }

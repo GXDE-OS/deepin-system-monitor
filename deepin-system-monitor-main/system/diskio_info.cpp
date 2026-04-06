@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "diskio_info.h"
+#include "ddlog.h"
 #include "common/common.h"
 #include "system/sys_info.h"
 
@@ -15,6 +16,7 @@
 
 using namespace common::error;
 using namespace common::alloc;
+using namespace DDLog;
 
 namespace core {
 namespace system {
@@ -25,12 +27,12 @@ namespace system {
 
 DiskIOInfo::DiskIOInfo()
 {
-
+    qCDebug(app) << "DiskIOInfo constructor";
 }
 
 DiskIOInfo::~DiskIOInfo()
 {
-
+    // qCDebug(app) << "DiskIOInfo destructor";
 }
 
 qreal DiskIOInfo::diskIoReadBps()
@@ -45,6 +47,7 @@ qreal DiskIOInfo::diskIoWriteBps()
 
 void DiskIOInfo::readDiskIOStats()
 {
+    qCDebug(app) << "Reading disk IO stats from" << PROC_PATH_DISK;
     bool b = false;
     FILE *fp;
     const size_t bsiz = 2048;
@@ -68,7 +71,7 @@ void DiskIOInfo::readDiskIOStats()
     };
 
     if ((fp = fopen(PROC_PATH_DISK, "r")) == nullptr) {
-        print_errno(errno, QString("open %1 failed").arg(PROC_PATH_DISK));
+        qCWarning(app) << "Failed to open" << PROC_PATH_DISK << ":" << strerror(errno);
         return;
     }
 
@@ -95,6 +98,7 @@ void DiskIOInfo::readDiskIOStats()
         if (rc >= 7) {
             if (is_block_dev(dev_name)) {
                 // per block dev stats
+                qCDebug(app) << "Parsed disk stats for device:" << dev_name;
                 timevalList[kCurrentStat] = SysInfo::instance()->uptime();
                 m_diskIoStatMap[kCurrentStat][dev_name] = stat;
                 b = true;
@@ -104,12 +108,14 @@ void DiskIOInfo::readDiskIOStats()
     b = !ferror(fp) && b;
     fclose(fp);
     if (!b) {
-        print_errno(errno, QString("read %1 failed").arg(PROC_PATH_DISK));
+        qCWarning(app) << "Failed to read disk I/O statistics from" << PROC_PATH_DISK << ":" << strerror(errno);
     }
+    qCDebug(app) << "Finished reading disk IO stats. Found" << m_diskIoStatMap[kCurrentStat].size() << "block devices.";
 }
 
 void DiskIOInfo::calDiskIoStates()
 {
+    qCDebug(app) << "Calculating disk IO states...";
     qulonglong cur_read_sectors = 0;
     qulonglong cur_write_sectors = 0;
     qulonglong cur_discard_sectors = 0;
@@ -138,6 +144,9 @@ void DiskIOInfo::calDiskIoStates()
         }
     }
 
+    qCDebug(app) << "Current sectors: read=" << cur_read_sectors << "write=" << cur_write_sectors;
+    qCDebug(app) << "Previous sectors: read=" << prev_read_sectors << "write=" << prev_write_sectors;
+
     // read increment between interval
     auto rdiff = (cur_read_sectors > prev_read_sectors) ? (cur_read_sectors - prev_read_sectors) : 0;
     // write increment between interval
@@ -155,13 +164,16 @@ void DiskIOInfo::calDiskIoStates()
 
     m_readBps = rsize / interval;
     m_writeBps = wsize / interval;
+    qCDebug(app) << "Calculated disk IO: Read=" << m_readBps << "B/s, Write=" << m_writeBps << "B/s";
 }
 
 void DiskIOInfo::update()
 {
+    qCDebug(app) << "Updating DiskIOInfo...";
     readDiskIOStats();
 
     calDiskIoStates();
+    qCDebug(app) << "DiskIOInfo update finished.";
 }
 
 } // namespace system

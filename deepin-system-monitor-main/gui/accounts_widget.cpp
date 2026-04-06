@@ -16,9 +16,8 @@ using namespace DDLog;
 AccountsWidget::AccountsWidget(QWidget *parent)
     : QWidget(parent), m_userModel(new AccountsInfoModel(this)), m_userItemModel(new QStandardItemModel(this)), m_userlistView(new UserListView(this))
 {
+    qCDebug(app) << "AccountsWidget constructor";
     m_currentUserType = m_userModel->getCurrentUserType();
-    qCInfo(app) << "AccountsWidget Constructor line 20:"
-                << "current user type:" << m_currentUserType;
     initUI();
     initConnection();
     addInfo(m_userModel);
@@ -27,25 +26,33 @@ AccountsWidget::AccountsWidget(QWidget *parent)
 
 AccountsWidget::~AccountsWidget()
 {
+    // qCDebug(app) << "AccountsWidget destructor";
     if (m_userItemModel) {
+        // qCDebug(app) << "m_userItemModel is not null, clear it";
         m_userItemModel->clear();
         m_userItemModel->deleteLater();
         m_userItemModel = nullptr;
     }
     if (m_onlineIconList.size() > 0) {
+        // qCDebug(app) << "m_onlineIconList is not empty, clear it";
         m_onlineIconList.clear();
     }
 }
 
 void AccountsWidget::initUI()
 {
+    qCDebug(app) << "initUI";
     // disable auto fill frame background
     setAutoFillBackground(false);
     // set frame background role
     //    setBackgroundRole(DPalette::Window);
     // 禁用横向滚动条,防止内容被截断
     QVBoxLayout *mainContentLayout = new QVBoxLayout(this);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     mainContentLayout->setMargin(0);
+#else
+    mainContentLayout->setContentsMargins(0, 0, 0, 0);
+#endif
     mainContentLayout->setSpacing(0);
 
     mainContentLayout->addWidget(m_userlistView);
@@ -73,6 +80,7 @@ void AccountsWidget::initUI()
 
 void AccountsWidget::initConnection()
 {
+    qCDebug(app) << "Setting up signal connections";
     connect(m_userModel, &AccountsInfoModel::signalUserOnlineStatusUpdated, this, &AccountsWidget::onUpdateUserList);
     connect(m_userlistView, &QListView::clicked, this, &AccountsWidget::onItemClicked);
     connect(m_userlistView, &UserListView::signalRightButtonClicked, this, &AccountsWidget::onRightButtonClicked);
@@ -105,17 +113,19 @@ void AccountsWidget::initConnection()
 
 void AccountsWidget::onUpdateUserList()
 {
-
+    qCDebug(app) << "onUpdateUserList";
     //原来已连接现在注销的用户
     for (auto user : m_userList) {
         if (!m_userModel->userList().contains(user)) {
+            qCDebug(app) << "Removing user:" << user->displayName();
             removeUser(user);
         }
     }
     //新增连接的用户
-    qCInfo(app) << m_userList.size() << m_userModel->userList().size();
+    qCInfo(app) << "Current user list size:" << m_userList.size() << "Model user list size:" << m_userModel->userList().size();
     for (auto user : m_userModel->userList()) {
         if (!m_userList.contains(user)) {
+            qCDebug(app) << "Adding new user:" << user->displayName();
             addUser(user);
         }
     }
@@ -123,21 +133,17 @@ void AccountsWidget::onUpdateUserList()
 
 void AccountsWidget::addInfo(AccountsInfoModel *model)
 {
-    qCInfo(app) << "AccountsWidget addInfo line 130:"
-                << "add info from list:" << model->userList();
+    qCDebug(app) << "addInfo";
     //给账户列表添加用户
     for (auto user : model->userList()) {
-        qCInfo(app) << "AccountsWidget addInfo line 132:"
-                    << "add user to listview:" << user->name();
         addUser(user);
     }
 }
 
 void AccountsWidget::addUser(User *user)
 {
+    qCDebug(app) << "addUser: " << user->displayName();
     //active
-    qCInfo(app) << "AccountsWidget addUser line 141:"
-                << "addUser begins:" << user->name();
     m_userList << user;
     DStandardItem *item = new DStandardItem;
     item->setData(0, AccountsWidget::ItemDataRole);
@@ -149,9 +155,6 @@ void AccountsWidget::addUser(User *user)
     /* 用户列表显示用户类型 */
     auto *subTitleAction = new DViewItemAction;
     setTitelFunc(user->userType(), subTitleAction);
-
-    qCInfo(app) << "AccountsWidget addUser line 156:"
-                << "subTitleAction text:" << subTitleAction->text();
 
     subTitleAction->setFontSize(DFontSizeManager::T8);
     subTitleAction->setTextColorRole(DPalette::TextTips);
@@ -181,12 +184,11 @@ void AccountsWidget::addUser(User *user)
     QPixmap pixmap = pixmapToRound(path);
 
     item->setIcon(QIcon(pixmap));
-
     item->setText(user->displayName());
-
     item->setToolTip(user->displayName());
 
     if (user->isCurrentUser()) {
+        qCDebug(app) << "Moving current user to top of list:" << user->displayName();
         //如果是当前用户
         auto tttitem = m_userItemModel->takeRow(m_userItemModel->rowCount() - 1);
         Q_ASSERT(tttitem[0] == item);
@@ -199,21 +201,17 @@ void AccountsWidget::addUser(User *user)
 
 void AccountsWidget::removeUser(User *user)
 {
+    qCDebug(app) << "Removing user:" << user->displayName();
     m_userItemModel->removeRow(m_userList.indexOf(user));
-
     m_userList.removeOne(user);
-
-    //    //对于删除的用户Item，不显示小圆点
-    //    for (int i = m_userItemModel->rowCount(); i < m_onlineIconList.size(); i++) {
-    //        m_onlineIconList.at(i)->setVisible(false);
-    //    }
-
     m_userlistView->update();
 }
 
 QPixmap AccountsWidget::pixmapToRound(const QPixmap &src)
 {
+    qCDebug(app) << "pixmapToRound";
     if (src.isNull()) {
+        qCWarning(app) << "Attempted to convert null pixmap to round";
         return QPixmap();
     }
 
@@ -235,17 +233,21 @@ QPixmap AccountsWidget::pixmapToRound(const QPixmap &src)
 
 QString AccountsWidget::getCurrentItemUserName()
 {
+    qCDebug(app) << "getCurrentItemUserName";
     //判断是否是全名
     for (auto *user : m_userList) {
         if (user->displayName() == m_userlistView->currentIndex().data().toString()) {
+            qCDebug(app) << "Found user name:" << user->name() << "for display name:" << user->displayName();
             return user->name();
         }
     }
+    qCDebug(app) << "Using display name as user name:" << m_userlistView->currentIndex().data().toString();
     return m_userlistView->currentIndex().data().toString();
 }
 
 void AccountsWidget::onItemClicked(const QModelIndex &index)
 {
+    qCDebug(app) << "onItemClicked: " << index;
     m_userlistView->resetStatus(index);
     Q_EMIT signalCurrentChanged();
 }
@@ -253,7 +255,7 @@ void AccountsWidget::onItemClicked(const QModelIndex &index)
 // show process table view context menu on specified positon
 void AccountsWidget::onRightButtonClicked(const QPoint &p)
 {
-
+    qCDebug(app) << "onRightButtonClicked: " << p;
     QPoint point = mapToGlobal(p);
 
     //    QString name = m_userlistView->indexAt(p).data().toString();
@@ -274,27 +276,34 @@ void AccountsWidget::onRightButtonClicked(const QPoint &p)
 
     m_contextMenu->popup(point);
 }
+
 void AccountsWidget::getUserToBeOperated(const QString &userName)
 {
+    qCDebug(app) << "Getting user to be operated:" << userName;
     for (auto *user : m_userList) {
         if (user->displayName() == userName) {
             m_userToBeOperated = user;
+            qCDebug(app) << "Found user:" << user->name();
+            break;
         }
     }
 }
 
 void AccountsWidget::onConnectTriggered()
 {
+    qCDebug(app) << "onConnectTriggered";
     m_userModel->activateSessionByUserName(m_userToBeOperated->name());
 }
 
 void AccountsWidget::onDisconnectTriggered()
 {
+    qCDebug(app) << "onDisconnectTriggered";
     m_userModel->lockSessionByUserName(m_userToBeOperated->name());
 }
 
 void AccountsWidget::onLogoutTriggered()
 {
+    qCDebug(app) << "Logout triggered for user:" << m_userToBeOperated->name();
     // show confirm dialog
     KillProcessConfirmDialog dialog(this);
     dialog.setMessage(LogoutDescription);
@@ -303,15 +312,18 @@ void AccountsWidget::onLogoutTriggered()
                      DDialog::ButtonRecommend);
     dialog.exec();
     if (dialog.result() == QMessageBox::Ok) {
+        qCDebug(app) << "User confirmed logout for:" << m_userToBeOperated->name();
         m_userModel->LogoutByUserName(m_userToBeOperated->name());
         //若为当前选中用户，进程列表切换到当前用户
         //todo
     } else {
+        qCDebug(app) << "User cancelled logout for:" << m_userToBeOperated->name();
         return;
     }
 }
 
 void AccountsWidget::onEditAccountTriggered()
 {
+    qCDebug(app) << "onEditAccountTriggered";
     m_userModel->EditAccount();
 }

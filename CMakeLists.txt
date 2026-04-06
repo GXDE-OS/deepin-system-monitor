@@ -31,6 +31,10 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -Wl,--gc-sections")
 endif()
 
+#安全加固编译参数
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack -pie -fstack-protector-all")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack -pie -fstack-protector-all")
+
 #判断龙芯架构
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips64")
     SET(IS_LOONGARCH_TYPE 1)
@@ -39,6 +43,20 @@ elseif(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "__longarch64")
 else()
     SET(IS_LOONGARCH_TYPE 0)
 endif()
+
+# Auto-detect Qt version (tries Qt6 first, falls back to Qt5)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
+message(STATUS "Found Qt version: ${QT_VERSION_MAJOR}")
+
+# Map to DTK version (Qt6→DTK6, Qt5→DTK5)
+if (QT_VERSION_MAJOR MATCHES 6)
+    set(DTK_VERSION_MAJOR 6)
+else()
+    set(DTK_VERSION_MAJOR)
+endif()
+message(STATUS "Build with DTK: ${DTK_VERSION_MAJOR}")
+set(QT_NS Qt${QT_VERSION_MAJOR})
+set(DTK_NS Dtk${DTK_VERSION_MAJOR})
 
 #系统监视器主应用
 ADD_SUBDIRECTORY(deepin-system-monitor-main)
@@ -72,19 +90,24 @@ set(system_monitor_plugin assets/configs/org.deepin.system-monitor.plugin.json)
 set(system_monitor_plugin_popup assets/configs/org.deepin.system-monitor.plugin.popup.json)
 set(system_monitor_plugin_server assets/configs/org.deepin.system-monitor.server.json)
 
-if (DEFINED DSG_DATA_DIR)
-    dconfig_meta_files(APPID ${APPID} FILES ${system_monitor_main})
-    dconfig_meta_files(APPID ${APPID} FILES ${system_monitor_daemon})
-    dconfig_meta_files(APPID ${APPID} FILES ${system_monitor_plugin})
-    dconfig_meta_files(APPID ${APPID} FILES ${system_monitor_plugin_popup})
-    dconfig_meta_files(APPID ${APPID} FILES ${system_monitor_plugin_server})
-    message("-- DConfig is supported by DTK")
+# DTK6 提供 dtk_add_config_meta_files 命令，DTK5 需要手动安装
+# 需要显式引入 DConfig 模块以确保 DSG_DATA_DIR 在当前作用域可用
+if (DTK_VERSION_MAJOR EQUAL 6)
+    find_package(Dtk${DTK_VERSION_MAJOR}DConfig QUIET)
+endif()
+
+if (COMMAND dtk_add_config_meta_files)
+    dtk_add_config_meta_files(APPID ${APPID} FILES ${system_monitor_main})
+    dtk_add_config_meta_files(APPID ${APPID} FILES ${system_monitor_daemon})
+    dtk_add_config_meta_files(APPID ${APPID} FILES ${system_monitor_plugin})
+    dtk_add_config_meta_files(APPID ${APPID} FILES ${system_monitor_plugin_popup})
+    dtk_add_config_meta_files(APPID ${APPID} FILES ${system_monitor_plugin_server})
+    message("-- DConfig is supported by DTK (using dtk_add_config_meta_files)")
 else()
     install(FILES ${system_monitor_main} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dsg/configs/${APPID}/)
     install(FILES ${system_monitor_daemon} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dsg/configs/${APPID}/)
     install(FILES ${system_monitor_plugin} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dsg/configs/${APPID}/)
     install(FILES ${system_monitor_plugin_popup} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dsg/configs/${APPID}/)
     install(FILES ${system_monitor_plugin_server} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dsg/configs/${APPID}/)
-
-    message("-- DConfig is not supported by DTK")
+    message("-- DConfig fallback: installing config files directly")
 endif()

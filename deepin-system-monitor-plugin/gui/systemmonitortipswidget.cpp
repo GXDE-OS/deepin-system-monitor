@@ -37,27 +37,51 @@ void SystemMonitorTipsWidget::setSystemMonitorTipsText(QStringList strList)
         else if (i == 3)
             upLoad = m_textList.at(i);
         else
-            qCDebug(app) << "do not set the text";
+            qCWarning(app) << "Invalid text list index:" << i;
     }
 
     // 设置左侧字符串宽度
     if (cpu.length() == 3) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         m_leftWidth = fontMetrics().width(QString(" ") + DApplication::translate("Plugin.cpu", "CPU") + QString(": 0") + cpu + QString(" "));
+#else
+        m_leftWidth = fontMetrics().horizontalAdvance(QString(" ") + DApplication::translate("Plugin.cpu", "CPU") + QString(": 0") + cpu + QString(" "));
+#endif
     } else {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         m_leftWidth = fontMetrics().width(QString(" ") + DApplication::translate("Plugin.cpu", "CPU") + QString(": ") + cpu + QString(" "));
+#else
+        m_leftWidth = fontMetrics().horizontalAdvance(QString(" ") + DApplication::translate("Plugin.cpu", "CPU") + QString(": ") + cpu + QString(" "));
+#endif
     }
     // 左侧宽度预留20个像素
     m_leftWidth += 20;
 
     // 设置右侧字符串宽度
     if (downLoad.length() == 3) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         m_rightWidth = fontMetrics().width(QString("↓000") + downLoad + QString(" "));
+#else
+        m_rightWidth = fontMetrics().horizontalAdvance(QString("↓000") + downLoad + QString(" "));
+#endif
     } else if (downLoad.length() == 4) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         m_rightWidth = fontMetrics().width(QString("↓00") + downLoad + QString(" "));
+#else
+        m_rightWidth = fontMetrics().horizontalAdvance(QString("↓00") + downLoad + QString(" "));
+#endif
     } else if (downLoad.length() == 5) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         m_rightWidth = fontMetrics().width(QString("↓0") + downLoad + QString(" "));
+#else
+        m_rightWidth = fontMetrics().horizontalAdvance(QString("↓0") + downLoad + QString(" "));
+#endif
     } else {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         m_rightWidth = fontMetrics().width(QString("↓") + downLoad + QString(" "));
+#else
+        m_rightWidth = fontMetrics().horizontalAdvance(QString("↓") + downLoad + QString(" "));
+#endif
     }
     // 设置右侧字符串宽度预留20个像素
     m_rightWidth += 20;
@@ -97,7 +121,7 @@ void SystemMonitorTipsWidget::paintEvent(QPaintEvent *event)
         else if (i == 3)
             upLoad = m_textList.at(i);
         else
-            qCDebug(app) << "do not set the text";
+            qCWarning(app) << "Invalid text list index during paint:" << i;
     }
 
     // 当没有数据更新时，设置默认的悬浮框内容
@@ -111,7 +135,11 @@ void SystemMonitorTipsWidget::paintEvent(QPaintEvent *event)
     //    int specialCharaWidth = fontMetrics().width(QString("↓"));
     int specialCharaWidth = 10;
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     int specialCharaHeight = fontMetrics().width(QString("1")) + 5;
+#else
+    int specialCharaHeight = fontMetrics().horizontalAdvance(QString("1")) + 5;
+#endif
     // 左侧空白区域
     int leftMargin = 10;
 
@@ -170,6 +198,7 @@ bool SystemMonitorTipsWidget::event(QEvent *event)
 {
     // 字体切换事件捕捉，当前获取到字体切换信号时，更新当前的悬浮框界面
     if (event->type() == QEvent::FontChange) {
+        qCDebug(app) << "Font changed, updating tips widget";
         if (m_textList.size() > 0)
             setSystemMonitorTipsText(m_textList);
         else
@@ -178,8 +207,10 @@ bool SystemMonitorTipsWidget::event(QEvent *event)
                                                    << "0KB/s"
                                                    << "0KB/s");
     } else if (event->type() == QEvent::Hide) {
+        qCDebug(app) << "Tips widget hidden";
         Q_EMIT visibleChanged(false);
     } else if (event->type() == QEvent::Show) {
+        qCDebug(app) << "Tips widget shown";
         Q_EMIT visibleChanged(true);
     }
 

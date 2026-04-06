@@ -23,8 +23,8 @@ ProcessTableModel::ProcessTableModel(QObject *parent, const QString &username)
     : QAbstractTableModel(parent)
 {
     setUserModeName(username);
-    qCInfo(app) << "ProcessTableModel Constructor line 41:"
-                << "new model with name" << username;
+    qCInfo(app) << "Initializing ProcessTableModel for user:" << username;
+    
     //update model's process list cache on process list updated signal
     auto *monitor = ThreadManager::instance()->thread<SystemMonitorThread>(BaseThread::kSystemMonitorThread)->systemMonitorInstance();
     connect(monitor, &SystemMonitor::statInfoUpdated, this, &ProcessTableModel::updateProcessList);
@@ -44,48 +44,50 @@ ProcessTableModel::ProcessTableModel(QObject *parent, const QString &username)
     connect(ProcessDB::instance(), &ProcessDB::processPriorityChanged, this,
             &ProcessTableModel::updateProcessPriority);
 
-    // 由于之前获取dapplication::themetypechanged改变信号在有些平台获取不到，现通过获取DPlatformtheme方式获取
-    static QPointer<DPlatformTheme> theme;
-
-    if (!theme) {
-        theme = DGuiApplicationHelper::instance()->applicationTheme();
-        connect(theme, &DPlatformTheme::iconThemeNameChanged, this, [=]() {
-            updateProcessList();
-        });
-    }
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, [=]() {
+        qCDebug(app) << "theme changed, updating process list";
+        updateProcessList();
+    });
 }
 
 char ProcessTableModel::getProcessState(pid_t pid) const
 {
+    qCDebug(app) << "Getting process state for PID:" << pid;
     if (m_procIdList.contains(pid)) {
         return ProcessDB::instance()->processSet()->getProcessById(pid).state();
     }
 
+    qCDebug(app) << "Process with PID" << pid << "not in the list";
     return 0;
 }
 
 Process ProcessTableModel::getProcess(pid_t pid) const
 {
+    qCDebug(app) << "Getting process for PID:" << pid;
     if (m_procIdList.contains(pid)) {
         return ProcessDB::instance()->processSet()->getProcessById(pid);
     }
 
+    qCDebug(app) << "Process with PID" << pid << "not in the list";
     return Process();
 }
 
 // update process model with the data provided by list
 void ProcessTableModel::updateProcessList()
 {
+    qCDebug(app) << "Updating process list";
     if (m_userModeName.isNull()) {
+        qCDebug(app) << "User mode name is null, delaying update";
         QTimer::singleShot(0, this, SLOT(updateProcessListDelay()));
     } else {
+        qCDebug(app) << "User mode name is set, updating for user:" << m_userModeName;
         QTimer::singleShot(0, this, SLOT(updateProcessListWithUserSpecified()));
     }
 }
 
 void ProcessTableModel::updateProcessListWithUserSpecified()
 {
-
+    qCDebug(app) << "Updating process list for specified user:" << m_userModeName;
     ProcessSet *processSet = ProcessDB::instance()->processSet();
     const QList<pid_t> &newpidlst = processSet->getPIDList();
     beginRemoveRows({}, 0, m_procIdList.size());
@@ -95,7 +97,9 @@ void ProcessTableModel::updateProcessListWithUserSpecified()
     int raw;
     for (const auto &pid : newpidlst) {
         Process changedProc = processSet->getProcessById(pid);
-        if (changedProc.userName() == m_userModeName) {
+        // 确保进程有效且用户名匹配
+        if (changedProc.isValid() && changedProc.userName() == m_userModeName) {
+            // qCDebug(app) << "Adding process with PID:" << pid << "for user" << m_userModeName;
             raw = m_procIdList.size();
             beginInsertRows({}, raw, raw);
             m_procIdList << pid;
@@ -104,27 +108,38 @@ void ProcessTableModel::updateProcessListWithUserSpecified()
         }
     }
 
+    qCDebug(app) << "Process list updated for user" << m_userModeName;
     Q_EMIT modelUpdated();
 }
 
 void ProcessTableModel::updateProcessListDelay()
 {
+    qCDebug(app) << "Updating process list with delay";
     ProcessSet *processSet = ProcessDB::instance()->processSet();
     const QList<pid_t> &newpidlst = processSet->getPIDList();
     QList<pid_t> oldpidlst = m_procIdList;
 
     for (const auto &pid : newpidlst) {
+        Process proc = processSet->getProcessById(pid);
+        // 只处理有效进程
+        if (!proc.isValid()) {
+            qCDebug(app) << "Skipping invalid process with PID:" << pid;
+            continue;
+        }
+        
         int row = m_procIdList.indexOf(pid);
         if (row >= 0) {
+            // qCDebug(app) << "Updating process at row:" << row;
             // update
-            m_processList[row] = processSet->getProcessById(pid);
+            m_processList[row] = proc;
             Q_EMIT dataChanged(index(row, 0), index(row, columnCount() - 1));
         } else {
             // insert
+            // qCDebug(app) << "Inserting new process with PID:" << pid;
             row = m_procIdList.size();
             beginInsertRows({}, row, row);
             m_procIdList << pid;
-            m_processList << processSet->getProcessById(pid);
+            m_processList << proc;
             endInsertRows();
         }
     }
@@ -132,6 +147,7 @@ void ProcessTableModel::updateProcessListDelay()
     // remove
     for (const auto &pid : oldpidlst) {
         if (!newpidlst.contains(pid)) {
+            // qCDebug(app) << "Removing process with PID:" << pid;
             int row = m_procIdList.indexOf(pid);
             beginRemoveRows({}, row, row);
             m_procIdList.removeAt(row);
@@ -140,24 +156,28 @@ void ProcessTableModel::updateProcessListDelay()
         }
     }
 
+    qCDebug(app) << "Delayed process list update finished";
     Q_EMIT modelUpdated();
 }
 
 // returns the number of rows under the given parent
 int ProcessTableModel::rowCount(const QModelIndex &) const
 {
+    // qCDebug(app) << "Getting row count:" << m_procIdList.size();
     return m_procIdList.size();
 }
 
 // returns the number of columns for the children of the given parent
 int ProcessTableModel::columnCount(const QModelIndex &) const
 {
+    // qCDebug(app) << "Getting column count:" << kProcessColumnCount;
     return kProcessColumnCount;
 }
 
 // returns the data for the given role and section in the header with the specified orientation
 QVariant ProcessTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    qCDebug(app) << "Getting header data for section:" << section << "role:" << role;
     if (role == Qt::DisplayRole || role == Qt::AccessibleTextRole) {
         switch (section) {
         case kProcessNameColumn: {
@@ -205,9 +225,11 @@ QVariant ProcessTableModel::headerData(int section, Qt::Orientation orientation,
             break;
         }
     } else if (role == Qt::TextAlignmentRole) {
+        qCDebug(app) << "Returning text alignment for header";
         // default header section alignment
         return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
     } else if (role == Qt::InitialSortOrderRole) {
+        qCDebug(app) << "Returning initial sort order for header";
         // sort section descending by default
         return QVariant::fromValue(Qt::DescendingOrder);
     }
@@ -217,18 +239,25 @@ QVariant ProcessTableModel::headerData(int section, Qt::Orientation orientation,
 // returns the data stored under the given role for the item referred to by the index
 QVariant ProcessTableModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
+        qCDebug(app) << "Invalid index, returning empty QVariant";
         return {};
+    }
 
     // validate index
-    if (index.row() < 0 || index.row() >= m_processList.size())
+    if (index.row() < 0 || index.row() >= m_processList.size()) {
+        qCDebug(app) << "Index out of bounds, returning empty QVariant";
         return {};
+    }
 
     int row = index.row();
     const Process &proc = m_processList[row];
-    if (!proc.isValid())
+    if (!proc.isValid()) {
+        qCDebug(app) << "Process at row" << row << "is invalid";
         return {};
+    }
 
+    // qCDebug(app) << "Getting data for row:" << row << "column:" << index.column() << "role:" << role;
     if (role == Qt::DisplayRole || role == Qt::AccessibleTextRole) {
         QString name;
         switch (index.column()) {
@@ -237,11 +266,13 @@ QVariant ProcessTableModel::data(const QModelIndex &index, int role) const
             name = proc.displayName();
             switch (proc.state()) {
             case 'Z':
+                qCDebug(app) << "Process state is Zombie";
                 name = QString("(%1) %2")
                                .arg(QApplication::translate("Process.Table", "No response"))
                                .arg(name);
                 break;
             case 'T':
+                qCDebug(app) << "Process state is Suspended";
                 name = QString("(%1) %2")
                                .arg(QApplication::translate("Process.Table", "Suspend"))
                                .arg(name);
@@ -294,12 +325,14 @@ QVariant ProcessTableModel::data(const QModelIndex &index, int role) const
     } else if (role == Qt::DecorationRole) {
         switch (index.column()) {
         case kProcessNameColumn:
+            qCDebug(app) << "Returning decoration role for process name";
             // process icon
             return proc.icon();
         default:
             return {};
         }
     } else if (role == Qt::UserRole) {
+        qCDebug(app) << "Returning user role data";
         // get process's raw data
         switch (index.column()) {
         case kProcessNameColumn:
@@ -328,6 +361,7 @@ QVariant ProcessTableModel::data(const QModelIndex &index, int role) const
             return {};
         }
     } else if (role == (Qt::UserRole + 1)) {
+        qCDebug(app) << "Returning user role + 1 data";
         // get process's extra data
         switch (index.column()) {
         case kProcessUploadColumn:
@@ -338,20 +372,25 @@ QVariant ProcessTableModel::data(const QModelIndex &index, int role) const
             return {};
         }
     } else if (role == Qt::TextAlignmentRole) {
+        qCDebug(app) << "Returning text alignment role";
         // default data alignment
         return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
     } else if (role == Qt::UserRole + 2) {
+        qCDebug(app) << "Returning user role + 2 data";
         // text color role based on process's state
         if (index.column() == kProcessNameColumn) {
             char state = proc.state();
             if (state == 'Z' || state == 'T') {
+                qCDebug(app) << "Returning warning color for process state:" << state;
                 return QVariant(int(Dtk::Gui::DPalette::TextWarning));
             }
         }
         return {};
     } else if (role == Qt::UserRole + 3) {
+        qCDebug(app) << "Returning app type";
         return proc.appType();
     } else if (role == Qt::UserRole + 4) {
+        qCDebug(app) << "Returning cmdline string";
         QString cmdlineStr = proc.cmdlineString();
         if (!cmdlineStr.isEmpty())
             return cmdlineStr;
@@ -364,66 +403,91 @@ QVariant ProcessTableModel::data(const QModelIndex &index, int role) const
 // returns the item flags for the given index
 Qt::ItemFlags ProcessTableModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
+        qCDebug(app) << "Invalid index, returning NoItemFlags";
         return Qt::NoItemFlags;
+    }
 
+    qCDebug(app) << "Returning item flags for index";
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemNeverHasChildren;
 }
 
 // get process priority enum type
 ProcessPriority ProcessTableModel::getProcessPriority(pid_t pid) const
 {
+    qCDebug(app) << "Getting process priority for PID:" << pid;
     int row = m_procIdList.indexOf(pid);
     if (row >= 0) {
         int prio = ProcessDB::instance()->processSet()->getProcessById(pid).priority();
+        qCDebug(app) << "Process found, priority value:" << prio;
         return getProcessPriorityStub(prio);
     }
 
+    qCDebug(app) << "Process with PID" << pid << "not found, returning invalid priority";
     return kInvalidPriority;
 }
 
 int ProcessTableModel::getProcessPriorityValue(pid_t pid) const
 {
+    qCDebug(app) << "Getting process priority value for PID:" << pid;
     int row = m_procIdList.indexOf(pid);
-    return row >= 0 ? ProcessDB::instance()->processSet()->getProcessById(pid).priority() : kNormalPriority;
+    int priority = row >= 0 ? ProcessDB::instance()->processSet()->getProcessById(pid).priority() : kNormalPriority;
+    qCDebug(app) << "Priority value for PID" << pid << "is" << priority;
+    return priority;
 }
 
 // remove process entry from model with specified pid
 void ProcessTableModel::removeProcess(pid_t pid)
 {
-    qCWarning(app) << m_procIdList.count() << "1";
+    qCInfo(app) << "Removing process with PID:" << pid;
     int row = m_procIdList.indexOf(pid);
     if (row >= 0) {
+        qCDebug(app) << "Process with PID" << pid << "found at row" << row << ", removing";
         beginRemoveRows(QModelIndex(), row, row);
         m_procIdList.removeAt(row);
         m_processList.removeAt(row);
         endRemoveRows();
+        qCInfo(app) << "Process removed successfully";
+    } else {
+        qCWarning(app) << "Failed to remove process: PID" << pid << "not found";
     }
 }
 
 // update the state of the process entry with specified pid
 void ProcessTableModel::updateProcessState(pid_t pid, char state)
 {
+    qCInfo(app) << "Updating process state. PID:" << pid << "New state:" << state;
     int row = m_procIdList.indexOf(pid);
     if (row >= 0) {
+        qCDebug(app) << "Process with PID" << pid << "found at row" << row << ", updating state";
         m_processList[row].setState(state);
         Q_EMIT dataChanged(index(row, 0), index(row, columnCount() - 1));
+        qCInfo(app) << "Process state updated successfully";
+    } else {
+        qCWarning(app) << "Failed to update process state: PID" << pid << "not found";
     }
 }
 
 // update priority of the process entry with specified pid
 void ProcessTableModel::updateProcessPriority(pid_t pid, int priority)
 {
+    qCInfo(app) << "Updating process priority. PID:" << pid << "New priority:" << priority;
     int row = m_procIdList.indexOf(pid);
     if (row >= 0) {
+        qCDebug(app) << "Process with PID" << pid << "found at row" << row << ", updating priority";
         m_processList[row].setPriority(priority);
         Q_EMIT dataChanged(index(row, 0), index(row, columnCount() - 1));
+        qCInfo(app) << "Process priority updated successfully";
+    } else {
+        qCWarning(app) << "Failed to update process priority: PID" << pid << "not found";
     }
 }
 
 void ProcessTableModel::setUserModeName(const QString &userName)
 {
+    qCDebug(app) << "Setting user mode name to:" << userName;
     if (userName != m_userModeName) {
+        qCInfo(app) << "Changing user mode from" << m_userModeName << "to" << userName;
         m_userModeName = userName;
         updateProcessListWithUserSpecified();
     }
@@ -431,6 +495,7 @@ void ProcessTableModel::setUserModeName(const QString &userName)
 
 qreal ProcessTableModel::getTotalCPUUsage()
 {
+    qCDebug(app) << "Calculating total CPU usage";
     qreal cpuUsage = 0;
     for (const auto &proc : m_processList) {
         cpuUsage += proc.cpu();
@@ -439,6 +504,7 @@ qreal ProcessTableModel::getTotalCPUUsage()
 }
 qreal ProcessTableModel::getTotalMemoryUsage()
 {
+    qCDebug(app) << "Calculating total memory usage";
     qreal memUsage = 0;
     for (const auto &proc : m_processList) {
         memUsage += proc.memory();
@@ -447,6 +513,7 @@ qreal ProcessTableModel::getTotalMemoryUsage()
 }
 qreal ProcessTableModel::getTotalDownload()
 {
+    qCDebug(app) << "Calculating total download";
     qreal download = 0;
     for (const auto &proc : m_processList) {
         download += proc.recvBps();
@@ -455,6 +522,7 @@ qreal ProcessTableModel::getTotalDownload()
 }
 qreal ProcessTableModel::getTotalUpload()
 {
+    qCDebug(app) << "Calculating total upload";
     qlonglong upload = 0;
     for (const auto &proc : m_processList) {
         upload += proc.sentBps();
@@ -464,6 +532,7 @@ qreal ProcessTableModel::getTotalUpload()
 
 qreal ProcessTableModel::getTotalVirtualMemoryUsage()
 {
+    qCDebug(app) << "Calculating total virtual memory usage";
     qlonglong vtmem = 0;
     for (const auto &proc : m_processList) {
         vtmem += proc.vtrmemory();
@@ -472,6 +541,7 @@ qreal ProcessTableModel::getTotalVirtualMemoryUsage()
 }
 qreal ProcessTableModel::getTotalSharedMemoryUsage()
 {
+    qCDebug(app) << "Calculating total shared memory usage";
     qlonglong smem = 0;
     for (const auto &proc : m_processList) {
         smem += proc.sharememory();
@@ -480,6 +550,7 @@ qreal ProcessTableModel::getTotalSharedMemoryUsage()
 }
 qreal ProcessTableModel::getTotalDiskRead()
 {
+    qCDebug(app) << "Calculating total disk read";
     qlonglong diskread = 0;
     for (const auto &proc : m_processList) {
         diskread += proc.readBps();
@@ -488,6 +559,7 @@ qreal ProcessTableModel::getTotalDiskRead()
 }
 qreal ProcessTableModel::getTotalDiskWrite()
 {
+    qCDebug(app) << "Calculating total disk write";
     qlonglong diskwrite = 0;
     for (const auto &proc : m_processList) {
         diskwrite += proc.writeBps();

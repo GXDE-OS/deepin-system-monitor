@@ -6,17 +6,26 @@
 #include "error_dialog.h"
 
 #include "gui/ui_common.h"
+#include "ddlog.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#include <DPaletteHelper>
+#endif
 #include <DFontSizeManager>
 
 #include <QApplication>
 #include <QMap>
 #include <QDebug>
 
+using namespace DDLog;
+
 // Show error dialog
 void ErrorDialog::show(QWidget *parent, const QString &errMsg, const QString &detail)
 {
+    qCDebug(app) << "Showing ErrorDialog with message:" << errMsg << "detail:" << detail;
     auto *dlg = new ErrorDialog(errMsg, detail, parent);
     dlg->exec();
 }
@@ -24,6 +33,7 @@ void ErrorDialog::show(QWidget *parent, const QString &errMsg, const QString &de
 // Initialize UI elements
 void ErrorDialog::initUI()
 {
+    qCDebug(app) << "Initializing ErrorDialog UI";
     // set dialog icon
     setIcon(QIcon::fromTheme("dialog-warning"));
     // set dialog attribute
@@ -33,10 +43,18 @@ void ErrorDialog::initUI()
 
     m_detailLabel = new DLabel(this);
     // global palette of current theme
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto pa = DApplicationHelper::instance()->palette(m_detailLabel);
+#else
+    auto pa = DPaletteHelper::instance()->palette(m_detailLabel);
+#endif
     // get TextTips color from palette
     auto color = pa.color(DPalette::TextTips);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     pa.setColor(DPalette::Foreground, color);
+#else
+    pa.setColor(DPalette::Text, color);
+#endif
     // set palette for error detail label
     m_detailLabel->setPalette(pa);
     // bind font size
@@ -59,5 +77,6 @@ void ErrorDialog::initUI()
 ErrorDialog::ErrorDialog(const QString &errMsg, const QString &detail, QWidget *parent)
     : DDialog(parent), m_errMsg(errMsg), m_detail(detail)
 {
+    qCDebug(app) << "ErrorDialog constructor";
     initUI();
 }

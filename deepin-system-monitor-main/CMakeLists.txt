@@ -16,17 +16,16 @@ set(POLICY_FILE com.deepin.pkexec.${PROJECT_NAME}.policy)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wl,--as-need -fPIE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wl,--as-needed -fPIE")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error=incompatible-pointer-types -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wl,--as-needed -fPIE -Wno-error=incompatible-pointer-types")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie")
 
 if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw_64")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mieee")
 endif ()
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-  add_definitions("-DQT_NO_DEBUG_OUTPUT")
-endif()
-if (USE_DEEPIN_WAYLAND)
-  add_definitions("-DUSE_DEEPIN_WAYLAND")
+    add_definitions("-DQT_NO_DEBUG_OUTPUT")
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/environments.h.in ${CMAKE_CURRENT_BINARY_DIR}/environments.h @ONLY)
@@ -37,29 +36,25 @@ include(CheckSymbolExists)
 check_symbol_exists(syscall "unistd.h" HAVE_SYS_CALL)
 check_symbol_exists(SYS_getrandom "sys/syscall.h" HAVE_SYS_GETRANDOM)
 include(FindPkgConfig)
-if (USE_DEEPIN_WAYLAND)
-    find_package(DWayland)
-    find_package(KF5Wayland)
+
+if (USE_DEEPIN_WAYLAND AND QT_VERSION LESS 6)
+    add_definitions("-DUSE_DEEPIN_WAYLAND")
+    find_package(DWayland QUIET)
+    find_package(KF5Wayland QUIET)
     if (DWayland_FOUND)
-        message("DWayland founded.")
+        message(STATUS "Build with Qt5 and DWayland found.")
         add_definitions(-DDWAYLAND)
     elseif(KF5Wayland_FOUND)
-        message("KF5Wayland founded.")
+        message(STATUS "Build with Qt5 and KF5Wayland found.")
         add_definitions(-DKF5WAYLAND)
+    elseif(NOT DWayland_FOUND AND NOT KF5Wayland_FOUND)
+        message(WARNING "Neither DWayland nor KF5Wayland found, Wayland support will be disabled")
     endif()
 endif()
 
-find_package(Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt5 COMPONENTS Gui REQUIRED)
-find_package(Qt5 COMPONENTS X11Extras REQUIRED)
-find_package(Qt5 COMPONENTS DBus REQUIRED)
-find_package(Qt5 COMPONENTS Concurrent REQUIRED)
-find_package(Qt5 COMPONENTS LinguistTools REQUIRED)
+find_package(${QT_NS} COMPONENTS Core Widgets Gui DBus Concurrent LinguistTools REQUIRED)
+find_package(${DTK_NS} COMPONENTS Core Gui Widget REQUIRED)
 
-find_package(DtkCore REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DtkWidget REQUIRED)
 find_library(LIB_PCAP NAMES pcap REQUIRED)
 find_library(LIB_XCB NAMES xcb REQUIRED)
 find_library(LIB_XEXT NAMES Xext REQUIRED)
@@ -70,9 +65,6 @@ find_package(ICU COMPONENTS i18n uc REQUIRED)
 pkg_search_module(LIB_NL3 REQUIRED libnl-3.0)
 pkg_search_module(LIB_NL3_ROUTE REQUIRED libnl-route-3.0)
 pkg_search_module(LIB_UDEV REQUIRED libudev)
-include_directories(${DtkCore_INCLUDE_DIRS})
-include_directories(${DtkGui_INCLUDE_DIRS})
-include_directories(${DtkWidget_INCLUDE_DIRS})
 
 include_directories(${LIB_NL3_INCLUDE_DIRS})
 include_directories(${LIB_NL3_ROUTE_INCLUDE_DIRS})
@@ -83,11 +75,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libsmartcols/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../)
 #include_directories(${DFrameworkDBus_INCLUDE_DIRS})  # chinalife
 
-#安全测试加固编译参数
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -z relro -z now -z noexecstack -pie")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -z relro -z now -z noexecstack -pie")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -fstack-protector-all")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -fstack-protector-all")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wl,-Map=deepin-system-monitor-main.map")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wl,-Map=deepin-system-monitor-main.map")
 
@@ -98,9 +85,11 @@ set(HPP_GLOBAL
     application.h
     stack_trace.h
     cpu_monitor.h
+    gpu_monitor.h
     memory_monitor.h
     network_monitor.h
     compact_cpu_monitor.h
+    compact_gpu_monitor.h
     compact_memory_monitor.h
     compact_network_monitor.h
     compact_disk_monitor.h
@@ -114,9 +103,11 @@ set(CPP_GLOBAL
     main.cpp
     application.cpp
     cpu_monitor.cpp
+    gpu_monitor.cpp
     memory_monitor.cpp
     network_monitor.cpp
     compact_cpu_monitor.cpp
+    compact_gpu_monitor.cpp
     compact_memory_monitor.cpp
     compact_network_monitor.cpp
     compact_disk_monitor.cpp
@@ -194,7 +185,7 @@ set(HPP_MODEL
     model/model_manager.h
     model/accounts_info_model.h
     model/user.h
-
+    model/gpu_info_model.h
 )
 set(CPP_MODEL
     model/system_service_table_model.cpp
@@ -215,6 +206,7 @@ set(CPP_MODEL
     model/model_manager.cpp
     model/accounts_info_model.cpp
     model/user.cpp
+    model/gpu_info_model.cpp
 )
 
 set(HPP_GUI
@@ -241,6 +233,7 @@ set(HPP_GUI
     gui/xwin_kill_preview_widget.h
     gui/xwin_kill_preview_background_widget.h
     gui/mem_detail_view_widget.h
+    gui/gpu_detail_view_widget.h
     gui/mem_summary_view_widget.h
     gui/mem_stat_view_widget.h
     gui/block_dev_detail_view_widget.h
@@ -287,6 +280,7 @@ set(CPP_GUI
     gui/xwin_kill_preview_widget.cpp
     gui/xwin_kill_preview_background_widget.cpp
     gui/mem_detail_view_widget.cpp
+    gui/gpu_detail_view_widget.cpp
     gui/mem_summary_view_widget.cpp
     gui/mem_stat_view_widget.cpp
     gui/block_dev_detail_view_widget.cpp
@@ -337,6 +331,7 @@ set(CPP_PROCESS
     process/desktop_entry_cache.cpp
     process/desktop_entry_cache_updater.cpp
     process/process_db.cpp
+    process/system_service_client.cpp
 )
 
 set(HPP_SERVICE
@@ -385,6 +380,7 @@ set(HPP_SYSTEM
     system/wireless.h
     system/diskio_info.h
     system/net_info.h
+    system/gpu_info.h
 )
 set(CPP_SYSTEM
     system/system_monitor.cpp
@@ -412,6 +408,7 @@ set(CPP_SYSTEM
     system/wireless.cpp
     system/diskio_info.cpp
     system/net_info.cpp
+    system/gpu_info.cpp
 )
 
 set(HPP_WM
@@ -588,15 +585,14 @@ set(APP_CPP
     ${DMIDECODE}
 )
 set(LIBS
-    Qt5::Core
-    Qt5::Widgets
-    Qt5::Gui
-    Qt5::DBus
-    Qt5::Concurrent
-    Qt5::X11Extras
-    dtkcore
-    dtkwidget
-    dtkgui
+    ${QT_NS}::Core
+    ${QT_NS}::Widgets
+    ${QT_NS}::Gui
+    ${QT_NS}::DBus
+    ${QT_NS}::Concurrent
+    ${DTK_NS}::Core
+    ${DTK_NS}::Widget
+    ${DTK_NS}::Gui
     ${LIB_PCAP}
     ICU::i18n
     ICU::uc
@@ -607,19 +603,22 @@ set(LIBS
     ${LIB_NL3_ROUTE_LIBRARIES}
     ${LIB_UDEV_LIBRARIES}
 #    ${DFrameworkDBus_LIBRARIES}   # chinalife
-    Dtk::Core
 )
 
 if (USE_DEEPIN_WAYLAND)
     if (DWayland_FOUND)
         list(APPEND LIBS DWaylandClient DWaylandServer)
-    else()
+    elseif(KF5Wayland_FOUND)
         list(APPEND LIBS KF5::WaylandClient KF5::WaylandServer)
     endif()
 endif()
 
 file(GLOB APP_TS_FILES LIST_DIRECTORIES false translations/*.ts)
-qt5_add_translation(APP_QM_FILES ${APP_TS_FILES})
+if (QT_VERSION_MAJOR LESS 6)
+    qt5_add_translation(APP_QM_FILES ${APP_TS_FILES})
+else()
+    qt6_add_translation(APP_QM_FILES ${APP_TS_FILES})
+endif()
 add_custom_target(QMFILES ALL DEPENDS ${APP_QM_FILES})
 
 find_program(POLICY_TS_CONV deepin-policy-ts-convert REQUIRED)
@@ -653,9 +652,11 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/assets/deepin-system-monitor DESTINA
 
 #hw机型增加DConfig配置
 set(APPID org.deepin.system-monitor)
-message("-- DConfig is supported by DTK ${PROJECT_SOURCE_DIR}")
 set(configFile ${PROJECT_SOURCE_DIR}/assets/org.deepin.system-monitor.main.json)
-if (DEFINED DSG_DATA_DIR)
-    message("-- DConfig is supported by DTK")
-    dconfig_meta_files(APPID ${APPID} FILES ${configFile})
+if (COMMAND dtk_add_config_meta_files)
+    message("-- DConfig is supported by DTK (main app)")
+    dtk_add_config_meta_files(APPID ${APPID} FILES ${configFile})
+else()
+    message("-- DConfig fallback: installing config file directly (main app)")
+    install(FILES ${configFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dsg/configs/${APPID}/)
 endif()

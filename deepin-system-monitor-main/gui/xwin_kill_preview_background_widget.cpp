@@ -3,11 +3,16 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "xwin_kill_preview_background_widget.h"
+#include "ddlog.h"
 
 #include "ui_common.h"
 
 #include <DFontSizeManager>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 #include <DPalette>
 #include <DApplication>
 #include <DStyle>
@@ -23,6 +28,7 @@
 #include <QRegion>
 
 DWIDGET_USE_NAMESPACE
+using namespace DDLog;
 
 // default help tip icon size
 static const QSize kDefaultIconSize {50, 50};
@@ -32,6 +38,7 @@ XWinKillPreviewBackgroundWidget::XWinKillPreviewBackgroundWidget(QPixmap &backgr
     : QWidget(parent)
     , m_background(background)
 {
+    qCDebug(app) << "XWinKillPreviewBackgroundWidget constructor";
     initUI();
     initConnection();
 }
@@ -39,6 +46,7 @@ XWinKillPreviewBackgroundWidget::XWinKillPreviewBackgroundWidget(QPixmap &backgr
 // update selected region (window currently being hovered by mouse & intersects with current screen's preview widget)
 void XWinKillPreviewBackgroundWidget::updateSelection(const QRegion &region)
 {
+    qCDebug(app) << "XWinKillPreviewBackgroundWidget updateSelection";
     // coordinate translate
     m_selRegion = region.translated(-geometry().x(), -geometry().y());
     update();
@@ -47,6 +55,7 @@ void XWinKillPreviewBackgroundWidget::updateSelection(const QRegion &region)
 // paint event handler
 void XWinKillPreviewBackgroundWidget::paintEvent(QPaintEvent *)
 {
+    // qCDebug(app) << "XWinKillPreviewBackgroundWidget paintEvent";
     QPainter painter(this);
     QPainterPath path;
 
@@ -60,7 +69,11 @@ void XWinKillPreviewBackgroundWidget::paintEvent(QPaintEvent *)
     painter.fillPath(path, Qt::red);
 
     // global palette
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto palette = DApplicationHelper::instance()->applicationPalette();
+#else
+    auto palette = DGuiApplicationHelper::instance()->applicationPalette();
+#endif
     // DStyle instance
     auto *style = dynamic_cast<DStyle *>(this->style());
     // frame radius
@@ -68,7 +81,11 @@ void XWinKillPreviewBackgroundWidget::paintEvent(QPaintEvent *)
     // content margin
     auto margin = 10;
     // background color
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto background = palette.color(DPalette::Current, DPalette::Background);
+#else
+    auto background = palette.color(DPalette::Current, DPalette::Window);
+#endif
     // forground color
     auto foreground = palette.color(DPalette::Current, DPalette::Text);
 
@@ -114,6 +131,7 @@ void XWinKillPreviewBackgroundWidget::paintEvent(QPaintEvent *)
 // initialize ui components
 void XWinKillPreviewBackgroundWidget::initUI()
 {
+    qCDebug(app) << "XWinKillPreviewBackgroundWidget initUI";
     Qt::WindowFlags flags {};
     flags |= Qt::Window;
     // always stay on top
@@ -146,4 +164,5 @@ void XWinKillPreviewBackgroundWidget::initUI()
 // initialize connections (nothing to do here)
 void XWinKillPreviewBackgroundWidget::initConnection()
 {
+    qCDebug(app) << "XWinKillPreviewBackgroundWidget initConnection";
 }

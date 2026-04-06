@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "process_table_view.h"
+#include "ddlog.h"
 
 #include "application.h"
 
@@ -17,7 +18,12 @@
 #include "process/process_db.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#include <DPaletteHelper>
+#endif
 #include <DDialog>
 #include <DErrorMessage>
 #include <DFontSizeManager>
@@ -39,6 +45,8 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QShortcut>
+
+using namespace DDLog;
 
 // process table view backup setting key
 const QByteArray header_version = "_1.0.0";
@@ -62,10 +70,14 @@ ProcessTableView::ProcessTableView(DWidget *parent)
 
     // adjust search result tip label text color dynamically on theme type change
     onThemeTypeChanged();
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &ProcessTableView::onThemeTypeChanged);
+#else
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ProcessTableView::onThemeTypeChanged);
+#endif
 
     this->setAttribute(Qt::WA_TranslucentBackground, true);
-
     setHeaderHidden(true);
 }
 
@@ -77,7 +89,11 @@ ProcessTableView::~ProcessTableView()
 
 void ProcessTableView::onThemeTypeChanged()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto palette = DApplicationHelper::instance()->applicationPalette();
+#else
+    auto palette = DGuiApplicationHelper::instance()->applicationPalette();
+#endif
     palette.setColor(DPalette::Text, palette.color(DPalette::PlaceholderText));
     m_notFoundLabel->setPalette(palette);
 
@@ -102,14 +118,17 @@ bool ProcessTableView::eventFilter(QObject *obj, QEvent *event)
 // filter process table based on searched text
 void ProcessTableView::search(const QString &text)
 {
+    qCDebug(app) << "Searching with text:" << text;
     m_proxyModel->setSortFilterString(text);
     // adjust search result tip label's visibility & position if needed
     adjustInfoLabelVisibility();
+    qCDebug(app) << "Search completed, adjusted label visibility";
 }
 
 // switch process table view display mode
 void ProcessTableView::switchDisplayMode(FilterType type)
 {
+    qCDebug(app) << "Switching display mode to:" << type;
     m_proxyModel->setFilterType(type);
 }
 
@@ -122,7 +141,11 @@ void ProcessTableView::initUI()
     m_notFoundLabel = new DLabel(DApplication::translate("Common.Search", "No search results"), this);
     DFontSizeManager::instance()->bind(m_notFoundLabel, DFontSizeManager::T1);
     // change text color
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto palette = DApplicationHelper::instance()->palette(m_notFoundLabel);
+#else
+    auto palette = DPaletteHelper::instance()->palette(m_notFoundLabel);
+#endif
     QColor labelColor = palette.color(DPalette::PlaceholderText);
     palette.setColor(DPalette::Text, labelColor);
     m_notFoundLabel->setPalette(palette);
@@ -178,6 +201,7 @@ void ProcessTableView::initConnections()
     connect(m_model, &ProcessTableModel::modelUpdated, this, [&]() {
         adjustInfoLabelVisibility();
         if (m_selectedPID.isValid()) {
+            qCDebug(app) << "Restoring selection for PID:" << m_selectedPID;
             for (int i = 0; i < m_proxyModel->rowCount(); i++) {
                 if (m_proxyModel->data(m_proxyModel->index(i, ProcessTableModel::kProcessPIDColumn),
                                        Qt::UserRole) == m_selectedPID)

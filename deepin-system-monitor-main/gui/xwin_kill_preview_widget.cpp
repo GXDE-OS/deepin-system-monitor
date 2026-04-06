@@ -37,6 +37,7 @@ using namespace core::wm;
 using namespace common::init;
 using namespace DDLog;
 
+#ifdef USE_DEEPIN_WAYLAND
 typedef int (*InitDtkWmDisplayPtr)();
 typedef void (*DestoryDtkWmDisplayPtr)();
 typedef int (*GetAllWindowStatesListPtr)(WindowState **states);
@@ -45,17 +46,20 @@ typedef int (*GetAllWindowStatesListPtr)(WindowState **states);
 static InitDtkWmDisplayPtr InitDtkWmDisplay = nullptr;
 static DestoryDtkWmDisplayPtr DestoryDtkWmDisplay = nullptr;
 static GetAllWindowStatesListPtr GetAllWindowStatesList = nullptr;
+#endif
 
 // constructor
 XWinKillPreviewWidget::XWinKillPreviewWidget(QWidget *parent)
     : QWidget(parent)
 {
+    qCDebug(app) << "XWinKillPreviewWidget constructor";
     // new window manager instance
     m_wminfo = new WMInfo();
 //不再使用CMakeList开关宏的方式，改用全局变量运行时控制
 //WaylandCentered定义在common/common.h中，在main函数开头进行初始化判断
 #ifdef USE_DEEPIN_WAYLAND
     if (WaylandCentered) {
+        qCDebug(app) << "Wayland is enabled";
         m_connectionThread = new QThread(this);
         m_connectionThreadObject = new ConnectionThread();
 
@@ -64,8 +68,10 @@ XWinKillPreviewWidget::XWinKillPreviewWidget(QWidget *parent)
         DestoryDtkWmDisplay = reinterpret_cast<void (*)()>(library.resolve("DestoryDtkWmDisplay"));
         GetAllWindowStatesList = reinterpret_cast<int (*)(WindowState **)>(library.resolve("GetAllWindowStatesList"));
 
-        if (InitDtkWmDisplay)
+        if (InitDtkWmDisplay) {
+            qCDebug(app) << "Initializing DtkWmDisplay";
             InitDtkWmDisplay();
+        }
     }
 #endif   // USE_DEEPIN_WAYLAND
 
@@ -83,6 +89,7 @@ XWinKillPreviewWidget::XWinKillPreviewWidget(QWidget *parent)
 // destructor
 XWinKillPreviewWidget::~XWinKillPreviewWidget()
 {
+    // qCDebug(app) << "XWinKillPreviewWidget destructor";
     // restore window state
     auto *mw = gApp->mainWindow();
     mw->setWindowState((mw->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
@@ -94,12 +101,15 @@ XWinKillPreviewWidget::~XWinKillPreviewWidget()
 
 #ifdef USE_DEEPIN_WAYLAND
     if (WaylandCentered) {
+        // qCDebug(app) << "Quitting connection thread";
         m_connectionThread->quit();
         m_connectionThread->wait();
         m_connectionThreadObject->deleteLater();
 
-        if (DestoryDtkWmDisplay)
+        if (DestoryDtkWmDisplay) {
+            // qCDebug(app) << "Destroying DtkWmDisplay";
             DestoryDtkWmDisplay();
+        }
     }
 #endif   // USE_DEEPIN_WAYLAND
 }
@@ -107,14 +117,17 @@ XWinKillPreviewWidget::~XWinKillPreviewWidget()
 // mouse press event
 void XWinKillPreviewWidget::mousePressEvent(QMouseEvent *event)
 {
+    // qCDebug(app) << "XWinKillPreviewWidget mousePressEvent";
     // only accept left mouse button click event
     if (event->button() != Qt::LeftButton) {
+        qCDebug(app) << "Not a left button click, ignoring";
         return;
     }
     // get the list of windows under cursor in stacked order when mouse pressed
     auto pos = QCursor::pos();
 #ifdef USE_DEEPIN_WAYLAND
     if (WaylandCentered) {
+        qCDebug(app) << "Handling mouse press for Wayland";
         double ratio = QGuiApplication::primaryScreen()->devicePixelRatio();   // 获得当前的缩放比例
         QRect screenRect;
         for (auto screen : QApplication::screens()) {
@@ -138,6 +151,7 @@ void XWinKillPreviewWidget::mousePressEvent(QMouseEvent *event)
                        static_cast<int>(screenRect.y() + (it->geometry.y - screenRect.y()) / ratio),
                        static_cast<int>(it->geometry.width / ratio), static_cast<int>(it->geometry.height / ratio));
             if (rect.contains(pos)) {
+                qCDebug(app) << "Window found for killing, pid:" << it->pid;
                 // hide preview & background widgets first
                 hide();
                 for (auto &background : m_backgroundList) {
@@ -155,6 +169,7 @@ void XWinKillPreviewWidget::mousePressEvent(QMouseEvent *event)
 #endif   // USE_DEEPIN_WAYLAND
 
     if (!WaylandCentered) {
+        qCDebug(app) << "Handling mouse press for X11";
         double ratio = QGuiApplication::primaryScreen()->devicePixelRatio();   // 获得当前的缩放比例
         QRect screenRect;
         for (auto screen : QApplication::screens()) {
@@ -171,6 +186,7 @@ void XWinKillPreviewWidget::mousePressEvent(QMouseEvent *event)
 
         // fix cursor not update issue while moved to areas covered by intersected area of dock & normal windows
         if (m_wminfo->isCursorHoveringDocks(windowPos)) {
+            qCDebug(app) << "Cursor is hovering docks, ignoring";
             return;
         }
 
@@ -181,6 +197,7 @@ void XWinKillPreviewWidget::mousePressEvent(QMouseEvent *event)
 
             // if such window exists, we emit window clicked signal to notify kill application performed action
             if (select->rect.contains(windowPos)) {
+                // qCDebug(app) << "Window found for killing, pid:" << select->pid;
                 // hide preview & background widgets first
                 hide();
                 for (auto &background : m_backgroundList) {
@@ -200,8 +217,10 @@ void XWinKillPreviewWidget::mousePressEvent(QMouseEvent *event)
 // mouse move event handler
 void XWinKillPreviewWidget::mouseMoveEvent(QMouseEvent *)
 {
+    // qCDebug(app) << "XWinKillPreviewWidget mouseMoveEvent";
 #ifdef USE_DEEPIN_WAYLAND
     if (WaylandCentered) {
+        // qCDebug(app) << "Handling mouse move for Wayland";
         double ratio = QGuiApplication::primaryScreen()->devicePixelRatio();   // 获得当前的缩放比例
         auto pos = QCursor::pos();
         QRect screenRect;
@@ -266,6 +285,7 @@ void XWinKillPreviewWidget::mouseMoveEvent(QMouseEvent *)
         }
         // if no such window found, we need clear any selection left before, plus restore cursor to its default style (forbit style)
         if (!found) {
+            // qCDebug(app) << "No window found for killing";
             for (auto &bg : m_backgroundList)
                 bg->clearSelection();
             emit cursorUpdated(m_defaultCursor);
@@ -273,6 +293,7 @@ void XWinKillPreviewWidget::mouseMoveEvent(QMouseEvent *)
     }
 #endif   // USE_DEEPIN_WAYLAND
     if (!WaylandCentered) {
+        // qCDebug(app) << "Handling mouse move for X11";
         double ratio = QGuiApplication::primaryScreen()->devicePixelRatio();   // 获得当前的缩放比例
         auto pos = QCursor::pos();
         QRect screenRect;
@@ -292,6 +313,7 @@ void XWinKillPreviewWidget::mouseMoveEvent(QMouseEvent *)
 
         // fix cursor not update issue while moved to areas covered by intersected area of dock & normal windows
         if (m_wminfo->isCursorHoveringDocks(windowPos)) {
+            // qCDebug(app) << "Cursor is hovering docks";
             for (auto &bg : m_backgroundList)
                 bg->clearSelection();
             emit cursorUpdated(m_defaultCursor);
@@ -333,6 +355,7 @@ void XWinKillPreviewWidget::mouseMoveEvent(QMouseEvent *)
         }
         // if no such window found, we need clear any selection left before, plus restore cursor to its default style (forbit style)
         if (!found) {
+            // qCDebug(app) << "No window found for killing";
             for (auto &bg : m_backgroundList)
                 bg->clearSelection();
             emit cursorUpdated(m_defaultCursor);
@@ -343,8 +366,10 @@ void XWinKillPreviewWidget::mouseMoveEvent(QMouseEvent *)
 // key press event handler
 void XWinKillPreviewWidget::keyPressEvent(QKeyEvent *event)
 {
+    // qCDebug(app) << "XWinKillPreviewWidget keyPressEvent, key:" << event->key();
     // ESC pressed
     if (event->key() == Qt::Key_Escape) {
+        qCDebug(app) << "ESC pressed, closing preview widget";
         // restore main window state
         auto *mw = gApp->mainWindow();
         mw->setWindowState((mw->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
@@ -356,6 +381,7 @@ void XWinKillPreviewWidget::keyPressEvent(QKeyEvent *event)
 // initialize ui components
 void XWinKillPreviewWidget::initUI()
 {
+    qCDebug(app) << "XWinKillPreviewWidget initUI";
     Qt::WindowFlags flags {};
     // frameless style
     flags |= Qt::FramelessWindowHint;
@@ -379,6 +405,7 @@ void XWinKillPreviewWidget::initUI()
     m_defaultCursor = QCursor(Qt::ForbiddenCursor);
 
     QTimer::singleShot(500, this, [=] {
+        qCDebug(app) << "Timer timeout, showing background windows";
         // show background window in all screens
         for (auto screen : QApplication::screens()) {
             // screen geometry
@@ -386,8 +413,10 @@ void XWinKillPreviewWidget::initUI()
             // snapshot current scree
             auto pixmap = screen->grabWindow(m_wminfo->getRootWindow());
 #ifdef USE_DEEPIN_WAYLAND
-            if (WaylandCentered)
+            if (WaylandCentered) {
+                qCDebug(app) << "Grabbing window for Wayland";
                 pixmap = screen->grabWindow(m_windowStates.end()->windowId);
+            }
 #endif   // USE_DEEPIN_WAYLAND
             pixmap = pixmap.copy(geom.x(), geom.y(), static_cast<int>(geom.width() * devicePixelRatioF()), static_cast<int>(geom.height() * devicePixelRatioF()));
             // create preview background widget for each screen
@@ -413,10 +442,12 @@ void XWinKillPreviewWidget::initUI()
 // wayland协议下建立连接
 void XWinKillPreviewWidget::initConnections()
 {
+    qCDebug(app) << "XWinKillPreviewWidget initConnections";
 #ifdef USE_DEEPIN_WAYLAND
     if (WaylandCentered) {
         connect(m_connectionThreadObject, &ConnectionThread::connected, this,
                 [this] {
+                    qCDebug(app) << "Connection thread connected";
                     m_eventQueue = new EventQueue(this);
                     m_eventQueue->setup(m_connectionThreadObject);
 
@@ -436,7 +467,9 @@ void XWinKillPreviewWidget::initConnections()
 #ifdef USE_DEEPIN_WAYLAND
 void XWinKillPreviewWidget::print_window_states(const QVector<ClientManagement::WindowState> &m_windowStates)
 {
+    // qCDebug(app) << "XWinKillPreviewWidget print_window_states";
     if (WaylandCentered) {
+        // qCDebug(app) << "Window states count:" << m_windowStates.count();
         for (int i = 0; i < m_windowStates.count(); ++i) {
             qCDebug(app) << QDateTime::currentDateTime().toString(QLatin1String("hh:mm:ss.zzz "))
                          << "window[" << i << "]"
@@ -457,23 +490,29 @@ void XWinKillPreviewWidget::print_window_states(const QVector<ClientManagement::
 #ifdef USE_DEEPIN_WAYLAND
 void XWinKillPreviewWidget::setupRegistry(Registry *registry)
 {
+    qCDebug(app) << "XWinKillPreviewWidget setupRegistry";
     if (WaylandCentered) {
+        qCDebug(app) << "Setting up Wayland registry";
         connect(registry, &Registry::compositorAnnounced, this,
                 [this, registry](quint32 name, quint32 version) {
+                    qCDebug(app) << "Compositor announced, name:" << name << "version:" << version;
                     m_compositor = registry->createCompositor(name, version, this);
                 });
 
         connect(registry, &Registry::clientManagementAnnounced, this,
                 [this, registry](quint32 name, quint32 version) {
+                    qCDebug(app) << "Client management announced, name:" << name << "version:" << version;
                     m_clientManagement = registry->createClientManagement(name, version, this);
                     connect(m_clientManagement, &ClientManagement::windowStatesChanged, this,
                             [this] {
+                                qCDebug(app) << "Window states changed";
                                 m_windowStates = getAllWindowStates();
                             });
                 });
 
         connect(registry, &Registry::interfacesAnnounced, this,
                 [this] {
+                    qCDebug(app) << "All interfaces announced";
                     Q_ASSERT(m_compositor);
                     Q_ASSERT(m_clientManagement);
                     m_windowStates = getAllWindowStates();
@@ -487,16 +526,21 @@ void XWinKillPreviewWidget::setupRegistry(Registry *registry)
 
 QVector<ClientManagement::WindowState> XWinKillPreviewWidget::getAllWindowStates()
 {
+    qCDebug(app) << "XWinKillPreviewWidget getAllWindowStates";
     QVector<ClientManagement::WindowState> vWindowStates;
 
     // 能解析到displayjack的接口，优先使用dispalayjack接口获取窗口状态
     if (GetAllWindowStatesList) {
+        qCDebug(app) << "Using displayjack interface to get window states";
         // 使用displayjack库接口获取窗口状态
         WindowState *pStates = nullptr;
         int nCount = GetAllWindowStatesList(&pStates);
-        if (nCount <= 0)
+        if (nCount <= 0) {
+            qCDebug(app) << "No window states found";
             return vWindowStates;
+        }
 
+        qCDebug(app) << "Found" << nCount << "window states";
         for (int i = 0; i < nCount; i++) {
             WindowState *p = &pStates[i];
             ClientManagement::WindowState windowState;
@@ -515,6 +559,7 @@ QVector<ClientManagement::WindowState> XWinKillPreviewWidget::getAllWindowStates
         }
         free(pStates);
     } else {
+        qCDebug(app) << "Using KDE interface to get window states";
         // 使用kde接口获取窗口状态
         Q_ASSERT(m_clientManagement);
         return m_clientManagement->getWindowStates();

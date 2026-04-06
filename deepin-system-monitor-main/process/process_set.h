@@ -10,6 +10,7 @@
 #include "common/common.h"
 
 #include <QMap>
+#include <DConfig>
 
 #include <dirent.h>
 
@@ -18,6 +19,8 @@ using namespace common::alloc;
 // class Settings;
 namespace core {
 namespace process {
+
+class SystemServiceClient;
 
 enum FilterType { kFilterApps,
                   kFilterCurrentUser,
@@ -32,12 +35,15 @@ struct RecentProcStage {
     timeval uptime = {0, 0};
 };
 
+// Forward declaration
+class Process;
+
 class ProcessSet
 {
 public:
     explicit ProcessSet();
     ProcessSet(const ProcessSet &other);
-    ~ProcessSet() = default;
+    ~ProcessSet();
 
     const Process getProcessById(pid_t pid) const;
     QList<pid_t> getPIDList() const;
@@ -79,6 +85,13 @@ private:
     QList<pid_t> m_prePid;
     QList<pid_t> m_curPid;
     QList<pid_t> m_pidMyApps;
+    
+    // System service client for DKapture data
+    SystemServiceClient *m_systemServiceClient;
+    bool m_useSystemService;
+    
+    // DConfig for configuration management
+    DTK_CORE_NAMESPACE::DConfig *m_config;
 
     friend class Iterator;
 };

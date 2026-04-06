@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "process.h"
+#include "ddlog.h"
 #include "process/private/process_p.h"
 #include "system/device_db.h"
 #include "process/process_db.h"
@@ -16,6 +17,7 @@
 #include <QList>
 #include <QDebug>
 #include <QApplication>
+#include <QVariantMap>
 
 #include <memory>
 
@@ -42,6 +44,7 @@ using namespace common::init;
 using namespace common::core;
 using namespace common::error;
 using namespace core::system;
+using namespace DDLog;
 
 namespace core {
 namespace process {
@@ -86,15 +89,18 @@ Process::Process()
 {
 
 }
+
 Process::Process(pid_t pid)
     : d(new ProcessPrivate())
 {
     d->pid = pid;
 }
+
 Process::Process(const Process &other)
     : d(other.d)
 {
 }
+
 Process &Process::operator=(const Process &rhs)
 {
     if (this == &rhs)
@@ -124,25 +130,20 @@ void Process::readProcessVariableInfo()
     readProcessInfo();
 }
 
-void Process::readProcessSimpleInfo()
-{
-    readProcessInfo();
-}
-
-void Process::readProcessInfo()
+void Process::readProcessSimpleInfo(bool skipStatReading)
 {
     d->valid = true;
-
     bool ok = true;
 
-    ok = ok && readStat();
-    ok = ok && readCmdline();
-//    readEnviron();
-    readSchedStat();
-    ok = ok && readStatus();
-    ok = ok && readStatm();
-//    readIO();
-//    readSockInodes();
+    ok = ok && readCmdline();      // 两种模式都需要cmdline
+
+    // 根据skipStatReading决定是否跳过stat、statm和status读取
+    if (!skipStatReading) {
+        ok = ok && readStat();     // 传统模式读取stat
+        readSchedStat();           // 传统模式读取schedstat
+        ok = ok && readStatm();    // 传统模式读取statm
+        ok = ok && readStatus();   // 传统模式读取status
+    }
 
     d->usrerName = SysInfo::userName(d->uid);
     d->proc_name.refreashProcessName(this);
@@ -186,6 +187,12 @@ void Process::readProcessInfo()
     d->valid = d->valid && ok;
 }
 
+void Process::readProcessInfo()
+{
+    // 传统模式：调用完整的readProcessSimpleInfo，不跳过stat读取
+    readProcessSimpleInfo(false);
+}
+
 // read /proc/[pid]/stat
 bool Process::readStat()
 {
@@ -202,7 +209,7 @@ bool Process::readStat()
     sprintf(path, PROC_STAT_PATH, d->pid);
     // open /proc/[pid]/stat
     if ((fd = open(path, O_RDONLY)) < 0) {
-        print_errno(errno, QString("open %1 failed").arg(path));
+        qCWarning(app) << "Failed to open" << path << ":" << strerror(errno);
         return !ok;
     }
 
@@ -210,7 +217,7 @@ bool Process::readStat()
     sz = read(fd, buf.data(), 1024);
     close(fd);
     if (sz < 0) {
-        print_errno(errno, QString("read %1 failed").arg(path));
+        qCWarning(app) << "Failed to read" << path << ":" << strerror(errno);
         return !ok;
     }
     buf.data()[sz] = '\0';
@@ -221,6 +228,7 @@ bool Process::readStat()
 
     pos = strrchr(buf.data(), ')');
     if (!pos) {
+        qCWarning(app) << "Failed to find process name in stat file";
         return !ok;
     }
 
@@ -252,6 +260,7 @@ bool Process::readStat()
                 &d->guest_time, // 43
                 &d->cguest_time); // 44
     if (rc < 15) {
+        qCWarning(app) << "Failed to parse stat file, got" << rc << "fields";
         return !ok;
     }
     // have guest & cguest time
@@ -279,13 +288,13 @@ bool Process::readCmdline()
     // open /proc/[pid]/cmdline
     uFile fp(fopen(path, "r"));
     if (!fp) {
-        print_errno(errno, QString("open %1 failed").arg(path));
+        qCWarning(app) << "Failed to open" << path << ":" << strerror(errno);
         return !ok;
     }
 
     nb = fread(cmd.data(), 1, bsiz - 1, fp.get());
     if (ferror(fp.get())) {
-        print_errno(errno, QString("read %1 failed").arg(path));
+        qCWarning(app) << "Failed to read" << path << ":" << strerror(errno);
         return !ok;
     }
 
@@ -326,7 +335,7 @@ void Process::readEnviron()
     // open /proc/[pid]/environ
     fd = open(path, O_RDONLY);
     if (fd < 0) {
-        print_errno(errno, QString("open %1 failed").arg(path));
+        qCWarning(app) << "Failed to open" << path << ":" << strerror(errno);
         return;
     }
 
@@ -337,7 +346,7 @@ void Process::readEnviron()
     close(fd);
 
     if (nb == 0 && errno != 0) {
-        print_errno(errno, QString("read %1 failed").arg(path));
+        qCWarning(app) << "Failed to read" << path << ":" << strerror(errno);
         return;
     }
 
@@ -369,7 +378,7 @@ void Process::readSchedStat()
     errno = 0;
     // open /proc/[pid]/schedstat
     if ((fd = open(path, O_RDONLY)) < 0) {
-        print_errno(errno, QString("open %1 failed").arg(path));
+        qCWarning(app) << "Failed to open" << path << ":" << strerror(errno);
         return;
     }
 
@@ -377,7 +386,7 @@ void Process::readSchedStat()
     close(fd);
 
     if (n < 0) {
-        print_errno(errno, QString("read %1 failed").arg(path));
+        qCWarning(app) << "Failed to read" << path << ":" << strerror(errno);
         return;
     }
 
@@ -403,7 +412,7 @@ bool Process::readStatus()
     uFile fp(fopen(path, "r"));
     // open /proc/[pid]/status
     if (!fp) {
-        print_errno(errno, QString("open %1 failed").arg(path));
+        qCWarning(app) << "Failed to open" << path << ":" << strerror(errno);
         return !ok;
     }
 
@@ -429,7 +438,7 @@ bool Process::readStatus()
     } // ::while(fgets)
 
     if (ferror(fp.get())) {
-        print_errno(errno, QString("read %1 failed").arg(path));
+        qCWarning(app) << "Failed to read" << path << ":" << strerror(errno);
         return !ok;
     }
 
@@ -450,14 +459,14 @@ bool Process::readStatm()
     errno = 0;
     // open /proc/[pid]/statm
     if ((fd = open(path, O_RDONLY)) < 0) {
-        print_errno(errno, QString("open %1 failed").arg(path));
+        qCWarning(app) << "Failed to open" << path << ":" << strerror(errno);
         return !ok;
     }
 
     nr = read(fd, buf, bsiz);
     close(fd);
     if (nr < 0) {
-        print_errno(errno, QString("read %1 failed").arg(path));
+        qCWarning(app) << "Failed to read" << path << ":" << strerror(errno);
         return !ok;
     }
 
@@ -468,7 +477,7 @@ bool Process::readStatm()
         d->vmsize = 0;
         d->rss = 0;
         d->shm = 0;
-        print_errno(errno, QString("read %1 failed").arg(path));
+        qCWarning(app) << "Failed to parse statm file for PID" << pid();
     } else {
         // convert to kB
         d->vmsize <<= kb_shift;
@@ -490,7 +499,7 @@ void Process::readIO()
     // open /proc/[pid]/io
     uFile fp(fopen(path, "r"));
     if (!fp) {
-        print_errno(errno, QString("open %1 failed").arg(path));
+        qCWarning(app) << "Failed to open" << path << ":" << strerror(errno);
         return;
     }
 
@@ -505,7 +514,7 @@ void Process::readIO()
         }
     } // ::while(fgets)
     if (ferror(fp.get())) {
-        print_errno(errno, QString("read %1 failed").arg(path));
+        qCWarning(app) << "Failed to read" << path << ":" << strerror(errno);
     }
 }
 
@@ -522,7 +531,7 @@ void Process::readSockInodes()
     // open /proc/[pid]/fd dir
     uDir dir(opendir(path));
     if (!dir) {
-        print_errno(errno, QString("open %1 failed").arg(path));
+        qCWarning(app) << "Failed to open" << path << ":" << strerror(errno);
         return;
     }
 
@@ -544,7 +553,7 @@ void Process::readSockInodes()
         } // ::if(isdigit)
     } // ::while(readdir)
     if (errno) {
-        print_errno(errno, QString("read %1 failed").arg(path));
+        qCWarning(app) << "Failed to read" << path << ":" << strerror(errno);
     }
 }
 
@@ -760,6 +769,149 @@ int Process::appType() const
 void Process::setAppType(int type)
 {
     d->apptype = type;
+}
+
+void Process::applyDKaptureData(const QVariantMap &pidData)
+{
+    // 设置基本状态信息
+    if (pidData.contains("state")) {
+        setState(pidData["state"].toString().at(0).toLatin1());
+    }
+    if (pidData.contains("priority")) {
+        setPriority(pidData["priority"].toInt());
+    }
+    if (pidData.contains("comm")) {
+        setName(pidData["comm"].toString());
+    }
+
+    // 设置 CPU 时间相关数据
+    if (pidData.contains("utime")) {
+        d->utime = pidData["utime"].toULongLong();
+    }
+    if (pidData.contains("stime")) {
+        d->stime = pidData["stime"].toULongLong();
+    }
+    if (pidData.contains("cutime")) {
+        d->cutime = pidData["cutime"].toULongLong();
+    }
+    if (pidData.contains("cstime")) {
+        d->cstime = pidData["cstime"].toULongLong();
+    }
+
+    // 设置内存相关数据（使用与main程序相同的转换逻辑）
+    // DKapture STAT中的rss和vsize是字节数（与/proc/[pid]/stat一致）
+    if (pidData.contains("rss")) {
+        d->rss = pidData["rss"].toULongLong() >> 10; // 字节转KB
+    }
+    if (pidData.contains("vsize")) {
+        d->vmsize = pidData["vsize"].toULongLong() >> 10; // 字节转KB  
+    }
+
+    // DKapture STATM中的数据是页数（与/proc/[pid]/statm一致）
+    if (pidData.contains("memory_resident")) {
+        qulonglong residentPages = pidData["memory_resident"].toULongLong();
+        d->rss = residentPages << kb_shift; // 页数转KB，与readStatm()一致
+    }
+    if (pidData.contains("memory_size")) {
+        qulonglong memorySizePages = pidData["memory_size"].toULongLong();
+        d->vmsize = memorySizePages << kb_shift; // 页数转KB，与readStatm()一致
+    }
+    if (pidData.contains("memory_shared")) {
+        qulonglong sharedPages = pidData["memory_shared"].toULongLong();
+        d->shm = sharedPages << kb_shift; // 页数转KB，与readStatm()一致
+    }
+
+    // 设置其他基本信息
+    if (pidData.contains("ppid")) {
+        d->ppid = pidData["ppid"].toInt();
+    }
+    if (pidData.contains("num_threads")) {
+        d->nthreads = pidData["num_threads"].toInt();
+    }
+    if (pidData.contains("nice")) {
+        d->nice = pidData["nice"].toInt();
+    }
+    if (pidData.contains("start_time")) {
+        d->start_time = pidData["start_time"].toULongLong();
+    }
+
+    // 设置 STATUS 相关数据 - DKapture提供的UID/GID等信息
+    if (pidData.contains("uid")) {
+        d->uid = pidData["uid"].toUInt();
+    }
+    if (pidData.contains("gid")) {
+        d->gid = pidData["gid"].toUInt();
+    }
+    if (pidData.contains("euid")) {
+        d->euid = pidData["euid"].toUInt();
+    }
+    if (pidData.contains("egid")) {
+        d->egid = pidData["egid"].toUInt();
+    }
+    
+    // 设置 I/O 相关数据
+    if (pidData.contains("read_bytes")) {
+        d->read_bytes = pidData["read_bytes"].toULongLong();
+    }
+    if (pidData.contains("write_bytes")) {
+        d->write_bytes = pidData["write_bytes"].toULongLong();
+    }
+    if (pidData.contains("cancelled_write_bytes")) {
+        d->cancelled_write_bytes = pidData["cancelled_write_bytes"].toULongLong();
+    }
+
+    // 设置 SCHEDSTAT 相关数据 - DKapture提供的调度统计信息
+    // 只处理wtime字段，保持与原有实现的兼容性
+    if (pidData.contains("rq_wait_time")) {
+        // DKapture提供纳秒单位数据，需要转换为时钟滴答数（与传统方式一致）
+        qulonglong rq_wait_time_ns = pidData["rq_wait_time"].toULongLong();
+        d->wtime = rq_wait_time_ns * HZ / 1000000000;  // 纳秒转时钟滴答数
+        qCDebug(app) << "✅ Applied SCHEDSTAT data for PID" << d->pid 
+                    << "- rq_wait_time_ns:" << rq_wait_time_ns << "-> wtime:" << d->wtime;
+    }
+    
+    // 标记进程为有效，但需要检查关键数据读取是否成功
+    d->valid = true;
+    bool ok = true;
+    
+    // 读取关键信息并检查成功性
+    ok = ok && readCmdline();    // cmdline是必需的，失败则进程无效
+    readEnviron();             // environ失败可以容忍
+    // readSockInodes();        // plugin-popup 不需要网络流量计算
+    
+    // 只有关键操作都成功才保持进程有效
+    d->valid = d->valid && ok;
+    
+    d->usrerName = SysInfo::userName(d->uid);
+    d->proc_name.refreashProcessName(this);
+    d->proc_icon.refreashProcessIcon(this);
+    d->uptime = SysInfo::instance()->uptime();
+    
+    // 更新应用类型，供过滤使用
+    d->apptype = kNoFilter;
+    const QVariant &euid = ProcessDB::instance()->processEuid();
+    WMWindowList *wmwindowList = ProcessDB::instance()->windowList();
+
+    if (euid == d->uid && (wmwindowList->isGuiApp(d->pid)
+                           || wmwindowList->isTrayApp(d->pid)
+                           || wmwindowList->isDesktopEntryApp(d->pid))) {
+        qCDebug(app) << "Process" << d->pid << "is a GUI/Tray/Desktop app";
+        d->apptype = kFilterApps;
+    } else if (euid == d->uid) {
+        qCDebug(app) << "Process" << d->pid << "is a current user app";
+        d->apptype = kFilterCurrentUser;
+    }
+    // plugin-popup 是轻量级组件，网络数据由calculateProcessMetrics统一处理
+    // 避免重复网络计算
+
+    auto netpair = d->networkIOSample->recentSamplePair();
+    struct IOPS netiops = IOSampleFrame::iops(netpair.first, netpair.second);
+    d->networkBandwidthSample->addSample(new IOPSSampleFrame(netiops));
+    
+    // qCInfo(app) << "Applied DKapture data to process" << pid() 
+    //             << "- rss:" << (d->rss / 1024) << "KB"
+    //             << "- vmsize:" << (d->vmsize / 1024) << "KB"
+    //             << "- cpu_time:" << (d->utime + d->stime);
 }
 
 } // namespace process

@@ -25,20 +25,14 @@ set(APP_RESOURCES ../deepin-system-monitor-main/${APP_RES_ROOT}/${PROJECT_NAME}.
 set(DESKTOP_FILE ${PROJECT_NAME}.desktop)
 set(POLICY_FILE com.deepin.pkexec.${PROJECT_NAME}.policy)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-
-#安全测试加固编译参数
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -z relro -z now -z noexecstack -pie")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -z relro -z now -z noexecstack -pie")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -fstack-protector-all")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -fstack-protector-all")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wl,-Map=deepin-system-monitor-test.map")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wl,-Map=deepin-system-monitor-test.map")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ")
-set(CMAKE_CXX_FLAGS "-Wl,--as-need -fPIE")
+set(CMAKE_CXX_FLAGS "-Wl,--as-needed -fPIE")
 set(CMAKE_EXE_LINKER_FLAGS "-pie")
 if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw_64")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mieee")
@@ -57,18 +51,9 @@ check_symbol_exists(SYS_getrandom "sys/syscall.h" HAVE_SYS_GETRANDOM)
 configure_file(${CMAKE_HOME_DIRECTORY}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 include(FindPkgConfig)
 
-find_package(KF5Wayland)
-find_package(Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt5 COMPONENTS Gui REQUIRED)
-find_package(Qt5 COMPONENTS X11Extras REQUIRED)
-find_package(Qt5 COMPONENTS DBus REQUIRED)
-find_package(Qt5 COMPONENTS Concurrent REQUIRED)
-find_package(Qt5 COMPONENTS LinguistTools REQUIRED)
+find_package(${QT_NS} COMPONENTS Core Widgets Gui DBus Concurrent LinguistTools REQUIRED)
+find_package(${DTK_NS} REQUIRED COMPONENTS Core Gui Widget)
 
-find_package(DtkCore REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DtkWidget REQUIRED)
 find_library(LIB_PCAP NAMES pcap REQUIRED)
 find_library(LIB_XCB NAMES xcb REQUIRED)
 find_library(LIB_XEXT NAMES Xext REQUIRED)
@@ -77,15 +62,13 @@ find_package(ICU COMPONENTS i18n uc REQUIRED)
 
 # For UT Test
 find_package(GTest REQUIRED)
-find_package(Qt5Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Test REQUIRED)
 find_package(Threads REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 pkg_search_module(LIB_NL3 REQUIRED libnl-3.0)
 pkg_search_module(LIB_NL3_ROUTE REQUIRED libnl-route-3.0)
 pkg_search_module(LIB_UDEV REQUIRED libudev)
-include_directories(${DtkGui_INCLUDE_DIRS})
-include_directories(${DtkCore_INCLUDE_DIRS})
 include_directories(${LIB_NL3_INCLUDE_DIRS})
 include_directories(${LIB_NL3_ROUTE_INCLUDE_DIRS})
 include_directories(${LIB_UDEV_INCLUDE_DIRS})
@@ -95,8 +78,6 @@ include_directories(${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/3rdparty)
 include_directories(${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/3rdparty/include)
 include_directories(${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/3rdparty/libsmartcols/src)
 
-
-
 set(HPP_GLOBAL
     ${CMAKE_HOME_DIRECTORY}/config.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/environments.h
@@ -105,9 +86,11 @@ set(HPP_GLOBAL
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/application.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/stack_trace.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/cpu_monitor.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gpu_monitor.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/memory_monitor.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/network_monitor.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_cpu_monitor.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_gpu_monitor.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_memory_monitor.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_network_monitor.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_disk_monitor.h
@@ -119,9 +102,11 @@ set(HPP_GLOBAL
 set(CPP_GLOBAL
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/application.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/cpu_monitor.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gpu_monitor.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/memory_monitor.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/network_monitor.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_cpu_monitor.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_gpu_monitor.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_memory_monitor.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_network_monitor.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/compact_disk_monitor.cpp
@@ -134,6 +119,7 @@ set(CPP_GLOBAL
 set(HPP_COMMON
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/common.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/error_context.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/eventlogutils.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/hash.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/han_latin.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/perf.h
@@ -145,6 +131,7 @@ set(HPP_COMMON
 set(CPP_COMMON
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/common.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/error_context.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/eventlogutils.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/hash.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/han_latin.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/common/perf.cpp
@@ -193,6 +180,9 @@ set(HPP_MODEL
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/block_dev_info_model.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/block_dev_info_sort_filter_proxy_model.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/model_manager.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/gpu_info_model.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/accounts_info_model.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/user.h
 )
 set(CPP_MODEL
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/system_service_table_model.cpp
@@ -211,6 +201,9 @@ set(CPP_MODEL
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/block_dev_stat_model.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/block_dev_info_sort_filter_proxy_model.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/model_manager.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/gpu_info_model.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/accounts_info_model.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/model/user.cpp
 )
 
 set(HPP_GUI
@@ -237,6 +230,7 @@ set(HPP_GUI
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/xwin_kill_preview_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/xwin_kill_preview_background_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/mem_detail_view_widget.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/gpu_detail_view_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/mem_summary_view_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/mem_stat_view_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/block_dev_detail_view_widget.h
@@ -245,6 +239,9 @@ set(HPP_GUI
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/netif_stat_view_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/netif_item_view_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/netif_summary_view_widget.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/accounts_widget.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/user_list_view.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/user_page_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/detail_view_stacked_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/chart_view_widget.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/block_dev_stat_view_widget.h
@@ -278,6 +275,7 @@ set(CPP_GUI
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/xwin_kill_preview_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/xwin_kill_preview_background_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/mem_detail_view_widget.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/gpu_detail_view_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/mem_summary_view_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/mem_stat_view_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/block_dev_detail_view_widget.cpp
@@ -286,6 +284,9 @@ set(CPP_GUI
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/netif_summary_view_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/netif_stat_view_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/netif_item_view_widget.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/accounts_widget.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/user_list_view.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/user_page_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/detail_view_stacked_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/chart_view_widget.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/gui/animation_stackedwidget.cpp
@@ -309,6 +310,7 @@ set(HPP_PROCESS
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/process/desktop_entry_cache.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/process/desktop_entry_cache_updater.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/process/process_db.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/process/system_service_client.h
 )
 set(CPP_PROCESS
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/process/process.cpp
@@ -322,6 +324,7 @@ set(CPP_PROCESS
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/process/desktop_entry_cache.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/process/desktop_entry_cache_updater.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/process/process_db.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/process/system_service_client.cpp
 )
 
 set(HPP_SERVICE
@@ -370,6 +373,7 @@ set(HPP_SYSTEM
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/system/wireless.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/system/diskio_info.h
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/system/net_info.h
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/system/gpu_info.h
 )
 
 set(CPP_SYSTEM
@@ -398,6 +402,7 @@ set(CPP_SYSTEM
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/system/wireless.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/system/diskio_info.cpp
     ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/system/net_info.cpp
+    ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/system/gpu_info.cpp
 )
 
 set(HPP_WM
@@ -574,11 +579,15 @@ set(APP_CPP
 )
 
 file(GLOB APP_TS_FILES LIST_DIRECTORIES false ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/translations/*.ts)
-qt5_add_translation(APP_QM_FILES ${APP_TS_FILES})
+if (QT_VERSION_MAJOR LESS 6)
+    qt5_add_translation(APP_QM_FILES ${APP_TS_FILES})
+else()
+    qt6_add_translation(APP_QM_FILES ${APP_TS_FILES})
+endif()
 add_custom_target(QMFILES_TEST ALL DEPENDS ${APP_QM_FILES})
 
 find_program(POLICY_TS_CONV deepin-policy-ts-convert REQUIRED)
-add_custom_target(APP_POLICY_FILE_TEST
+add_custom_target(APP_POLICY_FILE_TEST_UT
     ALL
     COMMAND ${POLICY_TS_CONV} ts2policy ${CMAKE_HOME_DIRECTORY}/${PROJECT_NAME}-main/translations/policy/${POLICY_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/translations/policy/ ${POLICY_FILE}.tmp
     COMMAND mv ${POLICY_FILE}.tmp ${POLICY_FILE}
@@ -615,8 +624,7 @@ set_target_properties(${PROJECT_NAME_TEST}
 
 target_include_directories(${PROJECT_NAME_TEST}
         PRIVATE
-        ${DtkWidget_INCLUDE_DIRS}
-        ${Qt5DBus_LIBRARIES}
+        ${CMAKE_HOME_DIRECTORY}
         ${GTEST_INCLUDE_DIRS}
         ${LIB_NL3_INCLUDE_DIRS}
         ${LIB_NL3_ROUTE_INCLUDE_DIRS}
@@ -629,17 +637,18 @@ target_include_directories(${PROJECT_NAME_TEST}
         )
 
 target_link_libraries(${PROJECT_NAME_TEST}
-    Qt5::Core
-    Qt5::Widgets
-    Qt5::Gui
-    Qt5::DBus
-    Qt5::Concurrent
-    Qt5::X11Extras
-    dtkcore
-    dtkwidget
-    dtkgui
-    KF5::WaylandClient
-    KF5::WaylandServer
+    ${QT_NS}::Core
+    ${QT_NS}::Widgets
+    ${QT_NS}::Gui
+    ${QT_NS}::DBus
+    ${QT_NS}::Concurrent
+    ${DTK_NS}::Core
+    ${DTK_NS}::Gui
+    ${DTK_NS}::Widget
+    $<$<TARGET_EXISTS:KF5::WaylandClient>:KF5::WaylandClient>
+    $<$<TARGET_EXISTS:KF5::WaylandServer>:KF5::WaylandServer>
+    $<$<TARGET_EXISTS:KF6::WaylandClient>:KF6::WaylandClient>
+    $<$<TARGET_EXISTS:KF6::WaylandServer>:KF6::WaylandServer>
     ${LIB_PCAP}
     ICU::i18n
     ICU::uc
@@ -650,7 +659,7 @@ target_link_libraries(${PROJECT_NAME_TEST}
     ${LIB_NL3_ROUTE_LIBRARIES}
     ${LIB_UDEV_LIBRARIES}
     Threads::Threads
-    Qt5::Test
+    Qt${QT_VERSION_MAJOR}::Test
     ${GTEST_LIBRARYS}
     ${GTEST_MAIN_LIBRARYS}
     gmock

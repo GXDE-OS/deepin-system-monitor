@@ -9,9 +9,14 @@
 #include "system/system_monitor.h"
 #include "system/device_db.h"
 #include "system/diskio_info.h"
+#include "ddlog.h"
 
 #include <DApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
+#else
+#include <DGuiApplicationHelper>
+#endif
 #include <DPalette>
 
 #include <QDebug>
@@ -21,15 +26,18 @@
 #include <QMouseEvent>
 
 DWIDGET_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 using namespace core::system;
 using namespace common;
 using namespace common::format;
+using namespace DDLog;
 
 const int gridSize = 10;
 const int pointsNumber = 30;
 CompactDiskMonitor::CompactDiskMonitor(QWidget *parent)
     : QWidget(parent)
 {
+    qCDebug(app) << "CompactDiskMonitor constructor";
     // TODO: use more elegent way to set width
     int statusBarMaxWidth = common::getStatusBarMaxWidth();
     setFixedWidth(statusBarMaxWidth);
@@ -54,12 +62,14 @@ CompactDiskMonitor::CompactDiskMonitor(QWidget *parent)
 
 CompactDiskMonitor::~CompactDiskMonitor()
 {
+    // qCDebug(app) << "CompactDiskMonitor destructor";
     delete readSpeeds;
     delete writeSpeeds;
 }
 
 void CompactDiskMonitor::updateStatus()
 {
+    qCDebug(app) << "updateStatus";
     m_readBps = DeviceDB::instance()->diskIoInfo()->diskIoReadBps();
     m_writeBps = DeviceDB::instance()->diskIoInfo()->diskIoWriteBps();
 
@@ -67,6 +77,7 @@ void CompactDiskMonitor::updateStatus()
     readSpeeds->append(m_readBps);
 
     if (readSpeeds->size() > pointsNumber + 1) {
+        qCDebug(app) << "readSpeeds list is full, pop one";
         readSpeeds->pop_front();
     }
     double readMaxHeight = *std::max_element(readSpeeds->begin(), readSpeeds->end()) * 1.1;
@@ -74,6 +85,7 @@ void CompactDiskMonitor::updateStatus()
     writeSpeeds->append(m_writeBps);
 
     if (writeSpeeds->size() > pointsNumber + 1) {
+        qCDebug(app) << "writeSpeeds list is full, pop one";
         writeSpeeds->pop_front();
     }
     double writeMaxHeight = *std::max_element(writeSpeeds->begin(), writeSpeeds->end()) * 1.1;
@@ -93,6 +105,7 @@ void CompactDiskMonitor::updateStatus()
 
 void CompactDiskMonitor::getPainterPathByData(QList<double> *listData, QPainterPath &path, qreal maxVlaue)
 {
+    qCDebug(app) << "getPainterPathByData";
     qreal offsetX = 0;
     qreal distance = (this->width() - 2) * 1.0 / pointsNumber;
     int dataCount = listData->size();
@@ -117,7 +130,11 @@ void CompactDiskMonitor::paintEvent(QPaintEvent *)
     int margin = 10;
 
     // init colors
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
+#else
+    auto *dAppHelper = DGuiApplicationHelper::instance();
+#endif
     auto palette = dAppHelper->applicationPalette();
 #ifndef THEME_FALLBACK_COLOR
     QColor tagColor = palette.color(DPalette::TextTitle);
@@ -232,6 +249,7 @@ void CompactDiskMonitor::paintEvent(QPaintEvent *)
 
 void CompactDiskMonitor::changeFont(const QFont &font)
 {
+    qCDebug(app) << "changeFont";
     m_tagFont = font;
     m_tagFont.setPointSizeF(m_tagFont.pointSizeF() - 1);
     m_tagFont.setWeight(QFont::Medium);
@@ -241,8 +259,11 @@ void CompactDiskMonitor::changeFont(const QFont &font)
 
 void CompactDiskMonitor::mouseReleaseEvent(QMouseEvent *ev)
 {
-    if (ev->button() == Qt::LeftButton)
+    qCDebug(app) << "mouseReleaseEvent";
+    if (ev->button() == Qt::LeftButton) {
+        qCDebug(app) << "Left mouse button released";
         emit clicked("MSG_DISK");
+    }
 }
 
 void CompactDiskMonitor::mouseMoveEvent(QMouseEvent *event)
