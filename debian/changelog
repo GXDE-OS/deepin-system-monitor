@@ -1,11 +1,26 @@
-deepin-system-monitor (6.5.38gxde3) UNRELEASED; urgency=medium
+deepin-system-monitor (6.5.40) unstable; urgency=medium
 
   * 修复 Debian 13 构建出错的问题
   * 适配 gxde-dock 插件
   * 补充编译依赖
   * 禁用任务栏插件
+  * chore: Update version to 6.5.40
+  * fix(dialog): ensure error dialog stays on top
+  * fix(gui): fix font change not updating interface
+  * fix(dbus): correct DBus service name in alarm notification
+  * fix(gui): adjust spacing between app name label and content area
 
- -- gfdgd_xi <3025613752@qq.com>  Mon, 06 Apr 2026 15:37:24 +0800
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Thu, 16 Apr 2026 20:29:22 +0800
+
+deepin-system-monitor (6.5.39) unstable; urgency=medium
+
+  * chore: Update dman's resources
+  * fix: adjust widget geometry to prevent overlap of text and chart
+  * chore: correct pronoun in README.md
+  * chore(CI): add debian check workflow
+  * fix: correct "Max frequency" translation in zh_HK and zh_TW
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Wed, 18 Mar 2026 10:02:50 +0800
 
 deepin-system-monitor (6.5.38) unstable; urgency=medium
 
