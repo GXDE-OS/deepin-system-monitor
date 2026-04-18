@@ -1,3 +1,9 @@
+deepin-system-monitor (6.5.40gxde1) UNRELEASED; urgency=medium
+
+  * 补充编译依赖 qttools5-dev
+
+ -- gfdgd_xi <3025613752@qq.com>  Sat, 18 Apr 2026 14:24:13 +0800
+
 deepin-system-monitor (6.5.40) unstable; urgency=medium
 
   * 修复 Debian 13 构建出错的问题

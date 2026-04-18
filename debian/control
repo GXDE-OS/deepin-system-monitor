@@ -26,7 +26,8 @@ Build-Depends:
  gxde-dock-dev,
  libgtest-dev,
  libgmock-dev,
- libpolkit-qt6-1-dev
+ libpolkit-qt6-1-dev, 
+ qttools5-dev
 Standards-Version: 4.6.2
 Homepage: https://github.com/linuxdeepin/deepin-system-monitor
 
