@@ -1,3 +1,18 @@
+deepin-system-monitor (6.5.43) unstable; urgency=medium
+
+  * chore: Update version to 6.5.43
+  * fix(gui): improve selected row text contrast on highlight background
+
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Thu, 14 May 2026 20:31:27 +0800
+
+deepin-system-monitor (6.5.42) unstable; urgency=medium
+
+  * chore: Update version to 6.5.42
+  * [skip CI] Translate deepin-system-monitor.ts in pl
+  * fix(gui): resolve icon blur issue at high DPI scaling
+
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Fri, 08 May 2026 13:54:24 +0800
+
 deepin-system-monitor (6.5.41) unstable; urgency=medium
 
   * chore: Update version to 6.5.41
