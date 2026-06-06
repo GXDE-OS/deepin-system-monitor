@@ -10,6 +10,7 @@
 
 #include <list>
 #include <memory>
+#include <list>
 
 namespace core {
 namespace system {

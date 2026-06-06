@@ -5,6 +5,7 @@
 
 //self
 #include "model/process_table_model.h"
+#include "process/process.h"
 #include "process/process_db.h"
 #include "common/common.h"
 //gtest

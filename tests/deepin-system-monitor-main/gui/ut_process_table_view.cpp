@@ -344,7 +344,7 @@ TEST_F(UT_ProcessTableView, test_onThemeTypeChanged_01)
 
 TEST_F(UT_ProcessTableView, test_loadSettings_01)
 {
-    m_tester->loadSettings(QStringLiteral("process_table_header_state"));
+    m_tester->loadSettings(QString());
 }
 
 

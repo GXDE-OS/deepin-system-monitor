@@ -315,7 +315,9 @@ set(HPP_PROCESS
     process/process_name_cache.h
     process/priority_controller.h
     process/process_controller.h
+    process/linglong_controller.h
     process/desktop_entry_cache.h
+    process/am_icon_manager.h
     process/desktop_entry_cache_updater.h
     process/process_db.h
 )
@@ -328,7 +330,9 @@ set(CPP_PROCESS
     process/process_name_cache.cpp
     process/priority_controller.cpp
     process/process_controller.cpp
+    process/linglong_controller.cpp
     process/desktop_entry_cache.cpp
+    process/am_icon_manager.cpp
     process/desktop_entry_cache_updater.cpp
     process/process_db.cpp
     process/system_service_client.cpp
