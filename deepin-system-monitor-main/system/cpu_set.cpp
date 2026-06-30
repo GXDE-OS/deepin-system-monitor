@@ -913,8 +913,7 @@ void CPUSet::read_cache_from_lscpu_cmd()
         return;   // 不要覆盖 dmidecode 获取的缓存信息
 
     QProcess process;
-    QString command = "lscpu | grep cache";
-    process.start("bash", QStringList() << "-c" << command);
+    process.start("lscpu", QStringList());
     process.waitForFinished(3000);
     QString cache = process.readAllStandardOutput();
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -923,6 +922,8 @@ void CPUSet::read_cache_from_lscpu_cmd()
     QStringList cacheList = cache.split("\n", Qt::SkipEmptyParts);
 #endif
     for (const QString &cacheLine : qAsConst(cacheList)) {
+        if (!cacheLine.contains("cache"))
+            continue;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QStringList keyValue = cacheLine.split(":", QString::SkipEmptyParts);
 #else
