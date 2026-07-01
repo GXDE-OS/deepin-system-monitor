@@ -1,3 +1,9 @@
+deepin-system-monitor (6.5.45gxde1) UNRELEASED; urgency=medium
+
+  * 新增 Intel 核显支持
+
+ -- gfdgd_xi <3025613752@qq.com>  Wed, 01 Jul 2026 16:20:50 +0800
+
 deepin-system-monitor (6.5.45) unstable; urgency=medium
 
   * fix(test): disable unstable unit tests causing ASan crashes

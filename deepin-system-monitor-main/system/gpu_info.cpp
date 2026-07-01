@@ -29,6 +29,10 @@ public:
     bool m_hasIntel {false};
     bool m_hasNpu {false};
     bool m_detected {false};
+    // For Intel GPU delta-based utilization calculation
+    bool m_intelRc6Initialized {false};
+    quint64 m_lastRc6ResidencyMs {0};
+    quint64 m_lastUptimeMs {0};
 };
 
 static float readPercentFromFile(const QString &path)
@@ -151,6 +155,67 @@ static bool readU64FromFile(const QString &path, quint64 &value)
 
     value = parsed;
     return true;
+}
+
+// Calculate Intel GPU utilization from rc6 residency delta and uptime delta
+// Uses two consecutive samples to compute real-time utilization
+static float calculateIntelGpuUtilization(const QString &devicePath,
+                                          bool &initialized,
+                                          quint64 &lastRc6Ms,
+                                          quint64 &lastUptimeMs)
+{
+    // Read rc6 residency time (cumulative time GPU spent in RC6 power saving state)
+    quint64 rc6ResidencyMs = 0;
+    const QString rc6Path = devicePath + "/drm/card0/gt/gt0/rc6_residency_ms";
+    if (!readU64FromFile(rc6Path, rc6ResidencyMs) || rc6ResidencyMs == 0)
+        return -1.0f;
+
+    // Read system uptime from /proc/uptime
+    QFile uptimeFile("/proc/uptime");
+    if (!uptimeFile.open(QIODevice::ReadOnly))
+        return -1.0f;
+
+    const QString uptimeText = QString::fromUtf8(uptimeFile.readAll()).trimmed();
+    uptimeFile.close();
+    if (uptimeText.isEmpty())
+        return -1.0f;
+
+    // Parse uptime (format: "total_time idle_time")
+    const QStringList parts = uptimeText.split(' ');
+    if (parts.isEmpty())
+        return -1.0f;
+
+    bool ok {false};
+    const double uptimeSeconds = parts.first().toDouble(&ok);
+    if (!ok || uptimeSeconds <= 0.0)
+        return -1.0f;
+
+    const quint64 uptimeMs = static_cast<quint64>(uptimeSeconds * 1000.0);
+
+    // First sample: just store values, cannot compute utilization yet
+    if (!initialized) {
+        initialized = true;
+        lastRc6Ms = rc6ResidencyMs;
+        lastUptimeMs = uptimeMs;
+        return -1.0f;
+    }
+
+    // Compute deltas
+    const quint64 uptimeDelta = uptimeMs - lastUptimeMs;
+    const quint64 rc6Delta = rc6ResidencyMs - lastRc6Ms;
+
+    // Save for next sample
+    lastRc6Ms = rc6ResidencyMs;
+    lastUptimeMs = uptimeMs;
+
+    // Guard against invalid data
+    if (uptimeDelta == 0 || uptimeDelta < rc6Delta)
+        return 0.0f;
+
+    // GPU active time = uptime not spent in RC6
+    // utilization = active_time / total_time * 100
+    const float utilization = static_cast<float>(uptimeDelta - rc6Delta) * 100.0f / static_cast<float>(uptimeDelta);
+    return qBound(0.0f, utilization, 100.0f);
 }
 
 static bool detectDedicatedMemoryFromSysfs(const QString &devicePath, quint64 &totalBytes, quint64 &usedBytes)
@@ -633,6 +698,17 @@ void GPUInfoSet::readIntelInfo()
         if (gpu->busInfo.isEmpty())
             gpu->busInfo = "SoC/Platform";
 
+        // Read temperature from hwmon
+        gpu->temperature = readTempFromHwmon(devicePath);
+
+        // Read current GPU clock speed (MHz)
+        quint64 clockSpeed = 0;
+        // Try drm/card0/gt_cur_freq_mhz first (standard i915 sysfs path)
+        const QString clockPath = devicePath + "/drm/card0/gt_cur_freq_mhz";
+        if (readU64FromFile(clockPath, clockSpeed) && clockSpeed > 0) {
+            gpu->clockSpeed = clockSpeed;
+        }
+
         appendEngineLoadIfValid(gpu, "Render", devicePath + "/gt_busy_percent");
         appendDrmEngineLoads(gpu, devicePath);
         for (int i = 0; i < gpu->engineNames.size(); ++i) {
@@ -643,6 +719,17 @@ void GPUInfoSet::readIntelInfo()
         }
         if (gpu->gpuUtilization <= 0.0f && !gpu->engineLoads.isEmpty())
             gpu->gpuUtilization = gpu->engineLoads.first();
+        
+        // If gt_busy_percent and DRM engine loads are not available,
+        // calculate GPU utilization from rc6 residency delta
+        if (gpu->gpuUtilization <= 0.0f) {
+            float calculatedUtilization = calculateIntelGpuUtilization(
+                devicePath, d->m_intelRc6Initialized, d->m_lastRc6ResidencyMs, d->m_lastUptimeMs);
+            if (calculatedUtilization >= 0.0f) {
+                gpu->gpuUtilization = calculatedUtilization;
+                qCDebug(app) << "Intel GPU" << gpu->index << "utilization from rc6 delta:" << calculatedUtilization;
+            }
+        }
         
         // Intel i915 driver provides some stats via debugfs or sysfs
         // Read from /sys/kernel/debug/dri if available
