@@ -4,13 +4,13 @@
 <context>
     <name>App.About</name>
     <message>
-        <location filename="../main.cpp" line="101"/>
-        <location filename="../main.cpp" line="105"/>
+        <location filename="../main.cpp" line="119"/>
+        <location filename="../main.cpp" line="123"/>
         <source>System Monitor</source>
         <translation>সিস্টেম মনিটর</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="91"/>
+        <location filename="../main.cpp" line="109"/>
         <source>System Monitor is a tool to monitor realtime system load, view and control processes and services running on your system.</source>
         <translation>এটি একটি উপকরণ যা সাইনাল সিস্টেমের সময়সূচিত বার্ষিক ভার পর্যবেক্ষণ করতে, প্রক্রিয়া এবং সেবা পর্যবেক্ষণ এবং কন্ট্রোল করার জন্য ব্যবহৃত হয়।</translation>
     </message>
@@ -38,12 +38,12 @@
 <context>
     <name>BlockDevItemWidget</name>
     <message>
-        <location filename="../gui/block_dev_item_widget.cpp" line="154"/>
+        <location filename="../gui/block_dev_item_widget.cpp" line="165"/>
         <source>Read</source>
         <translation>ঢাকা</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_item_widget.cpp" line="158"/>
+        <location filename="../gui/block_dev_item_widget.cpp" line="169"/>
         <source>Write</source>
         <translation>লেখা</translation>
     </message>
@@ -182,7 +182,7 @@
 <context>
     <name>Common.Search</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="493"/>
+        <location filename="../gui/process_table_view.cpp" line="522"/>
         <location filename="../gui/system_service_table_view.cpp" line="476"/>
         <source>No search results</source>
         <translation>নাই সার্চ ফলাফল</translation>
@@ -514,72 +514,71 @@
 <context>
     <name>DeailTableModelBlock</name>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="70"/>
         <source>Model</source>
-        <translation>মডেল</translation>
+        <translation type="vanished">মডেল</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="72"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="70"/>
         <source>Read speed</source>
         <translation>মানচিত্র গ্রহনের গতি</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="76"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="72"/>
         <source>Write speed</source>
         <translation>মানচিত্র লিখনের গতি</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="78"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="76"/>
         <source>Capacity</source>
         <translation>ক্যাপাসিটি</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="82"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="78"/>
         <source>Sectors read</source>
         <translation>ডিস্ক সেক্টর পড়া</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="84"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="82"/>
         <source>Reads/s</source>
         <translation>প্রতি সেকেন্ড পড়া</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="88"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="84"/>
         <source>Sectors read/s</source>
         <translation>প্রতি সেকেন্ড ডিস্ক সেক্টর পড়া</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="90"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="88"/>
         <source>Reads merged/s</source>
         <translation>প্রতি সেকেন্ড মিশ্রিত পড়া</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="94"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="90"/>
         <source>Sectors written</source>
         <translation>ডিস্ক সেক্টর লিখা</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="96"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="94"/>
         <source>Writes completed </source>
         <translation>লিখা সম্পন্ন</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="100"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="96"/>
         <source>Writes merged</source>
         <translation>লিখা মিশ্রিত</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="102"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="100"/>
         <source>Writes/s</source>
         <translation>প্রতি সেকেন্ড লিখা</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="106"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="102"/>
         <source>Sectors written/s</source>
         <translation>সংরক্ষিত ইউনিট/সেকেন্ড</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="108"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="106"/>
         <source>Writes merged/s</source>
         <translation>মিশ্রিত লিখ/সেকেন্ড</translation>
     </message>
@@ -587,7 +586,7 @@
 <context>
     <name>Error.Dialog</name>
     <message>
-        <location filename="../gui/dialog/error_dialog.cpp" line="73"/>
+        <location filename="../gui/dialog/error_dialog.cpp" line="75"/>
         <source>OK</source>
         <comment>button</comment>
         <translation>স্বাগতম</translation>
@@ -609,7 +608,7 @@
 <context>
     <name>Kill.Process.Dialog</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="173"/>
+        <location filename="../gui/process_table_view.cpp" line="177"/>
         <source>Ending this process may cause data loss.
 Are you sure you want to continue?</source>
         <translation>এই প্রক্রিয়াটি শেষ করার ক্ষেত্রে ডেটা হানা হতে পারে।
@@ -618,13 +617,13 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="530"/>
-        <location filename="../gui/process_table_view.cpp" line="172"/>
-        <location filename="../gui/process_table_view.cpp" line="379"/>
+        <location filename="../gui/process_table_view.cpp" line="176"/>
+        <location filename="../gui/process_table_view.cpp" line="408"/>
         <source>End process</source>
         <translation>প্রক্রিয়া শেষ করুন</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="380"/>
+        <location filename="../gui/process_table_view.cpp" line="409"/>
         <source>Force ending this process may cause data loss.
 Are you sure you want to continue?</source>
         <translation>ফোর্সে এই প্রক্রিয়াটি শেষ করার ক্ষেত্রে ডেটা হানা হতে পারে।
@@ -641,21 +640,21 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="539"/>
-        <location filename="../gui/process_table_view.cpp" line="179"/>
-        <location filename="../gui/process_table_view.cpp" line="387"/>
+        <location filename="../gui/process_table_view.cpp" line="183"/>
+        <location filename="../gui/process_table_view.cpp" line="416"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>বাতিল করুন</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="540"/>
-        <location filename="../gui/process_table_view.cpp" line="388"/>
+        <location filename="../gui/process_table_view.cpp" line="417"/>
         <source>Force End</source>
         <comment>button</comment>
         <translation>ফোর্সে শেষ করুন</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="180"/>
+        <location filename="../gui/process_table_view.cpp" line="184"/>
         <source>End</source>
         <comment>button</comment>
         <translation>শেষ করুন</translation>
@@ -672,7 +671,7 @@ Are you sure you want to continue?</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../gui/main_window.cpp" line="181"/>
+        <location filename="../gui/main_window.cpp" line="190"/>
         <source>Settings</source>
         <translation>সেটিংস</translation>
     </message>
@@ -737,72 +736,72 @@ Are you sure you want to continue?</source>
         <translation>সিগন্যাল শক্তি</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="317"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="320"/>
         <source>Noise level</source>
         <translation>নোইজ লেভেল</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="323"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="326"/>
         <source>MAC</source>
         <translation>MAC</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="328"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="331"/>
         <source>Bandwidth</source>
         <translation>ব্যান্ডওয়াইডথ</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="333"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="336"/>
         <source>RX packets</source>
         <translation>প্রাইভেট প্যাকেটস</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="338"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="341"/>
         <source>RX bytes</source>
         <translation>প্রাইভেট বায়েটস</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="343"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="346"/>
         <source>RX errors</source>
         <translation>প্রাইভেট অ্যার্টিফিশিয়াল অ্যান্ড ইভেন্টস</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="348"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="351"/>
         <source>RX dropped</source>
         <translation>প্রাইভেট ড্রপড</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="353"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="356"/>
         <source>RX overruns</source>
         <translation>প্রাইভেট ওভাররনার্স</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="358"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="361"/>
         <source>RX frame</source>
         <translation>প্রাইভেট ফ্রেম</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="363"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="366"/>
         <source>TX packets</source>
         <translation>ট্যাক্স প্যাকেটস</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="368"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="371"/>
         <source>TX bytes</source>
         <translation>ট্যাক্স বায়েটস</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="373"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="376"/>
         <source>TX errors</source>
         <translation>ট্যাক্স অ্যার্টিফিশিয়াল অ্যান্ড ইভেন্টস</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="383"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="386"/>
         <source>TX overruns</source>
         <translation>ট্যাক্স ওভাররনার্স</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="388"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="391"/>
         <source>TX carrier</source>
         <translation>ট্যাক্স কার্যার</translation>
     </message>
@@ -819,7 +818,7 @@ Are you sure you want to continue?</source>
         <translation>IPV6</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="378"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="381"/>
         <source>TX dropped</source>
         <translation>ট্যাক্স ড্রপড</translation>
     </message>
@@ -827,17 +826,17 @@ Are you sure you want to continue?</source>
 <context>
     <name>Process.Attributes.Dialog</name>
     <message>
-        <location filename="../gui/process_attribute_dialog.cpp" line="143"/>
+        <location filename="../gui/process_attribute_dialog.cpp" line="144"/>
         <source>Command line</source>
         <translation>কমান্ড লাইন</translation>
     </message>
     <message>
-        <location filename="../gui/process_attribute_dialog.cpp" line="148"/>
+        <location filename="../gui/process_attribute_dialog.cpp" line="149"/>
         <source>Start time</source>
         <translation>শুরুর সময়</translation>
     </message>
     <message>
-        <location filename="../gui/process_attribute_dialog.cpp" line="138"/>
+        <location filename="../gui/process_attribute_dialog.cpp" line="139"/>
         <source>Name</source>
         <translation>নাম</translation>
     </message>
@@ -853,7 +852,7 @@ Are you sure you want to continue?</source>
 <context>
     <name>Process.Graph.Title</name>
     <message>
-        <location filename="../gui/detail_view_stacked_widget.cpp" line="183"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="226"/>
         <location filename="../gui/mem_detail_view_widget.cpp" line="25"/>
         <location filename="../gui/mem_stat_view_widget.cpp" line="107"/>
         <location filename="../memory_monitor.cpp" line="177"/>
@@ -874,7 +873,7 @@ Are you sure you want to continue?</source>
         <location filename="../cpu_monitor.cpp" line="233"/>
         <location filename="../cpu_monitor.cpp" line="242"/>
         <location filename="../gui/cpu_detail_widget.cpp" line="371"/>
-        <location filename="../gui/detail_view_stacked_widget.cpp" line="182"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="224"/>
         <source>CPU</source>
         <translation>CPU</translation>
     </message>
@@ -890,6 +889,8 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="191"/>
+        <location filename="../gpu_monitor.cpp" line="214"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="280"/>
         <location filename="../memory_monitor.cpp" line="203"/>
         <source>Memory</source>
         <translation>মেমরি</translation>
@@ -922,8 +923,8 @@ Are you sure you want to continue?</source>
         <translation>আপলোড</translation>
     </message>
     <message>
-        <location filename="../gui/detail_view_stacked_widget.cpp" line="184"/>
-        <location filename="../gui/netif_detail_view_widget.cpp" line="28"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="227"/>
+        <location filename="../gui/netif_detail_view_widget.cpp" line="33"/>
         <location filename="../network_monitor.cpp" line="198"/>
         <source>Network</source>
         <translation>নেটওয়ার্ক</translation>
@@ -948,9 +949,111 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <location filename="../gui/block_dev_detail_view_widget.cpp" line="21"/>
-        <location filename="../gui/detail_view_stacked_widget.cpp" line="185"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="228"/>
         <source>Disks</source>
         <translation>ডিস্কস</translation>
+    </message>
+    <message>
+        <location filename="../compact_gpu_monitor.cpp" line="123"/>
+        <location filename="../gpu_monitor.cpp" line="169"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
+        <source>GPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpu_monitor.cpp" line="194"/>
+        <source>Utilization</source>
+        <translation type="unfinished">ব্যবহার</translation>
+    </message>
+    <message>
+        <location filename="../gpu_monitor.cpp" line="203"/>
+        <source>No GPU detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
+        <source>GPU Utilization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
+        <source>NPU Utilization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
+        <source>GPU Memory Utilization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
+        <source>NPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
+        <source>Embedded in CPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
+        <source>External</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
+        <source>Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
+        <source>System RAM (dynamic)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
+        <source>Model</source>
+        <translation type="unfinished">মডেল</translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
+        <source>Vendor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
+        <source>Bus Interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
+        <source>Active Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
+        <source>Engines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
+        <source>Temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
+        <source>Shared Memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
+        <source>Dedicated Memory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -964,54 +1067,54 @@ Are you sure you want to continue?</source>
 <context>
     <name>Process.Priority</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="633"/>
-        <location filename="../process/process.cpp" line="55"/>
+        <location filename="../gui/process_table_view.cpp" line="670"/>
+        <location filename="../process/process.cpp" line="56"/>
         <source>Very high</source>
         <translation>খুব উচ্চ</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="641"/>
-        <location filename="../process/process.cpp" line="56"/>
+        <location filename="../gui/process_table_view.cpp" line="678"/>
+        <location filename="../process/process.cpp" line="57"/>
         <source>High</source>
         <translation>উচ্চ</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="649"/>
-        <location filename="../process/process.cpp" line="57"/>
+        <location filename="../gui/process_table_view.cpp" line="686"/>
+        <location filename="../process/process.cpp" line="58"/>
         <source>Normal</source>
         <translation>নরম</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="657"/>
-        <location filename="../process/process.cpp" line="58"/>
+        <location filename="../gui/process_table_view.cpp" line="694"/>
+        <location filename="../process/process.cpp" line="59"/>
         <source>Low</source>
         <translation>লোয়</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="665"/>
-        <location filename="../process/process.cpp" line="59"/>
+        <location filename="../gui/process_table_view.cpp" line="702"/>
+        <location filename="../process/process.cpp" line="60"/>
         <source>Very low</source>
         <translation>খুব লোয়</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="673"/>
-        <location filename="../process/process.cpp" line="60"/>
+        <location filename="../gui/process_table_view.cpp" line="710"/>
+        <location filename="../process/process.cpp" line="61"/>
         <source>Custom</source>
         <translation>স্বাপ্পাত</translation>
     </message>
     <message>
-        <location filename="../process/process.cpp" line="61"/>
+        <location filename="../process/process.cpp" line="62"/>
         <source>Invalid</source>
         <translation>অব্যাহত</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="199"/>
+        <location filename="../process/process_db.cpp" line="201"/>
         <source>PID: %1, Error: [%2] %3</source>
         <translation>PID: %1, ত্রুটি: [%2] %3</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="156"/>
-        <location filename="../process/process_db.cpp" line="196"/>
+        <location filename="../process/process_db.cpp" line="158"/>
+        <location filename="../process/process_db.cpp" line="198"/>
         <source>Failed to change process priority</source>
         <translation>প্রক্রিয়ার প্রায়তন পরিবর্তন করা ব্যর্থ হয়েছে</translation>
     </message>
@@ -1037,32 +1140,34 @@ Are you sure you want to continue?</source>
 <context>
     <name>Process.Signal</name>
     <message>
-        <location filename="../process/process_db.cpp" line="267"/>
+        <location filename="../process/process_db.cpp" line="303"/>
         <source>Failed to pause process</source>
         <translation>প্রক্রিয়ার প্রায়তন দমন করা ব্যর্থ হয়েছে</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="270"/>
+        <location filename="../process/process_db.cpp" line="306"/>
         <source>Failed to resume process</source>
         <translation>প্রক্রিয়ার প্রায়তন প্রারম্ভ করা ব্যর্থ হয়েছে</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="273"/>
+        <location filename="../process/process_db.cpp" line="246"/>
+        <location filename="../process/process_db.cpp" line="309"/>
         <source>Failed to kill process</source>
         <translation>প্রক্রিয়া হত্যা করা ব্যর্থ হয়েছে</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="276"/>
+        <location filename="../process/process_db.cpp" line="312"/>
         <source>Unknown error</source>
         <translation>অজানা ত্রুটি</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="337"/>
+        <location filename="../process/process_db.cpp" line="373"/>
         <source>Failed in sending signal to process</source>
         <translation>প্রক্রিয়ায় সিগন্যাল পাঠার ক্ষেত্রে ত্রুটি</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="264"/>
+        <location filename="../process/process_db.cpp" line="245"/>
+        <location filename="../process/process_db.cpp" line="300"/>
         <source>Failed to end process</source>
         <translation>প্রক্রিয়া শেষ করার ক্ষেত্রে ত্রুটি</translation>
     </message>
@@ -1078,12 +1183,12 @@ Are you sure you want to continue?</source>
 <context>
     <name>Process.Table</name>
     <message>
-        <location filename="../model/process_table_model.cpp" line="269"/>
+        <location filename="../model/process_table_model.cpp" line="271"/>
         <source>No response</source>
         <translation>কোনো সংক্ষেপ নেই</translation>
     </message>
     <message>
-        <location filename="../model/process_table_model.cpp" line="275"/>
+        <location filename="../model/process_table_model.cpp" line="277"/>
         <source>Suspend</source>
         <translation>স্পার্সিভ করুন</translation>
     </message>
@@ -1098,42 +1203,42 @@ Are you sure you want to continue?</source>
 <context>
     <name>Process.Table.Context.Menu</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="680"/>
+        <location filename="../gui/process_table_view.cpp" line="717"/>
         <source>View command location</source>
         <translation>কম্যান্ডের স্থান দেখুন</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="83"/>
-        <location filename="../gui/process_table_view.cpp" line="684"/>
+        <location filename="../gui/process_table_view.cpp" line="721"/>
         <source>Properties</source>
         <translation>প্রবৃত্তি</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="66"/>
-        <location filename="../gui/process_table_view.cpp" line="608"/>
+        <location filename="../gui/process_table_view.cpp" line="637"/>
         <source>End process</source>
         <translation>প্রক্রিয়া শেষ করুন</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="78"/>
-        <location filename="../gui/process_table_view.cpp" line="620"/>
+        <location filename="../gui/process_table_view.cpp" line="649"/>
         <source>Resume process</source>
         <translation>প্রক্রিয়া শুরু করুন</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="89"/>
-        <location filename="../gui/process_table_view.cpp" line="691"/>
+        <location filename="../gui/process_table_view.cpp" line="728"/>
         <source>Kill process</source>
         <translation>প্রক্রিয়া হারিয়ে দূর করুন</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="627"/>
+        <location filename="../gui/process_table_view.cpp" line="664"/>
         <source>Change priority</source>
         <translation>প্রাইオリティを変更</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="72"/>
-        <location filename="../gui/process_table_view.cpp" line="614"/>
+        <location filename="../gui/process_table_view.cpp" line="643"/>
         <source>Suspend process</source>
         <translation>প্রক্রিয়া স্পার্সিভ করুন</translation>
     </message>
@@ -1141,18 +1246,18 @@ Are you sure you want to continue?</source>
 <context>
     <name>Process.Table.Custom.Priority.Dialog</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="1052"/>
+        <location filename="../gui/process_table_view.cpp" line="1093"/>
         <source>Custom Priority</source>
         <translation>স্বাপ্নলিখিত প্রাইオリティ</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="1085"/>
+        <location filename="../gui/process_table_view.cpp" line="1126"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>বাতিল</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="1087"/>
+        <location filename="../gui/process_table_view.cpp" line="1128"/>
         <source>Change</source>
         <comment>button</comment>
         <translation>পরিবর্তন করুন</translation>
@@ -1229,7 +1334,7 @@ Are you sure you want to continue?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../system/cpu_set.cpp" line="426"/>
+        <location filename="../system/cpu_set.cpp" line="429"/>
         <source>Not support</source>
         <translation>সমর্থন করা হয়নি</translation>
     </message>
@@ -1410,22 +1515,22 @@ Are you sure you want to continue?</source>
     <name>Title.Bar.Context.Menu</name>
     <message>
         <location filename="../common/common.cpp" line="59"/>
-        <location filename="../gui/main_window.cpp" line="129"/>
+        <location filename="../gui/main_window.cpp" line="138"/>
         <source>Force end application</source>
         <translation>প্রোগ্রাম শেষ করুন</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.cpp" line="147"/>
+        <location filename="../gui/main_window.cpp" line="156"/>
         <source>Expand</source>
         <translation>প্রসারিত করুন</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.cpp" line="150"/>
+        <location filename="../gui/main_window.cpp" line="159"/>
         <source>Compact</source>
         <translation>কম্পাক্ট</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.cpp" line="142"/>
+        <location filename="../gui/main_window.cpp" line="151"/>
         <source>View</source>
         <translation>ভিউ</translation>
     </message>
@@ -1443,23 +1548,23 @@ Are you sure you want to continue?</source>
     <name>Title.Bar.Switch</name>
     <message>
         <location filename="../common/common.cpp" line="53"/>
-        <location filename="../gui/main_window.cpp" line="224"/>
-        <location filename="../gui/main_window.cpp" line="235"/>
+        <location filename="../gui/main_window.cpp" line="233"/>
+        <location filename="../gui/main_window.cpp" line="244"/>
         <location filename="../gui/toolbar.cpp" line="45"/>
         <source>Processes</source>
         <translation>প্রসেস্সস</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="98"/>
-        <location filename="../gui/main_window.cpp" line="224"/>
-        <location filename="../gui/main_window.cpp" line="235"/>
-        <location filename="../gui/main_window.cpp" line="245"/>
+        <location filename="../gui/main_window.cpp" line="233"/>
+        <location filename="../gui/main_window.cpp" line="244"/>
+        <location filename="../gui/main_window.cpp" line="254"/>
         <location filename="../gui/toolbar.cpp" line="53"/>
         <source>Services</source>
         <translation>সেবা</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.cpp" line="245"/>
+        <location filename="../gui/main_window.cpp" line="254"/>
         <location filename="../gui/toolbar.cpp" line="60"/>
         <source>Users</source>
         <translation>ব্যবহারকারীরা</translation>

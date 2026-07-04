@@ -4,13 +4,13 @@
 <context>
     <name>App.About</name>
     <message>
-        <location filename="../main.cpp" line="101"/>
-        <location filename="../main.cpp" line="105"/>
+        <location filename="../main.cpp" line="119"/>
+        <location filename="../main.cpp" line="123"/>
         <source>System Monitor</source>
         <translation>Theo dõi hệ thống</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="91"/>
+        <location filename="../main.cpp" line="109"/>
         <source>System Monitor is a tool to monitor realtime system load, view and control processes and services running on your system.</source>
         <translation>Theo dõi hệ thống là công cụ để theo dõi tải hệ thống thời gian thực, xem và kiểm soát các quá trình và dịch vụ đang chạy trên hệ thống của bạn.</translation>
     </message>
@@ -38,12 +38,12 @@
 <context>
     <name>BlockDevItemWidget</name>
     <message>
-        <location filename="../gui/block_dev_item_widget.cpp" line="154"/>
+        <location filename="../gui/block_dev_item_widget.cpp" line="165"/>
         <source>Read</source>
         <translation>Đọc</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_item_widget.cpp" line="158"/>
+        <location filename="../gui/block_dev_item_widget.cpp" line="169"/>
         <source>Write</source>
         <translation>Viết</translation>
     </message>
@@ -182,7 +182,7 @@
 <context>
     <name>Common.Search</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="493"/>
+        <location filename="../gui/process_table_view.cpp" line="522"/>
         <location filename="../gui/system_service_table_view.cpp" line="476"/>
         <source>No search results</source>
         <translation>Không tìm thấy kết quả</translation>
@@ -516,72 +516,71 @@
 <context>
     <name>DeailTableModelBlock</name>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="70"/>
         <source>Model</source>
-        <translation>Mô hình</translation>
+        <translation type="vanished">Mô hình</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="72"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="70"/>
         <source>Read speed</source>
         <translation>Tốc độ đọc</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="76"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="72"/>
         <source>Write speed</source>
         <translation>Tốc độ ghi</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="78"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="76"/>
         <source>Capacity</source>
         <translation>Dung lượng</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="82"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="78"/>
         <source>Sectors read</source>
         <translation>Sector đã đọc</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="84"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="82"/>
         <source>Reads/s</source>
         <translation>Đọc/s</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="88"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="84"/>
         <source>Sectors read/s</source>
         <translation>Sector đọc/s</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="90"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="88"/>
         <source>Reads merged/s</source>
         <translation>Đọc hợp nhất/s</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="94"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="90"/>
         <source>Sectors written</source>
         <translation>Sector đã ghi</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="96"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="94"/>
         <source>Writes completed </source>
         <translation>Viết hoàn thành</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="100"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="96"/>
         <source>Writes merged</source>
         <translation>Viết hợp nhất</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="102"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="100"/>
         <source>Writes/s</source>
         <translation>Ghi/s</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="106"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="102"/>
         <source>Sectors written/s</source>
         <translation>Sectors written/s</translation>
     </message>
     <message>
-        <location filename="../gui/block_dev_summary_view_widget.cpp" line="108"/>
+        <location filename="../gui/block_dev_summary_view_widget.cpp" line="106"/>
         <source>Writes merged/s</source>
         <translation>Writes merged/s</translation>
     </message>
@@ -589,7 +588,7 @@
 <context>
     <name>Error.Dialog</name>
     <message>
-        <location filename="../gui/dialog/error_dialog.cpp" line="73"/>
+        <location filename="../gui/dialog/error_dialog.cpp" line="75"/>
         <source>OK</source>
         <comment>button</comment>
         <translation>OK</translation>
@@ -611,7 +610,7 @@
 <context>
     <name>Kill.Process.Dialog</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="173"/>
+        <location filename="../gui/process_table_view.cpp" line="177"/>
         <source>Ending this process may cause data loss.
 Are you sure you want to continue?</source>
         <translation>Dừng quá trình này có thể gây mất dữ liệu.
@@ -620,13 +619,13 @@ Bạn có chắc chắn muốn tiếp tục không?
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="530"/>
-        <location filename="../gui/process_table_view.cpp" line="172"/>
-        <location filename="../gui/process_table_view.cpp" line="379"/>
+        <location filename="../gui/process_table_view.cpp" line="176"/>
+        <location filename="../gui/process_table_view.cpp" line="408"/>
         <source>End process</source>
         <translation>Dừng quá trình</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="380"/>
+        <location filename="../gui/process_table_view.cpp" line="409"/>
         <source>Force ending this process may cause data loss.
 Are you sure you want to continue?</source>
         <translation>Dừng mạnh quá trình này có thể gây mất dữ liệu.
@@ -643,21 +642,21 @@ Bạn có chắc chắn muốn tiếp tục không?
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="539"/>
-        <location filename="../gui/process_table_view.cpp" line="179"/>
-        <location filename="../gui/process_table_view.cpp" line="387"/>
+        <location filename="../gui/process_table_view.cpp" line="183"/>
+        <location filename="../gui/process_table_view.cpp" line="416"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Hủy bỏ</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="540"/>
-        <location filename="../gui/process_table_view.cpp" line="388"/>
+        <location filename="../gui/process_table_view.cpp" line="417"/>
         <source>Force End</source>
         <comment>button</comment>
         <translation>Dừng mạnh</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="180"/>
+        <location filename="../gui/process_table_view.cpp" line="184"/>
         <source>End</source>
         <comment>button</comment>
         <translation>Dừng</translation>
@@ -674,7 +673,7 @@ Bạn có chắc chắn muốn tiếp tục không?
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../gui/main_window.cpp" line="181"/>
+        <location filename="../gui/main_window.cpp" line="190"/>
         <source>Settings</source>
         <translation>Cài đặt</translation>
     </message>
@@ -739,72 +738,72 @@ Bạn có chắc chắn muốn tiếp tục không?
         <translation>Độ mạnh tín hiệu</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="317"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="320"/>
         <source>Noise level</source>
         <translation>Mức độ nhiễu</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="323"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="326"/>
         <source>MAC</source>
         <translation>MAC</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="328"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="331"/>
         <source>Bandwidth</source>
         <translation>Độ rộng đường truyền</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="333"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="336"/>
         <source>RX packets</source>
         <translation>Packets nhận</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="338"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="341"/>
         <source>RX bytes</source>
         <translation>Bytes nhận</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="343"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="346"/>
         <source>RX errors</source>
         <translation>Lỗi nhận</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="348"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="351"/>
         <source>RX dropped</source>
         <translation>Được bỏ qua nhận</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="353"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="356"/>
         <source>RX overruns</source>
         <translation>Tràn nhận</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="358"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="361"/>
         <source>RX frame</source>
         <translation>Khung nhận</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="363"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="366"/>
         <source>TX packets</source>
         <translation>Packets gửi</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="368"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="371"/>
         <source>TX bytes</source>
         <translation>Bytes gửi</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="373"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="376"/>
         <source>TX errors</source>
         <translation>Lỗi gửi</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="383"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="386"/>
         <source>TX overruns</source>
         <translation>Tràn gửi</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="388"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="391"/>
         <source>TX carrier</source>
         <translation>Truyền載器</translation>
     </message>
@@ -821,7 +820,7 @@ Bạn có chắc chắn muốn tiếp tục không?
         <translation>IPv6</translation>
     </message>
     <message>
-        <location filename="../gui/netif_summary_view_widget.h" line="378"/>
+        <location filename="../gui/netif_summary_view_widget.h" line="381"/>
         <source>TX dropped</source>
         <translation>Được bỏ qua gửi</translation>
     </message>
@@ -829,17 +828,17 @@ Bạn có chắc chắn muốn tiếp tục không?
 <context>
     <name>Process.Attributes.Dialog</name>
     <message>
-        <location filename="../gui/process_attribute_dialog.cpp" line="143"/>
+        <location filename="../gui/process_attribute_dialog.cpp" line="144"/>
         <source>Command line</source>
         <translation>Dòng lệnh</translation>
     </message>
     <message>
-        <location filename="../gui/process_attribute_dialog.cpp" line="148"/>
+        <location filename="../gui/process_attribute_dialog.cpp" line="149"/>
         <source>Start time</source>
         <translation>Thời gian bắt đầu</translation>
     </message>
     <message>
-        <location filename="../gui/process_attribute_dialog.cpp" line="138"/>
+        <location filename="../gui/process_attribute_dialog.cpp" line="139"/>
         <source>Name</source>
         <translation>Tên</translation>
     </message>
@@ -855,7 +854,7 @@ Bạn có chắc chắn muốn tiếp tục không?
 <context>
     <name>Process.Graph.Title</name>
     <message>
-        <location filename="../gui/detail_view_stacked_widget.cpp" line="183"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="226"/>
         <location filename="../gui/mem_detail_view_widget.cpp" line="25"/>
         <location filename="../gui/mem_stat_view_widget.cpp" line="107"/>
         <location filename="../memory_monitor.cpp" line="177"/>
@@ -876,7 +875,7 @@ Bạn có chắc chắn muốn tiếp tục không?
         <location filename="../cpu_monitor.cpp" line="233"/>
         <location filename="../cpu_monitor.cpp" line="242"/>
         <location filename="../gui/cpu_detail_widget.cpp" line="371"/>
-        <location filename="../gui/detail_view_stacked_widget.cpp" line="182"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="224"/>
         <source>CPU</source>
         <translation>CPU</translation>
     </message>
@@ -892,6 +891,8 @@ Bạn có chắc chắn muốn tiếp tục không?
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="191"/>
+        <location filename="../gpu_monitor.cpp" line="214"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="280"/>
         <location filename="../memory_monitor.cpp" line="203"/>
         <source>Memory</source>
         <translation>Bộ nhớ</translation>
@@ -924,8 +925,8 @@ Bạn có chắc chắn muốn tiếp tục không?
         <translation>Tải lên</translation>
     </message>
     <message>
-        <location filename="../gui/detail_view_stacked_widget.cpp" line="184"/>
-        <location filename="../gui/netif_detail_view_widget.cpp" line="28"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="227"/>
+        <location filename="../gui/netif_detail_view_widget.cpp" line="33"/>
         <location filename="../network_monitor.cpp" line="198"/>
         <source>Network</source>
         <translation>Mạng</translation>
@@ -950,9 +951,111 @@ Bạn có chắc chắn muốn tiếp tục không?
     </message>
     <message>
         <location filename="../gui/block_dev_detail_view_widget.cpp" line="21"/>
-        <location filename="../gui/detail_view_stacked_widget.cpp" line="185"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="228"/>
         <source>Disks</source>
         <translation>Ổ đĩa</translation>
+    </message>
+    <message>
+        <location filename="../compact_gpu_monitor.cpp" line="123"/>
+        <location filename="../gpu_monitor.cpp" line="169"/>
+        <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
+        <source>GPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpu_monitor.cpp" line="194"/>
+        <source>Utilization</source>
+        <translation type="unfinished">Sử dụng</translation>
+    </message>
+    <message>
+        <location filename="../gpu_monitor.cpp" line="203"/>
+        <source>No GPU detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
+        <source>GPU Utilization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
+        <source>NPU Utilization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
+        <source>GPU Memory Utilization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
+        <source>NPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
+        <source>Embedded in CPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
+        <source>External</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
+        <source>Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
+        <source>System RAM (dynamic)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
+        <source>Model</source>
+        <translation type="unfinished">Mô hình</translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
+        <source>Vendor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
+        <source>Bus Interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
+        <source>Active Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
+        <source>Engines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
+        <source>Temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
+        <source>Shared Memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
+        <source>Dedicated Memory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -966,54 +1069,54 @@ Bạn có chắc chắn muốn tiếp tục không?
 <context>
     <name>Process.Priority</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="633"/>
-        <location filename="../process/process.cpp" line="55"/>
+        <location filename="../gui/process_table_view.cpp" line="670"/>
+        <location filename="../process/process.cpp" line="56"/>
         <source>Very high</source>
         <translation>Rất cao</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="641"/>
-        <location filename="../process/process.cpp" line="56"/>
+        <location filename="../gui/process_table_view.cpp" line="678"/>
+        <location filename="../process/process.cpp" line="57"/>
         <source>High</source>
         <translation>Cao</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="649"/>
-        <location filename="../process/process.cpp" line="57"/>
+        <location filename="../gui/process_table_view.cpp" line="686"/>
+        <location filename="../process/process.cpp" line="58"/>
         <source>Normal</source>
         <translation>Bình thường</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="657"/>
-        <location filename="../process/process.cpp" line="58"/>
+        <location filename="../gui/process_table_view.cpp" line="694"/>
+        <location filename="../process/process.cpp" line="59"/>
         <source>Low</source>
         <translation>Thấp</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="665"/>
-        <location filename="../process/process.cpp" line="59"/>
+        <location filename="../gui/process_table_view.cpp" line="702"/>
+        <location filename="../process/process.cpp" line="60"/>
         <source>Very low</source>
         <translation>Rất thấp</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="673"/>
-        <location filename="../process/process.cpp" line="60"/>
+        <location filename="../gui/process_table_view.cpp" line="710"/>
+        <location filename="../process/process.cpp" line="61"/>
         <source>Custom</source>
         <translation>Tùy chỉnh</translation>
     </message>
     <message>
-        <location filename="../process/process.cpp" line="61"/>
+        <location filename="../process/process.cpp" line="62"/>
         <source>Invalid</source>
         <translation>Không hợp lệ</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="199"/>
+        <location filename="../process/process_db.cpp" line="201"/>
         <source>PID: %1, Error: [%2] %3</source>
         <translation>PID: %1, Lỗi: [%2] %3</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="156"/>
-        <location filename="../process/process_db.cpp" line="196"/>
+        <location filename="../process/process_db.cpp" line="158"/>
+        <location filename="../process/process_db.cpp" line="198"/>
         <source>Failed to change process priority</source>
         <translation>Không thể thay đổi ưu tiên quá trình</translation>
     </message>
@@ -1039,32 +1142,34 @@ Bạn có chắc chắn muốn tiếp tục không?
 <context>
     <name>Process.Signal</name>
     <message>
-        <location filename="../process/process_db.cpp" line="267"/>
+        <location filename="../process/process_db.cpp" line="303"/>
         <source>Failed to pause process</source>
         <translation>Không thể tạm dừng quá trình</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="270"/>
+        <location filename="../process/process_db.cpp" line="306"/>
         <source>Failed to resume process</source>
         <translation>Không thể tiếp tục quá trình</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="273"/>
+        <location filename="../process/process_db.cpp" line="246"/>
+        <location filename="../process/process_db.cpp" line="309"/>
         <source>Failed to kill process</source>
         <translation>Không thể kết thúc quá trình</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="276"/>
+        <location filename="../process/process_db.cpp" line="312"/>
         <source>Unknown error</source>
         <translation>Lỗi không xác định</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="337"/>
+        <location filename="../process/process_db.cpp" line="373"/>
         <source>Failed in sending signal to process</source>
         <translation>Fehler beim Senden des Signals an den Prozess</translation>
     </message>
     <message>
-        <location filename="../process/process_db.cpp" line="264"/>
+        <location filename="../process/process_db.cpp" line="245"/>
+        <location filename="../process/process_db.cpp" line="300"/>
         <source>Failed to end process</source>
         <translation>Không thể kết thúc quá trình</translation>
     </message>
@@ -1080,12 +1185,12 @@ Bạn có chắc chắn muốn tiếp tục không?
 <context>
     <name>Process.Table</name>
     <message>
-        <location filename="../model/process_table_model.cpp" line="269"/>
+        <location filename="../model/process_table_model.cpp" line="271"/>
         <source>No response</source>
         <translation>Không có phản hồi</translation>
     </message>
     <message>
-        <location filename="../model/process_table_model.cpp" line="275"/>
+        <location filename="../model/process_table_model.cpp" line="277"/>
         <source>Suspend</source>
         <translation>Dừng lại</translation>
     </message>
@@ -1100,42 +1205,42 @@ Bạn có chắc chắn muốn tiếp tục không?
 <context>
     <name>Process.Table.Context.Menu</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="680"/>
+        <location filename="../gui/process_table_view.cpp" line="717"/>
         <source>View command location</source>
         <translation>Xem vị trí lệnh</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="83"/>
-        <location filename="../gui/process_table_view.cpp" line="684"/>
+        <location filename="../gui/process_table_view.cpp" line="721"/>
         <source>Properties</source>
         <translation>Tính năng</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="66"/>
-        <location filename="../gui/process_table_view.cpp" line="608"/>
+        <location filename="../gui/process_table_view.cpp" line="637"/>
         <source>End process</source>
         <translation>Kết thúc quá trình</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="78"/>
-        <location filename="../gui/process_table_view.cpp" line="620"/>
+        <location filename="../gui/process_table_view.cpp" line="649"/>
         <source>Resume process</source>
         <translation>Tiếp tục quá trình</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="89"/>
-        <location filename="../gui/process_table_view.cpp" line="691"/>
+        <location filename="../gui/process_table_view.cpp" line="728"/>
         <source>Kill process</source>
         <translation>Killing quá trình</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="627"/>
+        <location filename="../gui/process_table_view.cpp" line="664"/>
         <source>Change priority</source>
         <translation>Thay đổi ưu tiên</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="72"/>
-        <location filename="../gui/process_table_view.cpp" line="614"/>
+        <location filename="../gui/process_table_view.cpp" line="643"/>
         <source>Suspend process</source>
         <translation>Dừng lại quá trình</translation>
     </message>
@@ -1143,18 +1248,18 @@ Bạn có chắc chắn muốn tiếp tục không?
 <context>
     <name>Process.Table.Custom.Priority.Dialog</name>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="1052"/>
+        <location filename="../gui/process_table_view.cpp" line="1093"/>
         <source>Custom Priority</source>
         <translation>Ưu tiên tùy chỉnh</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="1085"/>
+        <location filename="../gui/process_table_view.cpp" line="1126"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Huỷ bỏ</translation>
     </message>
     <message>
-        <location filename="../gui/process_table_view.cpp" line="1087"/>
+        <location filename="../gui/process_table_view.cpp" line="1128"/>
         <source>Change</source>
         <comment>button</comment>
         <translation>Thay đổi</translation>
@@ -1231,7 +1336,7 @@ Bạn có chắc chắn muốn tiếp tục không?
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../system/cpu_set.cpp" line="426"/>
+        <location filename="../system/cpu_set.cpp" line="429"/>
         <source>Not support</source>
         <translation>Không hỗ trợ</translation>
     </message>
@@ -1412,22 +1517,22 @@ Bạn có chắc chắn muốn tiếp tục không?
     <name>Title.Bar.Context.Menu</name>
     <message>
         <location filename="../common/common.cpp" line="59"/>
-        <location filename="../gui/main_window.cpp" line="129"/>
+        <location filename="../gui/main_window.cpp" line="138"/>
         <source>Force end application</source>
         <translation>Kết thúc ứng dụng</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.cpp" line="147"/>
+        <location filename="../gui/main_window.cpp" line="156"/>
         <source>Expand</source>
         <translation>Mở rộng</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.cpp" line="150"/>
+        <location filename="../gui/main_window.cpp" line="159"/>
         <source>Compact</source>
         <translation>Tightly packed</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.cpp" line="142"/>
+        <location filename="../gui/main_window.cpp" line="151"/>
         <source>View</source>
         <translation>Xem</translation>
     </message>
@@ -1445,23 +1550,23 @@ Bạn có chắc chắn muốn tiếp tục không?
     <name>Title.Bar.Switch</name>
     <message>
         <location filename="../common/common.cpp" line="53"/>
-        <location filename="../gui/main_window.cpp" line="224"/>
-        <location filename="../gui/main_window.cpp" line="235"/>
+        <location filename="../gui/main_window.cpp" line="233"/>
+        <location filename="../gui/main_window.cpp" line="244"/>
         <location filename="../gui/toolbar.cpp" line="45"/>
         <source>Processes</source>
         <translation>Quá trình</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="98"/>
-        <location filename="../gui/main_window.cpp" line="224"/>
-        <location filename="../gui/main_window.cpp" line="235"/>
-        <location filename="../gui/main_window.cpp" line="245"/>
+        <location filename="../gui/main_window.cpp" line="233"/>
+        <location filename="../gui/main_window.cpp" line="244"/>
+        <location filename="../gui/main_window.cpp" line="254"/>
         <location filename="../gui/toolbar.cpp" line="53"/>
         <source>Services</source>
         <translation>Dịch vụ</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.cpp" line="245"/>
+        <location filename="../gui/main_window.cpp" line="254"/>
         <location filename="../gui/toolbar.cpp" line="60"/>
         <source>Users</source>
         <translation>Người dùng</translation>
