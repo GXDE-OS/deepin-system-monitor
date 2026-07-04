@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="bn">
+<TS version="2.1" language="bn_BD">
 <context>
     <name>App.About</name>
     <message>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>ফ্রিকোয়েন্সি</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>সরাসরি ফ্রিকোয়েন্সি</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
@@ -959,101 +959,101 @@ Are you sure you want to continue?</source>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>জিপিইউ</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished">ব্যবহার</translation>
+        <translation>ব্যবহার</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>জিপিইউ পাওয়া যায়নি</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>জিপিইউ ব্যবহার</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>এনপিইউ ব্যবহার</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>জিপিইউ মেমরি ব্যবহার</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>এনপিইউ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>সিপিইউতে অন্তর্ভুক্ত</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>বাহ্যিক</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>ডিভাইস</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>সিস্টেম র‍্যাম (গতিশীল)</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished">মডেল</translation>
+        <translation>মডেল</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>বিক্রেতা</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>বাস ইন্টারফেস</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>সক্রিয় সময়</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>ইঞ্জিন</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>তাপমাত্রা</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>শেয়ার্ড মেমরি</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>ডেডিকেটেড মেমরি</translation>
     </message>
 </context>
 <context>

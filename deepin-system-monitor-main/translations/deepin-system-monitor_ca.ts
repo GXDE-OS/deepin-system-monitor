@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ca">
+<TS version="2.1" language="ca_ES">
 <context>
     <name>App.About</name>
     <message>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>Freqüència</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>Frequència mitjana</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/accounts_widget.cpp" line="310"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel·la</translation>
+        <translation>Cancel·la</translation>
     </message>
 </context>
 <context>
@@ -956,101 +956,101 @@ Segur que voleu continuar?</translation>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>GPU</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished">Ús</translation>
+        <translation>Ús</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Cap GPU detectat</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilització de la GPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilització de la NPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilització de memòria de la GPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>NPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>Incorporada al CPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>Externa</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Dispositiu</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>RAM del sistema (dinàmica)</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished">Model</translation>
+        <translation>Model</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>Proveïdor</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Interfície de bus</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Temps actiu</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>Motors</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Temperatura</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Memòria compartida</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Memòria dedicada</translation>
     </message>
 </context>
 <context>

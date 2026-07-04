@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="hr">
+<TS version="2.1" language="hr_HR">
 <context>
     <name>App.About</name>
     <message>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>Frekvencija</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>Prosječna frekvencija</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/accounts_widget.cpp" line="310"/>
         <source>Cancel</source>
-        <translation type="unfinished">Otkaži</translation>
+        <translation>Otkaži</translation>
     </message>
 </context>
 <context>
@@ -440,7 +440,7 @@
     <message>
         <location filename="../dbus/dbusalarmnotify.cpp" line="71"/>
         <source>View</source>
-        <translation type="unfinished">Pogled</translation>
+        <translation>Pogled</translation>
     </message>
 </context>
 <context>
@@ -956,101 +956,101 @@ Jeste li sigurni da želite nastaviti?</translation>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>GPU</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished"> Iskorištenost</translation>
+        <translation> Iskorištenost</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Nije detektovan GPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Korištenje GPU-a</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Korištenje NPU-a</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Korištenje memorije GPU-a</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>NPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>Ugrađen u procesor</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>Vanjski</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Uređaj</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistemski RAM (dinamički)</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished">Model</translation>
+        <translation>Model</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>Dobavljač</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Sučelje magistrale</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivno vrijeme</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>Motori</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Temperatura</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Zajednička memorija</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Posvećena memorija</translation>
     </message>
 </context>
 <context>

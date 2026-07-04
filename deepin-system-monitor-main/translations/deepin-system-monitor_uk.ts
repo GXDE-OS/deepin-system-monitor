@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="uk">
+<TS version="2.1" language="uk_UA">
 <context>
     <name>App.About</name>
     <message>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>Частота</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>Середня частота</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/accounts_widget.cpp" line="310"/>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
 </context>
 <context>
@@ -660,7 +660,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/accounts_widget.cpp" line="311"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Вихід</translation>
     </message>
 </context>
 <context>
@@ -954,101 +954,101 @@ Are you sure you want to continue?</source>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>ГП</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished">Вжиток</translation>
+        <translation>Вжиток</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Не виявлено ГП</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Використання ГП</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Використання НП</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Використання пам&apos;яті ГП</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>НП</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>Вбудований в ЦП</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>Зовнішній</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Пристрій</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>Оперативна пам&apos;ять системи (динамічна)</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished">Модель</translation>
+        <translation>Модель</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>Виробник</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Інтерфейс шини</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Активний час</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>Двигуни</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Температура</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Спільна пам&apos;ять</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Призначена пам&apos;ять</translation>
     </message>
 </context>
 <context>

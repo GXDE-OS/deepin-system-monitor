@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pa">
+<TS version="2.1" language="pa_IN">
 <context>
     <name>App.About</name>
     <message>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>ਫ੍ਰੀਕਵੈਂਸੀ</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>ਔਸਤ ਫ੍ਰੀਕਵੈਂਸੀ</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/accounts_widget.cpp" line="310"/>
         <source>Cancel</source>
-        <translation type="unfinished">ਰੱਦ ਕਰੋ</translation>
+        <translation>ਰੱਦ ਕਰੋ</translation>
     </message>
 </context>
 <context>
@@ -633,7 +633,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/process_table_view.cpp" line="416"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">ਰੱਦ ਕਰੋ</translation>
+        <translation>ਰੱਦ ਕਰੋ</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="540"/>
@@ -825,17 +825,17 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="144"/>
         <source>Command line</source>
-        <translation type="unfinished">ਕਮਾਂਡ ਲਾਈਨ</translation>
+        <translation>ਕਮਾਂਡ ਲਾਈਨ</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="149"/>
         <source>Start time</source>
-        <translation type="unfinished">ਸ਼ੁਰੂ ਸਮਾਂ</translation>
+        <translation>ਸ਼ੁਰੂ ਸਮਾਂ</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="139"/>
         <source>Name</source>
-        <translation type="unfinished">ਨਾਂ</translation>
+        <translation>ਨਾਂ</translation>
     </message>
 </context>
 <context>
@@ -854,7 +854,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/mem_stat_view_widget.cpp" line="107"/>
         <location filename="../memory_monitor.cpp" line="177"/>
         <source>Memory</source>
-        <translation type="unfinished">ਮੈਮੋਰੀ</translation>
+        <translation>ਮੈਮੋਰੀ</translation>
     </message>
     <message>
         <location filename="../gui/netif_item_view_widget.cpp" line="95"/>
@@ -872,7 +872,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/cpu_detail_widget.cpp" line="371"/>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="224"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="153"/>
@@ -890,7 +890,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="280"/>
         <location filename="../memory_monitor.cpp" line="203"/>
         <source>Memory</source>
-        <translation type="unfinished">ਮੈਮੋਰੀ</translation>
+        <translation>ਮੈਮੋਰੀ</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="203"/>
@@ -905,13 +905,13 @@ Are you sure you want to continue?</source>
         <location filename="../compact_memory_monitor.cpp" line="204"/>
         <location filename="../memory_monitor.cpp" line="215"/>
         <source>Not enabled</source>
-        <translation type="unfinished">ਸਮਰੱਥ ਨਹੀਂ</translation>
+        <translation>ਸਮਰੱਥ ਨਹੀਂ</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="158"/>
         <location filename="../network_monitor.cpp" line="216"/>
         <source>Download</source>
-        <translation type="unfinished">ਡਾਊਨਲੋਡ</translation>
+        <translation>ਡਾਊਨਲੋਡ</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="163"/>
@@ -924,7 +924,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/netif_detail_view_widget.cpp" line="33"/>
         <location filename="../network_monitor.cpp" line="198"/>
         <source>Network</source>
-        <translation type="unfinished">ਨੈੱਟਵਰਕ</translation>
+        <translation>ਨੈੱਟਵਰਕ</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="160"/>
@@ -956,101 +956,101 @@ Are you sure you want to continue?</source>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>ਜੀਪੀਯੂ</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished">استعمال</translation>
+        <translation>استعمال</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>ਕੋਈ ਜੀਪੀਯੂ ਪਤਾ ਨਹੀਂ ਚਲਿਆ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>ਜੀਪੀਯੂ ਦੀ ਵਰਤੋਂ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>ਐਨਪੀਯੂ ਦੀ ਵਰਤੋਂ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>ਜੀਪੀਯੂ ਮੈਮੋਰੀ ਦੀ ਵਰਤੋਂ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>ਐਨਪੀਯੂ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>ਸੀਪੀਯੂ ਵਿੱਚ ਡਾਲਿਆ ਹੋਇਆ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>ਬਾਹਰੀ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>ਡਿਵਾਈਸ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>ਸਿਸਟਮ ਰੈਮ (ਡਾਇਨਾਮਿਕ)</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished">میڈل</translation>
+        <translation>میڈل</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>ਵੇਂਡਰ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>ਬੱਸ ਇੰਟਰਫੇਸ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>ਐਕਟਿਵ ਸਮਾਂ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>ਇੰਜਣ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>ਤਾਪਮਾਨ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>ਸ਼ੇਅਰਡ ਮੈਮੋਰੀ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>ਡੈਡੀਕੇਟਡ ਮੈਮੋਰੀ</translation>
     </message>
 </context>
 <context>
@@ -1121,17 +1121,17 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="61"/>
         <source>Applications</source>
-        <translation type="unfinished">ਐਪਲੀਕੇਸ਼ਨ</translation>
+        <translation>ਐਪਲੀਕੇਸ਼ਨ</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="63"/>
         <source>My processes</source>
-        <translation type="unfinished">ਮੇਰੇ ਪਰੋਸੈਸ</translation>
+        <translation>ਮੇਰੇ ਪਰੋਸੈਸ</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="65"/>
         <source>All processes</source>
-        <translation type="unfinished">ਸਾਰੇ ਪਰੋਸੈਸ</translation>
+        <translation>ਸਾਰੇ ਪਰੋਸੈਸ</translation>
     </message>
 </context>
 <context>
@@ -1251,7 +1251,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/process_table_view.cpp" line="1126"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">ਰੱਦ ਕਰੋ</translation>
+        <translation>ਰੱਦ ਕਰੋ</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="1128"/>
@@ -1265,17 +1265,17 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/process_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">ਨਾਂ</translation>
+        <translation>ਨਾਂ</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="18"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="22"/>
         <source>Memory</source>
-        <translation type="unfinished">ਮੈਮੋਰੀ</translation>
+        <translation>ਮੈਮੋਰੀ</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="23"/>
@@ -1300,7 +1300,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/process_table_model.h" line="28"/>
         <source>Download</source>
-        <translation type="unfinished">ਡਾਊਨਲੋਡ</translation>
+        <translation>ਡਾਊਨਲੋਡ</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="26"/>
@@ -1394,7 +1394,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/service_name_sub_input_dialog.cpp" line="39"/>
         <source>Cancel</source>
-        <translation type="unfinished">ਰੱਦ ਕਰੋ</translation>
+        <translation>ਰੱਦ ਕਰੋ</translation>
     </message>
     <message>
         <location filename="../gui/system_service_table_view.cpp" line="157"/>
@@ -1451,7 +1451,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/system_service_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">ਨਾਂ</translation>
+        <translation>ਨਾਂ</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="18"/>
@@ -1538,7 +1538,7 @@ Are you sure you want to continue?</source>
         <location filename="../common/common.cpp" line="44"/>
         <location filename="../gui/toolbar.cpp" line="95"/>
         <source>Search</source>
-        <translation type="unfinished">ਖੋਜੋ</translation>
+        <translation>ਖੋਜੋ</translation>
     </message>
 </context>
 <context>

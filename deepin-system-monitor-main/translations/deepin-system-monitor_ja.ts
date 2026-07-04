@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ja">
+<TS version="2.1" language="ja_JP">
 <context>
     <name>App.About</name>
     <message>
         <location filename="../main.cpp" line="119"/>
         <location filename="../main.cpp" line="123"/>
         <source>System Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>システムモニター</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="109"/>
         <source>System Monitor is a tool to monitor realtime system load, view and control processes and services running on your system.</source>
-        <translation type="unfinished"></translation>
+        <translation>システムモニターは、リアルタイムのシステム負荷を監視し、プロセスやサービスを表示および制御するツールです。</translation>
     </message>
 </context>
 <context>
@@ -20,19 +20,19 @@
     <message>
         <location filename="../gui/base/base_detail_view_widget.cpp" line="29"/>
         <source>Hide details</source>
-        <translation type="unfinished"></translation>
+        <translation>詳細を非表示</translation>
     </message>
     <message>
         <location filename="../gui/base/base_detail_view_widget.cpp" line="40"/>
         <location filename="../gui/base/base_detail_view_widget.cpp" line="52"/>
         <source>Overall utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>全体の利用率</translation>
     </message>
     <message>
         <location filename="../gui/base/base_detail_view_widget.cpp" line="43"/>
         <location filename="../gui/base/base_detail_view_widget.cpp" line="54"/>
         <source>Individual utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>個別の利用率</translation>
     </message>
 </context>
 <context>
@@ -40,12 +40,12 @@
     <message>
         <location filename="../gui/block_dev_item_widget.cpp" line="165"/>
         <source>Read</source>
-        <translation type="unfinished"></translation>
+        <translation>読み取り</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_item_widget.cpp" line="169"/>
         <source>Write</source>
-        <translation type="unfinished"></translation>
+        <translation>書き込み</translation>
     </message>
 </context>
 <context>
@@ -54,7 +54,7 @@
         <location filename="../gui/cpu_detail_widget.cpp" line="168"/>
         <location filename="../gui/cpu_detail_widget.cpp" line="285"/>
         <source>60 seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>60秒</translation>
     </message>
 </context>
 <context>
@@ -62,7 +62,7 @@
     <message>
         <location filename="../model/cpu_info_model.cpp" line="49"/>
         <source>%1 days %2 hours %3 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>%1日 %2時間 %3分</translation>
     </message>
 </context>
 <context>
@@ -70,12 +70,12 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="91"/>
         <source>Utilization</source>
-        <translation></translation>
+        <translation>利用率</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>周波数</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,82 +85,82 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>平均周波数</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
         <source>Up time</source>
-        <translation></translation>
+        <translation>稼働時間</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="106"/>
         <source>Sockets</source>
-        <translation></translation>
+        <translation>ソケット</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="110"/>
         <source>Logical processors</source>
-        <translation></translation>
+        <translation>論理プロセッサ</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="112"/>
         <source>Virtualization</source>
-        <translation></translation>
+        <translation>仮想化</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="116"/>
         <source>L1i cache</source>
-        <translation></translation>
+        <translation>L1iキャッシュ</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="118"/>
         <source>L1d cache</source>
-        <translation></translation>
+        <translation>L1dキャッシュ</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="122"/>
         <source>L2 cache</source>
-        <translation></translation>
+        <translation>L2キャッシュ</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="124"/>
         <source>L3 cache</source>
-        <translation></translation>
+        <translation>L3キャッシュ</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="128"/>
         <source>Load average</source>
-        <translation></translation>
+        <translation>負荷平均</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="130"/>
         <source>File descriptors</source>
-        <translation></translation>
+        <translation>ファイルディスクリプタ</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="134"/>
         <source>Processes</source>
-        <translation></translation>
+        <translation>プロセス</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="136"/>
         <source>Threads</source>
-        <translation></translation>
+        <translation>スレッド</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="140"/>
         <source>Host name</source>
-        <translation></translation>
+        <translation>ホスト名</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="142"/>
         <source>OS type</source>
-        <translation></translation>
+        <translation>OSタイプ</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="146"/>
         <source>Version</source>
-        <translation></translation>
+        <translation>バージョン</translation>
     </message>
 </context>
 <context>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/accounts_widget.cpp" line="310"/>
         <source>Cancel</source>
-        <translation type="unfinished">キャンセル</translation>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -176,7 +176,7 @@
     <message>
         <location filename="../gui/chart_view_widget.cpp" line="321"/>
         <source>60 seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>60秒</translation>
     </message>
 </context>
 <context>
@@ -185,7 +185,7 @@
         <location filename="../gui/process_table_view.cpp" line="522"/>
         <location filename="../gui/system_service_table_view.cpp" line="476"/>
         <source>No search results</source>
-        <translation type="unfinished"></translation>
+        <translation>検索結果がありません</translation>
     </message>
 </context>
 <context>
@@ -193,7 +193,7 @@
     <message>
         <location filename="../compact_cpu_monitor.cpp" line="89"/>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>詳細</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,7 @@
     <message>
         <location filename="../cpu_monitor.cpp" line="72"/>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>詳細</translation>
     </message>
 </context>
 <context>
@@ -209,32 +209,32 @@
     <message>
         <location filename="../dbus/dbus_common.h" line="165"/>
         <source>active</source>
-        <translation type="unfinished"></translation>
+        <translation>アクティブ</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="167"/>
         <source>reloading</source>
-        <translation type="unfinished"></translation>
+        <translation>再読み込み中</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="169"/>
         <source>inactive</source>
-        <translation type="unfinished"></translation>
+        <translation>非アクティブ</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="170"/>
         <source>failed</source>
-        <translation type="unfinished"></translation>
+        <translation>失敗</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="172"/>
         <source>activating</source>
-        <translation type="unfinished"></translation>
+        <translation>アクティブ化中</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="174"/>
         <source>deactivating</source>
-        <translation type="unfinished"></translation>
+        <translation>非アクティブ化中</translation>
     </message>
 </context>
 <context>
@@ -242,37 +242,37 @@
     <message>
         <location filename="../dbus/dbus_common.h" line="146"/>
         <source>stub</source>
-        <translation type="unfinished"></translation>
+        <translation>スタブ</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="149"/>
         <source>not-found</source>
-        <translation type="unfinished"></translation>
+        <translation>見つからない</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="151"/>
         <source>bad-setting</source>
-        <translation type="unfinished"></translation>
+        <translation>設定エラー</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="152"/>
         <source>error</source>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="153"/>
         <source>merged</source>
-        <translation type="unfinished"></translation>
+        <translation>マージ済み</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="154"/>
         <source>masked</source>
-        <translation type="unfinished"></translation>
+        <translation>非表示</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="147"/>
         <source>loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>読み込まれた</translation>
     </message>
 </context>
 <context>
@@ -280,17 +280,17 @@
     <message>
         <location filename="../dbus/dbus_common.h" line="297"/>
         <source>N/A</source>
-        <translation type="unfinished"></translation>
+        <translation>該当なし</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="295"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>自動</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="296"/>
         <source>Manual</source>
-        <translation type="unfinished"></translation>
+        <translation>手動</translation>
     </message>
 </context>
 <context>
@@ -298,42 +298,42 @@
     <message>
         <location filename="../dbus/dbus_common.h" line="274"/>
         <source>enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>有効</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="275"/>
         <source>disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>無効</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="276"/>
         <source>static</source>
-        <translation type="unfinished"></translation>
+        <translation>静的</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="277"/>
         <source>transient</source>
-        <translation type="unfinished"></translation>
+        <translation>一時的</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="278"/>
         <source>indirect</source>
-        <translation type="unfinished"></translation>
+        <translation>間接</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="280"/>
         <source>enabled-runtime</source>
-        <translation type="unfinished"></translation>
+        <translation>ランタイムで有効</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="281"/>
         <source>masked</source>
-        <translation type="unfinished"></translation>
+        <translation>マスクされた</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="283"/>
         <source>generated</source>
-        <translation type="unfinished"></translation>
+        <translation>生成された</translation>
     </message>
 </context>
 <context>
@@ -341,82 +341,82 @@
     <message>
         <location filename="../dbus/dbus_common.h" line="217"/>
         <source>dead</source>
-        <translation type="unfinished"></translation>
+        <translation>停止</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="219"/>
         <source>start-pre</source>
-        <translation type="unfinished"></translation>
+        <translation>開始前</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="221"/>
         <source>start</source>
-        <translation type="unfinished"></translation>
+        <translation>開始</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="223"/>
         <source>start-post</source>
-        <translation type="unfinished"></translation>
+        <translation>開始後</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="225"/>
         <source>running</source>
-        <translation type="unfinished"></translation>
+        <translation>実行中</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="227"/>
         <source>exited</source>
-        <translation type="unfinished"></translation>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="229"/>
         <source>reload</source>
-        <translation type="unfinished"></translation>
+        <translation>再読み込み</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="231"/>
         <source>stop</source>
-        <translation type="unfinished"></translation>
+        <translation>停止</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="233"/>
         <source>stop-watchdog</source>
-        <translation type="unfinished"></translation>
+        <translation>ウォッチドッグによる停止</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="235"/>
         <source>stop-sigterm</source>
-        <translation type="unfinished"></translation>
+        <translation>SIGTERMによる停止</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="237"/>
         <source>stop-sigkill</source>
-        <translation type="unfinished"></translation>
+        <translation>SIGKILLによる停止</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="239"/>
         <source>stop-post</source>
-        <translation type="unfinished"></translation>
+        <translation>停止後</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="241"/>
         <source>final-sigterm</source>
-        <translation type="unfinished"></translation>
+        <translation>最終SIGTERM</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="243"/>
         <source>final-sigkill</source>
-        <translation type="unfinished"></translation>
+        <translation>最終SIGKILL</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="245"/>
         <source>failed</source>
-        <translation type="unfinished"></translation>
+        <translation>失敗</translation>
     </message>
     <message>
         <location filename="../dbus/dbus_common.h" line="247"/>
         <source>auto-restart</source>
-        <translation type="unfinished"></translation>
+        <translation>自動再起動</translation>
     </message>
 </context>
 <context>
@@ -425,22 +425,22 @@
         <location filename="../dbus/dbusalarmnotify.cpp" line="38"/>
         <location filename="../dbus/dbusalarmnotify.cpp" line="50"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../dbus/dbusalarmnotify.cpp" line="39"/>
         <source>Your CPU usage is higher than %1%!</source>
-        <translation type="unfinished"></translation>
+        <translation>CPUの使用率が%1%を超えています！</translation>
     </message>
     <message>
         <location filename="../dbus/dbusalarmnotify.cpp" line="51"/>
         <source>Your memory usage is higher than %1%!</source>
-        <translation type="unfinished"></translation>
+        <translation>メモリの使用量が%1%を超えています！</translation>
     </message>
     <message>
         <location filename="../dbus/dbusalarmnotify.cpp" line="71"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>表示</translation>
     </message>
 </context>
 <context>
@@ -448,67 +448,67 @@
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="67"/>
         <source>Used</source>
-        <translation type="unfinished"></translation>
+        <translation>使用済み</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="69"/>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation>利用可能</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="73"/>
         <source>Shared</source>
-        <translation type="unfinished"></translation>
+        <translation>共有</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="75"/>
         <source>Cached</source>
-        <translation type="unfinished"></translation>
+        <translation>キャッシュ</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="79"/>
         <source>Buffers</source>
-        <translation type="unfinished"></translation>
+        <translation>バッファ</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="81"/>
         <source>Cached swap</source>
-        <translation type="unfinished"></translation>
+        <translation>キャッシュスワップ</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="85"/>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>アクティブ</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="87"/>
         <source>Inactive</source>
-        <translation type="unfinished"></translation>
+        <translation>非アクティブ</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="91"/>
         <source>Dirty</source>
-        <translation type="unfinished"></translation>
+        <translation>汚れ</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="93"/>
         <source>Mapped</source>
-        <translation type="unfinished"></translation>
+        <translation>マップ済み</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="97"/>
         <source>Total swap</source>
-        <translation type="unfinished"></translation>
+        <translation>総スワップ</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="99"/>
         <source>Free swap</source>
-        <translation type="unfinished"></translation>
+        <translation>フリースワップ</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="103"/>
         <source>Slab</source>
-        <translation type="unfinished"></translation>
+        <translation>スラブ</translation>
     </message>
 </context>
 <context>
@@ -516,67 +516,67 @@
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="70"/>
         <source>Read speed</source>
-        <translation type="unfinished"></translation>
+        <translation>読み取り速度</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="72"/>
         <source>Write speed</source>
-        <translation type="unfinished"></translation>
+        <translation>書き込み速度</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="76"/>
         <source>Capacity</source>
-        <translation type="unfinished"></translation>
+        <translation>容量</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="78"/>
         <source>Sectors read</source>
-        <translation type="unfinished"></translation>
+        <translation>読み取られたセクター</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="82"/>
         <source>Reads/s</source>
-        <translation type="unfinished"></translation>
+        <translation>秒あたりの読み取り回数</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="84"/>
         <source>Sectors read/s</source>
-        <translation type="unfinished"></translation>
+        <translation>秒あたりの読み取られたセクター</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="88"/>
         <source>Reads merged/s</source>
-        <translation type="unfinished"></translation>
+        <translation>秒あたりのマージされた読み取り</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="90"/>
         <source>Sectors written</source>
-        <translation type="unfinished"></translation>
+        <translation>書き込まれたセクター</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="94"/>
         <source>Writes completed </source>
-        <translation type="unfinished"></translation>
+        <translation>完了した書き込み</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="96"/>
         <source>Writes merged</source>
-        <translation type="unfinished"></translation>
+        <translation>マージされた書き込み</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="100"/>
         <source>Writes/s</source>
-        <translation type="unfinished"></translation>
+        <translation>秒あたりの書き込み回数</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="102"/>
         <source>Sectors written/s</source>
-        <translation type="unfinished"></translation>
+        <translation>秒あたりの書き込まれたセクター</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_summary_view_widget.cpp" line="106"/>
         <source>Writes merged/s</source>
-        <translation type="unfinished"></translation>
+        <translation>秒あたりのマージされた書き込み</translation>
     </message>
 </context>
 <context>
@@ -585,7 +585,7 @@
         <location filename="../gui/dialog/error_dialog.cpp" line="75"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>ＯＫ</translation>
     </message>
 </context>
 <context>
@@ -593,12 +593,12 @@
     <message>
         <location filename="../common/common.cpp" line="32"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>システム</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="38"/>
         <source>Display shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>ショートカットを表示する</translation>
     </message>
 </context>
 <context>
@@ -607,20 +607,21 @@
         <location filename="../gui/process_table_view.cpp" line="177"/>
         <source>Ending this process may cause data loss.
 Are you sure you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>このプロセスを終了するとデータが失われる可能性があります。
+続行しますか？</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="184"/>
         <source>End</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="530"/>
         <location filename="../gui/process_table_view.cpp" line="176"/>
         <location filename="../gui/process_table_view.cpp" line="408"/>
         <source>End process</source>
-        <translation type="unfinished">プロセスを終了</translation>
+        <translation>プロセスを終了</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="539"/>
@@ -628,26 +629,28 @@ Are you sure you want to continue?</source>
         <location filename="../gui/process_table_view.cpp" line="416"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">キャンセル</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="540"/>
         <location filename="../gui/process_table_view.cpp" line="417"/>
         <source>Force End</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>強制終了</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="409"/>
         <source>Force ending this process may cause data loss.
 Are you sure you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>このプロセスを強制的に終了するとデータが失われる可能性があります。
+続行しますか？</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="531"/>
         <source>Force ending this application may cause data loss.
 Are you sure you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>このアプリケーションを強制的に終了するとデータが失われる可能性があります。
+続行しますか？</translation>
     </message>
 </context>
 <context>
@@ -655,7 +658,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/accounts_widget.cpp" line="311"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>ログアウト</translation>
     </message>
 </context>
 <context>
@@ -663,7 +666,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/main_window.cpp" line="190"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
 </context>
 <context>
@@ -671,7 +674,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/mem_stat_view_widget.cpp" line="52"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>サイズ</translation>
     </message>
 </context>
 <context>
@@ -680,27 +683,27 @@ Are you sure you want to continue?</source>
         <location filename="../gui/netif_summary_view_widget.h" line="157"/>
         <location filename="../gui/netif_summary_view_widget.h" line="159"/>
         <source>IP address:</source>
-        <translation type="unfinished"></translation>
+        <translation>IP アドレス:</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="157"/>
         <source>Netmask:</source>
-        <translation type="unfinished"></translation>
+        <translation>サブネットマスク:</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="157"/>
         <source>Broadcast:</source>
-        <translation type="unfinished"></translation>
+        <translation>ブロードキャスト:</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="159"/>
         <source>Prefixlen:</source>
-        <translation type="unfinished"></translation>
+        <translation>プレフィックス長:</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="159"/>
         <source>Scope:</source>
-        <translation type="unfinished"></translation>
+        <translation>スコープ:</translation>
     </message>
 </context>
 <context>
@@ -709,108 +712,108 @@ Are you sure you want to continue?</source>
         <location filename="../gui/netif_summary_view_widget.h" line="267"/>
         <location filename="../gui/netif_summary_view_widget.h" line="269"/>
         <source>IPv4</source>
-        <translation type="unfinished"></translation>
+        <translation>IPv4</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="282"/>
         <location filename="../gui/netif_summary_view_widget.h" line="284"/>
         <source>IPv6</source>
-        <translation type="unfinished"></translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="293"/>
         <source>Connection type</source>
-        <translation type="unfinished"></translation>
+        <translation>接続タイプ</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="301"/>
         <source>ESSID</source>
-        <translation type="unfinished"></translation>
+        <translation>ESSID</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="307"/>
         <source>Link quality</source>
-        <translation type="unfinished"></translation>
+        <translation>リンク品質</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="312"/>
         <source>Signal strength</source>
-        <translation type="unfinished"></translation>
+        <translation>信号強度</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="320"/>
         <source>Noise level</source>
-        <translation type="unfinished"></translation>
+        <translation>ノイズレベル</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="326"/>
         <source>MAC</source>
-        <translation type="unfinished"></translation>
+        <translation>MACアドレス</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="331"/>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>帯域幅</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="336"/>
         <source>RX packets</source>
-        <translation type="unfinished"></translation>
+        <translation>受信パケット</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="341"/>
         <source>RX bytes</source>
-        <translation type="unfinished"></translation>
+        <translation>受信バイト</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="346"/>
         <source>RX errors</source>
-        <translation type="unfinished"></translation>
+        <translation>受信エラー</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="351"/>
         <source>RX dropped</source>
-        <translation type="unfinished"></translation>
+        <translation>受信削除</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="356"/>
         <source>RX overruns</source>
-        <translation type="unfinished"></translation>
+        <translation>受信オーバーラン</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="361"/>
         <source>RX frame</source>
-        <translation type="unfinished"></translation>
+        <translation>受信フレーム</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="366"/>
         <source>TX packets</source>
-        <translation type="unfinished"></translation>
+        <translation>送信パケット</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="371"/>
         <source>TX bytes</source>
-        <translation type="unfinished"></translation>
+        <translation>送信バイト</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="376"/>
         <source>TX errors</source>
-        <translation type="unfinished"></translation>
+        <translation>送信エラー</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="381"/>
         <source>TX dropped</source>
-        <translation type="unfinished"></translation>
+        <translation>送信削除</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="386"/>
         <source>TX overruns</source>
-        <translation type="unfinished"></translation>
+        <translation>送信オーバーラン</translation>
     </message>
     <message>
         <location filename="../gui/netif_summary_view_widget.h" line="391"/>
         <source>TX carrier</source>
-        <translation type="unfinished"></translation>
+        <translation>TX キャリア</translation>
     </message>
 </context>
 <context>
@@ -818,17 +821,17 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="144"/>
         <source>Command line</source>
-        <translation type="unfinished">コマンドライン</translation>
+        <translation>コマンドライン</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="149"/>
         <source>Start time</source>
-        <translation type="unfinished">開始時刻</translation>
+        <translation>開始時刻</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="139"/>
         <source>Name</source>
-        <translation type="unfinished">名前</translation>
+        <translation>名前</translation>
     </message>
 </context>
 <context>
@@ -836,7 +839,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/xwin_kill_preview_background_widget.cpp" line="152"/>
         <source>Click the application you want to end</source>
-        <translation type="unfinished">終了させたいアプリケーションをクリックしてください</translation>
+        <translation>終了させたいアプリケーションをクリックしてください</translation>
     </message>
 </context>
 <context>
@@ -847,13 +850,13 @@ Are you sure you want to continue?</source>
         <location filename="../gui/mem_stat_view_widget.cpp" line="107"/>
         <location filename="../memory_monitor.cpp" line="177"/>
         <source>Memory</source>
-        <translation type="unfinished">メモリ</translation>
+        <translation>メモリ</translation>
     </message>
     <message>
         <location filename="../gui/netif_item_view_widget.cpp" line="95"/>
         <location filename="../gui/netif_item_view_widget.cpp" line="121"/>
         <source>Receive</source>
-        <translation type="unfinished"></translation>
+        <translation>受信</translation>
     </message>
 </context>
 <context>
@@ -865,17 +868,17 @@ Are you sure you want to continue?</source>
         <location filename="../gui/cpu_detail_widget.cpp" line="371"/>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="224"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="153"/>
         <source>Disk read</source>
-        <translation type="unfinished">ディスク読込</translation>
+        <translation>ディスク読込</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="154"/>
         <source>Disk write</source>
-        <translation type="unfinished">ディスク書込</translation>
+        <translation>ディスク書込</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="191"/>
@@ -883,7 +886,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="280"/>
         <location filename="../memory_monitor.cpp" line="203"/>
         <source>Memory</source>
-        <translation type="unfinished">メモリ</translation>
+        <translation>メモリ</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="203"/>
@@ -892,56 +895,56 @@ Are you sure you want to continue?</source>
         <location filename="../memory_monitor.cpp" line="214"/>
         <location filename="../memory_monitor.cpp" line="221"/>
         <source>Swap</source>
-        <translation type="unfinished">スワップ</translation>
+        <translation>スワップ</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="204"/>
         <location filename="../memory_monitor.cpp" line="215"/>
         <source>Not enabled</source>
-        <translation type="unfinished">未有効</translation>
+        <translation>未有効</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="158"/>
         <location filename="../network_monitor.cpp" line="216"/>
         <source>Download</source>
-        <translation type="unfinished">ダウンロード</translation>
+        <translation>ダウンロード</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="163"/>
         <location filename="../network_monitor.cpp" line="221"/>
         <source>Upload</source>
-        <translation type="unfinished">アップロード</translation>
+        <translation>アップロード</translation>
     </message>
     <message>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="227"/>
         <location filename="../gui/netif_detail_view_widget.cpp" line="33"/>
         <location filename="../network_monitor.cpp" line="198"/>
         <source>Network</source>
-        <translation type="unfinished">ネットワーク</translation>
+        <translation>ネットワーク</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="160"/>
         <location filename="../network_monitor.cpp" line="218"/>
         <source>Total Received</source>
-        <translation type="unfinished"></translation>
+        <translation>受信総量</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="165"/>
         <location filename="../network_monitor.cpp" line="223"/>
         <source>Total Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>送信総量</translation>
     </message>
     <message>
         <location filename="../gui/block_dev_detail_view_widget.cpp" line="21"/>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="228"/>
         <source>Disks</source>
-        <translation type="unfinished"></translation>
+        <translation>ディスク</translation>
     </message>
     <message>
         <location filename="../gui/netif_item_view_widget.cpp" line="104"/>
         <location filename="../gui/netif_item_view_widget.cpp" line="130"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>送信</translation>
     </message>
     <message>
         <location filename="../compact_gpu_monitor.cpp" line="123"/>
@@ -949,101 +952,101 @@ Are you sure you want to continue?</source>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>GPU</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>利用率</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>GPUが検出されていません</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>GPUの利用率</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>NPUの利用率</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>GPUメモリの利用率</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>NPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>CPUに組み込まれています</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>外部</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>デバイス</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>システムRAM（動的）</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished"></translation>
+        <translation>モデル</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>ベンダー</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>バスインターフェース</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>アクティブ時間</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>エンジン</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>温度</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>共有メモリ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>専用メモリ</translation>
     </message>
 </context>
 <context>
@@ -1051,7 +1054,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="67"/>
         <source>Loading</source>
-        <translation type="unfinished"></translation>
+        <translation>読み込み中</translation>
     </message>
 </context>
 <context>
@@ -1060,53 +1063,53 @@ Are you sure you want to continue?</source>
         <location filename="../gui/process_table_view.cpp" line="670"/>
         <location filename="../process/process.cpp" line="56"/>
         <source>Very high</source>
-        <translation type="unfinished"></translation>
+        <translation>非常に高い</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="678"/>
         <location filename="../process/process.cpp" line="57"/>
         <source>High</source>
-        <translation type="unfinished"></translation>
+        <translation>高</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="686"/>
         <location filename="../process/process.cpp" line="58"/>
         <source>Normal</source>
-        <translation type="unfinished"></translation>
+        <translation>通常</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="694"/>
         <location filename="../process/process.cpp" line="59"/>
         <source>Low</source>
-        <translation type="unfinished"></translation>
+        <translation>低</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="702"/>
         <location filename="../process/process.cpp" line="60"/>
         <source>Very low</source>
-        <translation type="unfinished"></translation>
+        <translation>非常に低い</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="710"/>
         <location filename="../process/process.cpp" line="61"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム</translation>
     </message>
     <message>
         <location filename="../process/process.cpp" line="62"/>
         <source>Invalid</source>
-        <translation type="unfinished"></translation>
+        <translation>無効</translation>
     </message>
     <message>
         <location filename="../process/process_db.cpp" line="201"/>
         <source>PID: %1, Error: [%2] %3</source>
-        <translation type="unfinished"></translation>
+        <translation>PID: %1、エラー: [%2] %3</translation>
     </message>
     <message>
         <location filename="../process/process_db.cpp" line="158"/>
         <location filename="../process/process_db.cpp" line="198"/>
         <source>Failed to change process priority</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセスの優先順位を変更できませんでした</translation>
     </message>
 </context>
 <context>
@@ -1114,17 +1117,17 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="61"/>
         <source>Applications</source>
-        <translation type="unfinished">アプリケーション</translation>
+        <translation>アプリケーション</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="63"/>
         <source>My processes</source>
-        <translation type="unfinished">マイプロセス</translation>
+        <translation>マイプロセス</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="65"/>
         <source>All processes</source>
-        <translation type="unfinished">全てのプロセス</translation>
+        <translation>全てのプロセス</translation>
     </message>
 </context>
 <context>
@@ -1132,34 +1135,34 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../process/process_db.cpp" line="303"/>
         <source>Failed to pause process</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセスの一時停止に失敗しました</translation>
     </message>
     <message>
         <location filename="../process/process_db.cpp" line="306"/>
         <source>Failed to resume process</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセスの再開に失敗しました</translation>
     </message>
     <message>
         <location filename="../process/process_db.cpp" line="246"/>
         <location filename="../process/process_db.cpp" line="309"/>
         <source>Failed to kill process</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセスの終了に失敗しました</translation>
     </message>
     <message>
         <location filename="../process/process_db.cpp" line="312"/>
         <source>Unknown error</source>
-        <translation type="unfinished"></translation>
+        <translation>不明なエラー</translation>
     </message>
     <message>
         <location filename="../process/process_db.cpp" line="373"/>
         <source>Failed in sending signal to process</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセスへのシグナル送信に失敗しました</translation>
     </message>
     <message>
         <location filename="../process/process_db.cpp" line="245"/>
         <location filename="../process/process_db.cpp" line="300"/>
         <source>Failed to end process</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセスの終了に失敗しました</translation>
     </message>
 </context>
 <context>
@@ -1167,7 +1170,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="58"/>
         <source>(%1 applications and %2 processes are running)</source>
-        <translation type="unfinished"></translation>
+        <translation>(%1 アプリケーションと %2 プロセスが実行中です)</translation>
     </message>
 </context>
 <context>
@@ -1175,19 +1178,19 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/process_table_model.cpp" line="271"/>
         <source>No response</source>
-        <translation type="unfinished">応答なし</translation>
+        <translation>応答なし</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.cpp" line="277"/>
         <source>Suspend</source>
-        <translation type="unfinished">サスペンド</translation>
+        <translation>サスペンド</translation>
     </message>
     <message>
         <location filename="../process/process_name.cpp" line="90"/>
         <location filename="../process/process_name.cpp" line="99"/>
         <location filename="../process/process_name.cpp" line="104"/>
         <source>Tray</source>
-        <translation type="unfinished">トレイ</translation>
+        <translation>トレイ</translation>
     </message>
 </context>
 <context>
@@ -1195,42 +1198,42 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_table_view.cpp" line="717"/>
         <source>View command location</source>
-        <translation type="unfinished"></translation>
+        <translation>コマンドの場所を表示</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="83"/>
         <location filename="../gui/process_table_view.cpp" line="721"/>
         <source>Properties</source>
-        <translation type="unfinished">プロパティ</translation>
+        <translation>プロパティ</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="66"/>
         <location filename="../gui/process_table_view.cpp" line="637"/>
         <source>End process</source>
-        <translation type="unfinished">プロセスを終了</translation>
+        <translation>プロセスを終了</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="78"/>
         <location filename="../gui/process_table_view.cpp" line="649"/>
         <source>Resume process</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセスを再開</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="89"/>
         <location filename="../gui/process_table_view.cpp" line="728"/>
         <source>Kill process</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセスを終了</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="664"/>
         <source>Change priority</source>
-        <translation type="unfinished"></translation>
+        <translation>優先順位を変更</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="72"/>
         <location filename="../gui/process_table_view.cpp" line="643"/>
         <source>Suspend process</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセスを一時停止</translation>
     </message>
 </context>
 <context>
@@ -1238,19 +1241,19 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_table_view.cpp" line="1093"/>
         <source>Custom Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム優先順位</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="1126"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">キャンセル</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="1128"/>
         <source>Change</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>変更</translation>
     </message>
 </context>
 <context>
@@ -1258,67 +1261,67 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/process_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">名前</translation>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="18"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="22"/>
         <source>Memory</source>
-        <translation type="unfinished">メモリ</translation>
+        <translation>メモリ</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="23"/>
         <source>Shared memory</source>
-        <translation type="unfinished"></translation>
+        <translation>共有メモリ</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="24"/>
         <source>Virtual memory</source>
-        <translation type="unfinished"></translation>
+        <translation>仮想メモリ</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="32"/>
         <source>Disk write</source>
-        <translation type="unfinished">ディスク書込</translation>
+        <translation>ディスク書込</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="30"/>
         <source>Disk read</source>
-        <translation type="unfinished">ディスク読込</translation>
+        <translation>ディスク読込</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="28"/>
         <source>Download</source>
-        <translation type="unfinished">ダウンロード</translation>
+        <translation>ダウンロード</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="26"/>
         <source>Upload</source>
-        <translation type="unfinished">アップロード</translation>
+        <translation>アップロード</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="34"/>
         <source>PID</source>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="20"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="36"/>
         <source>Nice</source>
-        <translation type="unfinished"></translation>
+        <translation>優先度調整</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="38"/>
         <source>Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>優先順位</translation>
     </message>
 </context>
 <context>
@@ -1326,42 +1329,42 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/dialog/settingsdialog.cpp" line="10"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../gui/dialog/settingsdialog.cpp" line="11"/>
         <source>System Protection</source>
-        <translation type="unfinished"></translation>
+        <translation>システム保護</translation>
     </message>
     <message>
         <location filename="../gui/dialog/settingsdialog.cpp" line="12"/>
         <source>Show warnings when the usage exceeds the thresholds</source>
-        <translation type="unfinished"></translation>
+        <translation>使用量がしきい値を超えたときに警告を表示する</translation>
     </message>
     <message>
         <location filename="../gui/dialog/settingsdialog.cpp" line="13"/>
         <source>CPU warning threshold (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>CPU 警告閾値 (%)</translation>
     </message>
     <message>
         <location filename="../gui/dialog/settingsdialog.cpp" line="14"/>
         <source>Memory warning threshold (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>メモリ警告閾値 (%)</translation>
     </message>
     <message>
         <location filename="../gui/dialog/settingsdialog.cpp" line="15"/>
         <source>Warning interval (min)</source>
-        <translation type="unfinished"></translation>
+        <translation>警告間隔 (分)</translation>
     </message>
     <message>
         <location filename="../gui/dialog/settingsdialog.cpp" line="16"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>通知</translation>
     </message>
     <message>
         <location filename="../system/cpu_set.cpp" line="429"/>
         <source>Not support</source>
-        <translation type="unfinished"></translation>
+        <translation>サポートされていません</translation>
     </message>
 </context>
 <context>
@@ -1369,12 +1372,12 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../service/service_manager.cpp" line="342"/>
         <source>Failed to set service startup type</source>
-        <translation type="unfinished"></translation>
+        <translation>サービスの起動タイプを設定できませんでした</translation>
     </message>
     <message>
         <location filename="../service/service_manager.cpp" line="408"/>
         <source>Error: Failed to set service startup type due to the crashed sub process.</source>
-        <translation type="unfinished"></translation>
+        <translation>エラー：サブプロセスがクラッシュしたため、サービスの起動タイプを設定できませんでした。</translation>
     </message>
 </context>
 <context>
@@ -1382,19 +1385,19 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/service_name_sub_input_dialog.cpp" line="38"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../gui/service_name_sub_input_dialog.cpp" line="39"/>
         <source>Cancel</source>
-        <translation type="unfinished">キャンセル</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../gui/system_service_table_view.cpp" line="157"/>
         <location filename="../gui/system_service_table_view.cpp" line="224"/>
         <location filename="../gui/system_service_table_view.cpp" line="292"/>
         <source>Service instance name</source>
-        <translation type="unfinished"></translation>
+        <translation>サービスインスタンス名</translation>
     </message>
 </context>
 <context>
@@ -1403,40 +1406,40 @@ Are you sure you want to continue?</source>
         <location filename="../common/common.cpp" line="118"/>
         <location filename="../gui/system_service_table_view.cpp" line="562"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="103"/>
         <location filename="../gui/system_service_table_view.cpp" line="542"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>開始</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="108"/>
         <location filename="../gui/system_service_table_view.cpp" line="547"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>停止</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="113"/>
         <location filename="../gui/system_service_table_view.cpp" line="552"/>
         <source>Restart</source>
-        <translation type="unfinished"></translation>
+        <translation>再起動</translation>
     </message>
     <message>
         <location filename="../gui/system_service_table_view.cpp" line="558"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>自動</translation>
     </message>
     <message>
         <location filename="../gui/system_service_table_view.cpp" line="559"/>
         <source>Manual</source>
-        <translation type="unfinished"></translation>
+        <translation>手動</translation>
     </message>
     <message>
         <location filename="../gui/system_service_table_view.cpp" line="557"/>
         <source>Startup type</source>
-        <translation type="unfinished"></translation>
+        <translation>起動タイプ</translation>
     </message>
 </context>
 <context>
@@ -1444,42 +1447,42 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/system_service_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">名前</translation>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="18"/>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>読み込み</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="21"/>
         <source>Start State</source>
-        <translation type="unfinished"></translation>
+        <translation>開始状態</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="25"/>
         <source>Start Tactic</source>
-        <translation type="unfinished"></translation>
+        <translation>開始戦術</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="23"/>
         <source>Sub</source>
-        <translation type="unfinished"></translation>
+        <translation>サブ</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="30"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>説明</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="32"/>
         <source>PID</source>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="27"/>
         <source>Startup Type</source>
-        <translation type="unfinished"></translation>
+        <translation>起動タイプ</translation>
     </message>
 </context>
 <context>
@@ -1487,18 +1490,18 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/dialog/systemprotectionsetting.cpp" line="132"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../gui/dialog/systemprotectionsetting.cpp" line="165"/>
         <source>(Modifiable)</source>
-        <translation type="unfinished"></translation>
+        <translation>(変更可能)</translation>
     </message>
     <message>
         <location filename="../gui/dialog/systemprotectionsetting.cpp" line="278"/>
         <location filename="../gui/dialog/systemprotectionsetting.cpp" line="387"/>
         <source>Range: %1-%2</source>
-        <translation type="unfinished"></translation>
+        <translation>範囲：%1-%2</translation>
     </message>
 </context>
 <context>
@@ -1507,22 +1510,22 @@ Are you sure you want to continue?</source>
         <location filename="../common/common.cpp" line="59"/>
         <location filename="../gui/main_window.cpp" line="138"/>
         <source>Force end application</source>
-        <translation type="unfinished"></translation>
+        <translation>アプリケーションを強制終了</translation>
     </message>
     <message>
         <location filename="../gui/main_window.cpp" line="156"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>拡大</translation>
     </message>
     <message>
         <location filename="../gui/main_window.cpp" line="159"/>
         <source>Compact</source>
-        <translation type="unfinished"></translation>
+        <translation>コンパクト</translation>
     </message>
     <message>
         <location filename="../gui/main_window.cpp" line="151"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>表示</translation>
     </message>
 </context>
 <context>
@@ -1531,7 +1534,7 @@ Are you sure you want to continue?</source>
         <location filename="../common/common.cpp" line="44"/>
         <location filename="../gui/toolbar.cpp" line="95"/>
         <source>Search</source>
-        <translation type="unfinished">検索</translation>
+        <translation>検索</translation>
     </message>
 </context>
 <context>
@@ -1542,7 +1545,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/main_window.cpp" line="244"/>
         <location filename="../gui/toolbar.cpp" line="45"/>
         <source>Processes</source>
-        <translation type="unfinished"></translation>
+        <translation>プロセス</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="98"/>
@@ -1551,13 +1554,13 @@ Are you sure you want to continue?</source>
         <location filename="../gui/main_window.cpp" line="254"/>
         <location filename="../gui/toolbar.cpp" line="53"/>
         <source>Services</source>
-        <translation type="unfinished"></translation>
+        <translation>サービス</translation>
     </message>
     <message>
         <location filename="../gui/main_window.cpp" line="254"/>
         <location filename="../gui/toolbar.cpp" line="60"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー</translation>
     </message>
 </context>
 <context>
@@ -1565,7 +1568,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/accounts_widget.cpp" line="102"/>
         <source>Edit account information</source>
-        <translation type="unfinished"></translation>
+        <translation>アカウント情報を編集する</translation>
     </message>
 </context>
 <context>
@@ -1573,12 +1576,12 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/accounts_widget.cpp" line="152"/>
         <source>Administrator</source>
-        <translation type="unfinished"></translation>
+        <translation>管理者</translation>
     </message>
     <message>
         <location filename="../gui/accounts_widget.cpp" line="152"/>
         <source>Standard User</source>
-        <translation type="unfinished"></translation>
+        <translation>標準ユーザー</translation>
     </message>
 </context>
 </TS>

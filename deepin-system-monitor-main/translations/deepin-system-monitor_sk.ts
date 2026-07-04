@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="sk">
+<TS version="2.1" language="sk_SK">
 <context>
     <name>App.About</name>
     <message>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>Frekvencia</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>Priemerná frekvencia</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/accounts_widget.cpp" line="310"/>
         <source>Cancel</source>
-        <translation type="unfinished">Zrušiť</translation>
+        <translation>Zrušiť</translation>
     </message>
 </context>
 <context>
@@ -611,7 +611,7 @@
         <location filename="../gui/process_table_view.cpp" line="177"/>
         <source>Ending this process may cause data loss.
 Are you sure you want to continue?</source>
-        <translation type="unfinished">Ukončenie tohto procesu môže spôsobiť stratu údajov.
+        <translation>Ukončenie tohto procesu môže spôsobiť stratu údajov.
 Naozaj chcete pokračovať?</translation>
     </message>
     <message>
@@ -625,7 +625,7 @@ Naozaj chcete pokračovať?</translation>
         <location filename="../gui/process_table_view.cpp" line="176"/>
         <location filename="../gui/process_table_view.cpp" line="408"/>
         <source>End process</source>
-        <translation type="unfinished">Ukončiť proces</translation>
+        <translation>Ukončiť proces</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="539"/>
@@ -633,7 +633,7 @@ Naozaj chcete pokračovať?</translation>
         <location filename="../gui/process_table_view.cpp" line="416"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Zrušiť</translation>
+        <translation>Zrušiť</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="540"/>
@@ -825,17 +825,17 @@ Ste si istí, že chcete pokračovať?</translation>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="144"/>
         <source>Command line</source>
-        <translation type="unfinished">Príkazový riadok</translation>
+        <translation>Príkazový riadok</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="149"/>
         <source>Start time</source>
-        <translation type="unfinished">Doba spustenia</translation>
+        <translation>Doba spustenia</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="139"/>
         <source>Name</source>
-        <translation type="unfinished">Názov</translation>
+        <translation>Názov</translation>
     </message>
 </context>
 <context>
@@ -843,7 +843,7 @@ Ste si istí, že chcete pokračovať?</translation>
     <message>
         <location filename="../gui/xwin_kill_preview_background_widget.cpp" line="152"/>
         <source>Click the application you want to end</source>
-        <translation type="unfinished">Kliknite na aplikáciu, ktorú chcete ukončiť</translation>
+        <translation>Kliknite na aplikáciu, ktorú chcete ukončiť</translation>
     </message>
 </context>
 <context>
@@ -854,7 +854,7 @@ Ste si istí, že chcete pokračovať?</translation>
         <location filename="../gui/mem_stat_view_widget.cpp" line="107"/>
         <location filename="../memory_monitor.cpp" line="177"/>
         <source>Memory</source>
-        <translation type="unfinished">Pamäť</translation>
+        <translation>Pamäť</translation>
     </message>
     <message>
         <location filename="../gui/netif_item_view_widget.cpp" line="95"/>
@@ -872,17 +872,17 @@ Ste si istí, že chcete pokračovať?</translation>
         <location filename="../gui/cpu_detail_widget.cpp" line="371"/>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="224"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="153"/>
         <source>Disk read</source>
-        <translation type="unfinished">Čítanie disku</translation>
+        <translation>Čítanie disku</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="154"/>
         <source>Disk write</source>
-        <translation type="unfinished">Zápis disku</translation>
+        <translation>Zápis disku</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="191"/>
@@ -890,7 +890,7 @@ Ste si istí, že chcete pokračovať?</translation>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="280"/>
         <location filename="../memory_monitor.cpp" line="203"/>
         <source>Memory</source>
-        <translation type="unfinished">Pamäť</translation>
+        <translation>Pamäť</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="203"/>
@@ -899,32 +899,32 @@ Ste si istí, že chcete pokračovať?</translation>
         <location filename="../memory_monitor.cpp" line="214"/>
         <location filename="../memory_monitor.cpp" line="221"/>
         <source>Swap</source>
-        <translation type="unfinished">Swap</translation>
+        <translation>Swap</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="204"/>
         <location filename="../memory_monitor.cpp" line="215"/>
         <source>Not enabled</source>
-        <translation type="unfinished">Nie je povolené</translation>
+        <translation>Nie je povolené</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="158"/>
         <location filename="../network_monitor.cpp" line="216"/>
         <source>Download</source>
-        <translation type="unfinished">Sťahovanie</translation>
+        <translation>Sťahovanie</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="163"/>
         <location filename="../network_monitor.cpp" line="221"/>
         <source>Upload</source>
-        <translation type="unfinished">Odosielanie</translation>
+        <translation>Odosielanie</translation>
     </message>
     <message>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="227"/>
         <location filename="../gui/netif_detail_view_widget.cpp" line="33"/>
         <location filename="../network_monitor.cpp" line="198"/>
         <source>Network</source>
-        <translation type="unfinished">Sieť</translation>
+        <translation>Sieť</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="160"/>
@@ -956,101 +956,101 @@ Ste si istí, že chcete pokračovať?</translation>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>GPU</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished">Využitie</translation>
+        <translation>Využitie</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenájdený žiadny GPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Využitie GPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Využitie NPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Využitie pamäte GPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>NPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapracované v CPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>Externé</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Zariadenie</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>Systémová RAM (dynamická)</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished">Model</translation>
+        <translation>Model</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodávateľ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozhranie sběrnice</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktívny čas</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>Motory</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Teplota</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Spoločná pamäť</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyhradená pamäť</translation>
     </message>
 </context>
 <context>
@@ -1121,17 +1121,17 @@ Ste si istí, že chcete pokračovať?</translation>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="61"/>
         <source>Applications</source>
-        <translation type="unfinished">Aplikácie</translation>
+        <translation>Aplikácie</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="63"/>
         <source>My processes</source>
-        <translation type="unfinished">Moje procesy</translation>
+        <translation>Moje procesy</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="65"/>
         <source>All processes</source>
-        <translation type="unfinished">Všetky procesy</translation>
+        <translation>Všetky procesy</translation>
     </message>
 </context>
 <context>
@@ -1182,19 +1182,19 @@ Ste si istí, že chcete pokračovať?</translation>
     <message>
         <location filename="../model/process_table_model.cpp" line="271"/>
         <source>No response</source>
-        <translation type="unfinished">Žiadna odpoveď</translation>
+        <translation>Žiadna odpoveď</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.cpp" line="277"/>
         <source>Suspend</source>
-        <translation type="unfinished">Pozastaviť</translation>
+        <translation>Pozastaviť</translation>
     </message>
     <message>
         <location filename="../process/process_name.cpp" line="90"/>
         <location filename="../process/process_name.cpp" line="99"/>
         <location filename="../process/process_name.cpp" line="104"/>
         <source>Tray</source>
-        <translation type="unfinished">Zásobník</translation>
+        <translation>Zásobník</translation>
     </message>
 </context>
 <context>
@@ -1208,13 +1208,13 @@ Ste si istí, že chcete pokračovať?</translation>
         <location filename="../common/common.cpp" line="83"/>
         <location filename="../gui/process_table_view.cpp" line="721"/>
         <source>Properties</source>
-        <translation type="unfinished">Vlastnosti</translation>
+        <translation>Vlastnosti</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="66"/>
         <location filename="../gui/process_table_view.cpp" line="637"/>
         <source>End process</source>
-        <translation type="unfinished">Ukončiť proces</translation>
+        <translation>Ukončiť proces</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="78"/>
@@ -1251,7 +1251,7 @@ Ste si istí, že chcete pokračovať?</translation>
         <location filename="../gui/process_table_view.cpp" line="1126"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Zrušiť</translation>
+        <translation>Zrušiť</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="1128"/>
@@ -1265,17 +1265,17 @@ Ste si istí, že chcete pokračovať?</translation>
     <message>
         <location filename="../model/process_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">Názov</translation>
+        <translation>Názov</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="18"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="22"/>
         <source>Memory</source>
-        <translation type="unfinished">Pamäť</translation>
+        <translation>Pamäť</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="23"/>
@@ -1290,27 +1290,27 @@ Ste si istí, že chcete pokračovať?</translation>
     <message>
         <location filename="../model/process_table_model.h" line="32"/>
         <source>Disk write</source>
-        <translation type="unfinished">Zápis disku</translation>
+        <translation>Zápis disku</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="30"/>
         <source>Disk read</source>
-        <translation type="unfinished">Čítanie disku</translation>
+        <translation>Čítanie disku</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="28"/>
         <source>Download</source>
-        <translation type="unfinished">Sťahovanie</translation>
+        <translation>Sťahovanie</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="26"/>
         <source>Upload</source>
-        <translation type="unfinished">Odosielanie</translation>
+        <translation>Odosielanie</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="34"/>
         <source>PID</source>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="20"/>
@@ -1394,7 +1394,7 @@ Ste si istí, že chcete pokračovať?</translation>
     <message>
         <location filename="../gui/service_name_sub_input_dialog.cpp" line="39"/>
         <source>Cancel</source>
-        <translation type="unfinished">Zrušiť</translation>
+        <translation>Zrušiť</translation>
     </message>
     <message>
         <location filename="../gui/system_service_table_view.cpp" line="157"/>
@@ -1451,7 +1451,7 @@ Ste si istí, že chcete pokračovať?</translation>
     <message>
         <location filename="../model/system_service_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">Názov</translation>
+        <translation>Názov</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="18"/>
@@ -1481,7 +1481,7 @@ Ste si istí, že chcete pokračovať?</translation>
     <message>
         <location filename="../model/system_service_table_model.h" line="32"/>
         <source>PID</source>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="27"/>
@@ -1538,7 +1538,7 @@ Ste si istí, že chcete pokračovať?</translation>
         <location filename="../common/common.cpp" line="44"/>
         <location filename="../gui/toolbar.cpp" line="95"/>
         <source>Search</source>
-        <translation type="unfinished">Vyhľadávanie</translation>
+        <translation>Vyhľadávanie</translation>
     </message>
 </context>
 <context>

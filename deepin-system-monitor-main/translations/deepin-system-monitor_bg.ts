@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="bg">
+<TS version="2.1" language="bg_BG">
 <context>
     <name>App.About</name>
     <message>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>Честота</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>Средна честота</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/accounts_widget.cpp" line="310"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отказ</translation>
+        <translation>Отказ</translation>
     </message>
 </context>
 <context>
@@ -611,7 +611,7 @@
         <location filename="../gui/process_table_view.cpp" line="177"/>
         <source>Ending this process may cause data loss.
 Are you sure you want to continue?</source>
-        <translation type="unfinished">Прекратяването на този процес може да причини загуба на данни.
+        <translation>Прекратяването на този процес може да причини загуба на данни.
 Сигурни ли сте, че искате да продължите? </translation>
     </message>
     <message>
@@ -625,7 +625,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/process_table_view.cpp" line="176"/>
         <location filename="../gui/process_table_view.cpp" line="408"/>
         <source>End process</source>
-        <translation type="unfinished">Край на процес</translation>
+        <translation>Край на процес</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="539"/>
@@ -633,7 +633,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/process_table_view.cpp" line="416"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Отказ</translation>
+        <translation>Отказ</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="540"/>
@@ -825,17 +825,17 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="144"/>
         <source>Command line</source>
-        <translation type="unfinished">Команден ред</translation>
+        <translation>Команден ред</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="149"/>
         <source>Start time</source>
-        <translation type="unfinished">Време на стартиране</translation>
+        <translation>Време на стартиране</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="139"/>
         <source>Name</source>
-        <translation type="unfinished">Име</translation>
+        <translation>Име</translation>
     </message>
 </context>
 <context>
@@ -843,7 +843,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/xwin_kill_preview_background_widget.cpp" line="152"/>
         <source>Click the application you want to end</source>
-        <translation type="unfinished">Кликнете на приложението, което искате да спрете</translation>
+        <translation>Кликнете на приложението, което искате да спрете</translation>
     </message>
 </context>
 <context>
@@ -854,7 +854,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/mem_stat_view_widget.cpp" line="107"/>
         <location filename="../memory_monitor.cpp" line="177"/>
         <source>Memory</source>
-        <translation type="unfinished">Памет</translation>
+        <translation>Памет</translation>
     </message>
     <message>
         <location filename="../gui/netif_item_view_widget.cpp" line="95"/>
@@ -872,17 +872,17 @@ Are you sure you want to continue?</source>
         <location filename="../gui/cpu_detail_widget.cpp" line="371"/>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="224"/>
         <source>CPU</source>
-        <translation type="unfinished">Процесор</translation>
+        <translation>Процесор</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="153"/>
         <source>Disk read</source>
-        <translation type="unfinished">Четене на диска</translation>
+        <translation>Четене на диска</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="154"/>
         <source>Disk write</source>
-        <translation type="unfinished">Запис на диска</translation>
+        <translation>Запис на диска</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="191"/>
@@ -890,7 +890,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="280"/>
         <location filename="../memory_monitor.cpp" line="203"/>
         <source>Memory</source>
-        <translation type="unfinished">Памет</translation>
+        <translation>Памет</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="203"/>
@@ -899,32 +899,32 @@ Are you sure you want to continue?</source>
         <location filename="../memory_monitor.cpp" line="214"/>
         <location filename="../memory_monitor.cpp" line="221"/>
         <source>Swap</source>
-        <translation type="unfinished">Swap</translation>
+        <translation>Swap</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="204"/>
         <location filename="../memory_monitor.cpp" line="215"/>
         <source>Not enabled</source>
-        <translation type="unfinished">Не е разрешено</translation>
+        <translation>Не е разрешено</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="158"/>
         <location filename="../network_monitor.cpp" line="216"/>
         <source>Download</source>
-        <translation type="unfinished">Сваляне</translation>
+        <translation>Сваляне</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="163"/>
         <location filename="../network_monitor.cpp" line="221"/>
         <source>Upload</source>
-        <translation type="unfinished">Качване</translation>
+        <translation>Качване</translation>
     </message>
     <message>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="227"/>
         <location filename="../gui/netif_detail_view_widget.cpp" line="33"/>
         <location filename="../network_monitor.cpp" line="198"/>
         <source>Network</source>
-        <translation type="unfinished">Мрежа</translation>
+        <translation>Мрежа</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="160"/>
@@ -956,101 +956,101 @@ Are you sure you want to continue?</source>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>ГПУ</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished">Използване</translation>
+        <translation>Използване</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Не е открит ГПУ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Използване на ГПУ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Използване на НПУ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Памет на ГПУ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>НПУ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>Вграден в ЦП</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>Външен</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Устройство</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>Системна ОЗП (динамична)</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished">Модел</translation>
+        <translation>Модел</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>Производител</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Интерфейс на шината</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Активно време</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>Движещи сили</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Температура</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Споделена памет</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Посветена памет</translation>
     </message>
 </context>
 <context>
@@ -1121,17 +1121,17 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="61"/>
         <source>Applications</source>
-        <translation type="unfinished">Приложения</translation>
+        <translation>Приложения</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="63"/>
         <source>My processes</source>
-        <translation type="unfinished">Моите процеси</translation>
+        <translation>Моите процеси</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="65"/>
         <source>All processes</source>
-        <translation type="unfinished">Всички процеси</translation>
+        <translation>Всички процеси</translation>
     </message>
 </context>
 <context>
@@ -1182,19 +1182,19 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/process_table_model.cpp" line="271"/>
         <source>No response</source>
-        <translation type="unfinished">Няма отговор</translation>
+        <translation>Няма отговор</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.cpp" line="277"/>
         <source>Suspend</source>
-        <translation type="unfinished">Приспиване</translation>
+        <translation>Приспиване</translation>
     </message>
     <message>
         <location filename="../process/process_name.cpp" line="90"/>
         <location filename="../process/process_name.cpp" line="99"/>
         <location filename="../process/process_name.cpp" line="104"/>
         <source>Tray</source>
-        <translation type="unfinished">Лента на задачи</translation>
+        <translation>Лента на задачи</translation>
     </message>
 </context>
 <context>
@@ -1208,13 +1208,13 @@ Are you sure you want to continue?</source>
         <location filename="../common/common.cpp" line="83"/>
         <location filename="../gui/process_table_view.cpp" line="721"/>
         <source>Properties</source>
-        <translation type="unfinished">Свойства</translation>
+        <translation>Свойства</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="66"/>
         <location filename="../gui/process_table_view.cpp" line="637"/>
         <source>End process</source>
-        <translation type="unfinished">Край на процес</translation>
+        <translation>Край на процес</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="78"/>
@@ -1251,7 +1251,7 @@ Are you sure you want to continue?</source>
         <location filename="../gui/process_table_view.cpp" line="1126"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Отказ</translation>
+        <translation>Отказ</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="1128"/>
@@ -1265,17 +1265,17 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/process_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">Име</translation>
+        <translation>Име</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="18"/>
         <source>CPU</source>
-        <translation type="unfinished">Процесор</translation>
+        <translation>Процесор</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="22"/>
         <source>Memory</source>
-        <translation type="unfinished">Памет</translation>
+        <translation>Памет</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="23"/>
@@ -1290,27 +1290,27 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/process_table_model.h" line="32"/>
         <source>Disk write</source>
-        <translation type="unfinished">Запис на диска</translation>
+        <translation>Запис на диска</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="30"/>
         <source>Disk read</source>
-        <translation type="unfinished">Четене на диска</translation>
+        <translation>Четене на диска</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="28"/>
         <source>Download</source>
-        <translation type="unfinished">Сваляне</translation>
+        <translation>Сваляне</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="26"/>
         <source>Upload</source>
-        <translation type="unfinished">Качване</translation>
+        <translation>Качване</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="34"/>
         <source>PID</source>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="20"/>
@@ -1394,7 +1394,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../gui/service_name_sub_input_dialog.cpp" line="39"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отказ</translation>
+        <translation>Отказ</translation>
     </message>
     <message>
         <location filename="../gui/system_service_table_view.cpp" line="157"/>
@@ -1451,7 +1451,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/system_service_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">Име</translation>
+        <translation>Име</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="18"/>
@@ -1481,7 +1481,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../model/system_service_table_model.h" line="32"/>
         <source>PID</source>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="27"/>
@@ -1538,7 +1538,7 @@ Are you sure you want to continue?</source>
         <location filename="../common/common.cpp" line="44"/>
         <location filename="../gui/toolbar.cpp" line="95"/>
         <source>Search</source>
-        <translation type="unfinished">Търсене</translation>
+        <translation>Търсене</translation>
     </message>
 </context>
 <context>

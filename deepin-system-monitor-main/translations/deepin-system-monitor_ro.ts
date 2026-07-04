@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ro">
+<TS version="2.1" language="ro_RO">
 <context>
     <name>App.About</name>
     <message>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>Frecvență</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>Frecvență medie</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/accounts_widget.cpp" line="310"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anulare</translation>
+        <translation>Anulare</translation>
     </message>
 </context>
 <context>
@@ -625,7 +625,7 @@ Sigur dorești să continui?</translation>
         <location filename="../gui/process_table_view.cpp" line="176"/>
         <location filename="../gui/process_table_view.cpp" line="408"/>
         <source>End process</source>
-        <translation type="unfinished">Închidere proces</translation>
+        <translation>Închidere proces</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="539"/>
@@ -633,7 +633,7 @@ Sigur dorești să continui?</translation>
         <location filename="../gui/process_table_view.cpp" line="416"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Anulare</translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="540"/>
@@ -825,17 +825,17 @@ Sigur dorești să continui?</translation>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="144"/>
         <source>Command line</source>
-        <translation type="unfinished">Comandă</translation>
+        <translation>Comandă</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="149"/>
         <source>Start time</source>
-        <translation type="unfinished">Timpul de start</translation>
+        <translation>Timpul de start</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="139"/>
         <source>Name</source>
-        <translation type="unfinished">Nume</translation>
+        <translation>Nume</translation>
     </message>
 </context>
 <context>
@@ -843,7 +843,7 @@ Sigur dorești să continui?</translation>
     <message>
         <location filename="../gui/xwin_kill_preview_background_widget.cpp" line="152"/>
         <source>Click the application you want to end</source>
-        <translation type="unfinished">Faceți click pe aplicația care doriți să o închideți</translation>
+        <translation>Faceți click pe aplicația care doriți să o închideți</translation>
     </message>
 </context>
 <context>
@@ -854,7 +854,7 @@ Sigur dorești să continui?</translation>
         <location filename="../gui/mem_stat_view_widget.cpp" line="107"/>
         <location filename="../memory_monitor.cpp" line="177"/>
         <source>Memory</source>
-        <translation type="unfinished">Memorie</translation>
+        <translation>Memorie</translation>
     </message>
     <message>
         <location filename="../gui/netif_item_view_widget.cpp" line="95"/>
@@ -872,17 +872,17 @@ Sigur dorești să continui?</translation>
         <location filename="../gui/cpu_detail_widget.cpp" line="371"/>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="224"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="153"/>
         <source>Disk read</source>
-        <translation type="unfinished">Citire de pe disk</translation>
+        <translation>Citire de pe disk</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="154"/>
         <source>Disk write</source>
-        <translation type="unfinished">Scriere pe disk</translation>
+        <translation>Scriere pe disk</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="191"/>
@@ -890,7 +890,7 @@ Sigur dorești să continui?</translation>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="280"/>
         <location filename="../memory_monitor.cpp" line="203"/>
         <source>Memory</source>
-        <translation type="unfinished">Memorie</translation>
+        <translation>Memorie</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="203"/>
@@ -899,32 +899,32 @@ Sigur dorești să continui?</translation>
         <location filename="../memory_monitor.cpp" line="214"/>
         <location filename="../memory_monitor.cpp" line="221"/>
         <source>Swap</source>
-        <translation type="unfinished">Swap</translation>
+        <translation>Swap</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="204"/>
         <location filename="../memory_monitor.cpp" line="215"/>
         <source>Not enabled</source>
-        <translation type="unfinished">Inactiv</translation>
+        <translation>Inactiv</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="158"/>
         <location filename="../network_monitor.cpp" line="216"/>
         <source>Download</source>
-        <translation type="unfinished">Descărcare</translation>
+        <translation>Descărcare</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="163"/>
         <location filename="../network_monitor.cpp" line="221"/>
         <source>Upload</source>
-        <translation type="unfinished">Încărcare</translation>
+        <translation>Încărcare</translation>
     </message>
     <message>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="227"/>
         <location filename="../gui/netif_detail_view_widget.cpp" line="33"/>
         <location filename="../network_monitor.cpp" line="198"/>
         <source>Network</source>
-        <translation type="unfinished">Rețea</translation>
+        <translation>Rețea</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="160"/>
@@ -956,101 +956,101 @@ Sigur dorești să continui?</translation>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>GPU</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished">Utilizare</translation>
+        <translation>Utilizare</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a detectat niciun GPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizarea GPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizarea NPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizarea memoriei GPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>NPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>Incorporat în CPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>Extern</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Dispozitiv</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>Memorie RAM a sistemului (dinamică)</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished">Model</translation>
+        <translation>Model</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>Furnizor</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Interfață de bus</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Timp activ</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>Motoare</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Temperatură</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Memorie partajată</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Memorie dedicată</translation>
     </message>
 </context>
 <context>
@@ -1121,17 +1121,17 @@ Sigur dorești să continui?</translation>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="61"/>
         <source>Applications</source>
-        <translation type="unfinished">Aplicații</translation>
+        <translation>Aplicații</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="63"/>
         <source>My processes</source>
-        <translation type="unfinished">Procesele mele</translation>
+        <translation>Procesele mele</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="65"/>
         <source>All processes</source>
-        <translation type="unfinished">Alte procese</translation>
+        <translation>Alte procese</translation>
     </message>
 </context>
 <context>
@@ -1182,12 +1182,12 @@ Sigur dorești să continui?</translation>
     <message>
         <location filename="../model/process_table_model.cpp" line="271"/>
         <source>No response</source>
-        <translation type="unfinished">Nici un răspuns</translation>
+        <translation>Nici un răspuns</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.cpp" line="277"/>
         <source>Suspend</source>
-        <translation type="unfinished">Suspendare</translation>
+        <translation>Suspendare</translation>
     </message>
     <message>
         <location filename="../process/process_name.cpp" line="90"/>
@@ -1208,13 +1208,13 @@ Sigur dorești să continui?</translation>
         <location filename="../common/common.cpp" line="83"/>
         <location filename="../gui/process_table_view.cpp" line="721"/>
         <source>Properties</source>
-        <translation type="unfinished">Proprietăți</translation>
+        <translation>Proprietăți</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="66"/>
         <location filename="../gui/process_table_view.cpp" line="637"/>
         <source>End process</source>
-        <translation type="unfinished">Închidere proces</translation>
+        <translation>Închidere proces</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="78"/>
@@ -1251,7 +1251,7 @@ Sigur dorești să continui?</translation>
         <location filename="../gui/process_table_view.cpp" line="1126"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Anulare</translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="1128"/>
@@ -1265,17 +1265,17 @@ Sigur dorești să continui?</translation>
     <message>
         <location filename="../model/process_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">Nume</translation>
+        <translation>Nume</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="18"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="22"/>
         <source>Memory</source>
-        <translation type="unfinished">Memorie</translation>
+        <translation>Memorie</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="23"/>
@@ -1290,27 +1290,27 @@ Sigur dorești să continui?</translation>
     <message>
         <location filename="../model/process_table_model.h" line="32"/>
         <source>Disk write</source>
-        <translation type="unfinished">Scriere pe disk</translation>
+        <translation>Scriere pe disk</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="30"/>
         <source>Disk read</source>
-        <translation type="unfinished">Citire de pe disk</translation>
+        <translation>Citire de pe disk</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="28"/>
         <source>Download</source>
-        <translation type="unfinished">Descărcare</translation>
+        <translation>Descărcare</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="26"/>
         <source>Upload</source>
-        <translation type="unfinished">Încărcare</translation>
+        <translation>Încărcare</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="34"/>
         <source>PID</source>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="20"/>
@@ -1394,7 +1394,7 @@ Sigur dorești să continui?</translation>
     <message>
         <location filename="../gui/service_name_sub_input_dialog.cpp" line="39"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anulare</translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location filename="../gui/system_service_table_view.cpp" line="157"/>
@@ -1451,7 +1451,7 @@ Sigur dorești să continui?</translation>
     <message>
         <location filename="../model/system_service_table_model.h" line="16"/>
         <source>Name</source>
-        <translation type="unfinished">Nume</translation>
+        <translation>Nume</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="18"/>
@@ -1481,7 +1481,7 @@ Sigur dorești să continui?</translation>
     <message>
         <location filename="../model/system_service_table_model.h" line="32"/>
         <source>PID</source>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="27"/>
@@ -1538,7 +1538,7 @@ Sigur dorești să continui?</translation>
         <location filename="../common/common.cpp" line="44"/>
         <location filename="../gui/toolbar.cpp" line="95"/>
         <source>Search</source>
-        <translation type="unfinished">Căutare</translation>
+        <translation>Căutare</translation>
     </message>
 </context>
 <context>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="nb">
+<TS version="2.1" language="nb_NO">
 <context>
     <name>App.About</name>
     <message>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="93"/>
         <source>Frequency</source>
-        <translation></translation>
+        <translation>Frekvens</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
         <source>Average frequency</source>
-        <translation></translation>
+        <translation>Gjennomsnittsfrekvens</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="104"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/accounts_widget.cpp" line="310"/>
         <source>Cancel</source>
-        <translation type="unfinished">Avbryt</translation>
+        <translation>Avbryt</translation>
     </message>
 </context>
 <context>
@@ -625,7 +625,7 @@ Er du sikker på at du vil fortsette?</translation>
         <location filename="../gui/process_table_view.cpp" line="176"/>
         <location filename="../gui/process_table_view.cpp" line="408"/>
         <source>End process</source>
-        <translation type="unfinished">Avslutt oppgave</translation>
+        <translation>Avslutt oppgave</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="539"/>
@@ -633,7 +633,7 @@ Er du sikker på at du vil fortsette?</translation>
         <location filename="../gui/process_table_view.cpp" line="416"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Avbryt</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../gui/process_page_widget.cpp" line="540"/>
@@ -825,12 +825,12 @@ Er du sikker på at du vil fortsette?</translation>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="144"/>
         <source>Command line</source>
-        <translation type="unfinished">Kommandolinje</translation>
+        <translation>Kommandolinje</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="149"/>
         <source>Start time</source>
-        <translation type="unfinished">Starttidspunkt</translation>
+        <translation>Starttidspunkt</translation>
     </message>
     <message>
         <location filename="../gui/process_attribute_dialog.cpp" line="139"/>
@@ -854,7 +854,7 @@ Er du sikker på at du vil fortsette?</translation>
         <location filename="../gui/mem_stat_view_widget.cpp" line="107"/>
         <location filename="../memory_monitor.cpp" line="177"/>
         <source>Memory</source>
-        <translation type="unfinished">Minne</translation>
+        <translation>Minne</translation>
     </message>
     <message>
         <location filename="../gui/netif_item_view_widget.cpp" line="95"/>
@@ -872,17 +872,17 @@ Er du sikker på at du vil fortsette?</translation>
         <location filename="../gui/cpu_detail_widget.cpp" line="371"/>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="224"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="153"/>
         <source>Disk read</source>
-        <translation type="unfinished">Disk les</translation>
+        <translation>Disk les</translation>
     </message>
     <message>
         <location filename="../compact_disk_monitor.cpp" line="154"/>
         <source>Disk write</source>
-        <translation type="unfinished">Disk skriv</translation>
+        <translation>Disk skriv</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="191"/>
@@ -890,7 +890,7 @@ Er du sikker på at du vil fortsette?</translation>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="280"/>
         <location filename="../memory_monitor.cpp" line="203"/>
         <source>Memory</source>
-        <translation type="unfinished">Minne</translation>
+        <translation>Minne</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="203"/>
@@ -899,32 +899,32 @@ Er du sikker på at du vil fortsette?</translation>
         <location filename="../memory_monitor.cpp" line="214"/>
         <location filename="../memory_monitor.cpp" line="221"/>
         <source>Swap</source>
-        <translation type="unfinished">Mellomlager</translation>
+        <translation>Mellomlager</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="204"/>
         <location filename="../memory_monitor.cpp" line="215"/>
         <source>Not enabled</source>
-        <translation type="unfinished">Ikke aktivert</translation>
+        <translation>Ikke aktivert</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="158"/>
         <location filename="../network_monitor.cpp" line="216"/>
         <source>Download</source>
-        <translation type="unfinished">Nedlasting</translation>
+        <translation>Nedlasting</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="163"/>
         <location filename="../network_monitor.cpp" line="221"/>
         <source>Upload</source>
-        <translation type="unfinished">Opplasting</translation>
+        <translation>Opplasting</translation>
     </message>
     <message>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="227"/>
         <location filename="../gui/netif_detail_view_widget.cpp" line="33"/>
         <location filename="../network_monitor.cpp" line="198"/>
         <source>Network</source>
-        <translation type="unfinished">Nettverk</translation>
+        <translation>Nettverk</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="160"/>
@@ -956,101 +956,101 @@ Er du sikker på at du vil fortsette?</translation>
         <location filename="../gui/detail_view_stacked_widget.cpp" line="225"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="110"/>
         <source>GPU</source>
-        <translation type="unfinished"></translation>
+        <translation>GPU</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="194"/>
         <source>Utilization</source>
-        <translation type="unfinished">Bruk</translation>
+        <translation>Bruk</translation>
     </message>
     <message>
         <location filename="../gpu_monitor.cpp" line="203"/>
         <source>No GPU detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen GPU oppdaget</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="118"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="194"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="207"/>
         <source>GPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>GPU-bruk</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="119"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="199"/>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="203"/>
         <source>NPU Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>NPU-bruk</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="136"/>
         <source>GPU Memory Utilization</source>
-        <translation type="unfinished"></translation>
+        <translation>GPU-minnebruk</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="230"/>
         <source>NPU</source>
-        <translation type="unfinished"></translation>
+        <translation>NPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="232"/>
         <source>Embedded in CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>Innbygd i CPU</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="234"/>
         <source>External</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekstern</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="237"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Enhet</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="255"/>
         <source>System RAM (dynamic)</source>
-        <translation type="unfinished"></translation>
+        <translation>Systemminne (dynamisk)</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="262"/>
         <source>Model</source>
-        <translation type="unfinished">Modell</translation>
+        <translation>Modell</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="263"/>
         <source>Vendor</source>
-        <translation type="unfinished"></translation>
+        <translation>Leverandør</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="264"/>
         <source>Bus Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Bussgrensesnitt</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="265"/>
         <source>Active Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiv tid</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="277"/>
         <source>Engines</source>
-        <translation type="unfinished"></translation>
+        <translation>Motorer</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="279"/>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Temperatur</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="281"/>
         <source>Shared Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Delt minne</translation>
     </message>
     <message>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="282"/>
         <source>Dedicated Memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Eget minne</translation>
     </message>
 </context>
 <context>
@@ -1182,12 +1182,12 @@ Er du sikker på at du vil fortsette?</translation>
     <message>
         <location filename="../model/process_table_model.cpp" line="271"/>
         <source>No response</source>
-        <translation type="unfinished">Ingen respons</translation>
+        <translation>Ingen respons</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.cpp" line="277"/>
         <source>Suspend</source>
-        <translation type="unfinished">Stopp midlertidig</translation>
+        <translation>Stopp midlertidig</translation>
     </message>
     <message>
         <location filename="../process/process_name.cpp" line="90"/>
@@ -1214,7 +1214,7 @@ Er du sikker på at du vil fortsette?</translation>
         <location filename="../common/common.cpp" line="66"/>
         <location filename="../gui/process_table_view.cpp" line="637"/>
         <source>End process</source>
-        <translation type="unfinished">Avslutt oppgave</translation>
+        <translation>Avslutt oppgave</translation>
     </message>
     <message>
         <location filename="../common/common.cpp" line="78"/>
@@ -1251,7 +1251,7 @@ Er du sikker på at du vil fortsette?</translation>
         <location filename="../gui/process_table_view.cpp" line="1126"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Avbryt</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../gui/process_table_view.cpp" line="1128"/>
@@ -1270,12 +1270,12 @@ Er du sikker på at du vil fortsette?</translation>
     <message>
         <location filename="../model/process_table_model.h" line="18"/>
         <source>CPU</source>
-        <translation type="unfinished">CPU</translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="22"/>
         <source>Memory</source>
-        <translation type="unfinished">Minne</translation>
+        <translation>Minne</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="23"/>
@@ -1290,22 +1290,22 @@ Er du sikker på at du vil fortsette?</translation>
     <message>
         <location filename="../model/process_table_model.h" line="32"/>
         <source>Disk write</source>
-        <translation type="unfinished">Disk skriv</translation>
+        <translation>Disk skriv</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="30"/>
         <source>Disk read</source>
-        <translation type="unfinished">Disk les</translation>
+        <translation>Disk les</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="28"/>
         <source>Download</source>
-        <translation type="unfinished">Nedlasting</translation>
+        <translation>Nedlasting</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="26"/>
         <source>Upload</source>
-        <translation type="unfinished">Opplasting</translation>
+        <translation>Opplasting</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="34"/>
@@ -1394,7 +1394,7 @@ Er du sikker på at du vil fortsette?</translation>
     <message>
         <location filename="../gui/service_name_sub_input_dialog.cpp" line="39"/>
         <source>Cancel</source>
-        <translation type="unfinished">Avbryt</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../gui/system_service_table_view.cpp" line="157"/>
