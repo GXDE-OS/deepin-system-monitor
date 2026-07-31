@@ -7,6 +7,7 @@ Icon=deepin-system-monitor
 Name=deepin System Monitor
 Type=Application
 X-Deepin-Vendor=deepin
+X-Deepin-Singleton=true
 
 # Translations:
 # Do not manually modify!
@@ -132,7 +133,7 @@ Name[tr]=Deepin Sistem İzleyici
 Name[ug]=deepin سىستېما نازارەتچىسى
 Name[uk]=Монітор системи Deepin
 Name[lo]=deepin ເຄື່ອງຕິດຕາມລະບົບ
-Name[zh_CN]=深度系统监视器
-Name[zh_HK]=deepin 系統監視器
-Name[zh_TW]=deepin 系統監視器
+Name[zh_CN]=系统监视器
+Name[zh_HK]=系統監視器
+Name[zh_TW]=系統監視器
 

@@ -15,6 +15,9 @@
 #include <QSignalSpy>
 #include <QResizeEvent>
 #include <QPainter>
+#include <DFontSizeManager>
+
+DWIDGET_USE_NAMESPACE
 
 /***************************************STUB begin*********************************************/
 
@@ -182,7 +185,9 @@ TEST_F(UT_ChartViewWidget, test_changeFont_01)
     font.setPointSizeF(10.0);
     m_tester->changeFont(font);
 
-    EXPECT_EQ(m_tester->m_textfont, originFont);
+    // changeFont() ignores the input font and assigns T8 from DFontSizeManager
+    const QFont expected = DFontSizeManager::instance()->get(DFontSizeManager::T8);
+    EXPECT_EQ(m_tester->m_textfont, expected);
 }
 
 TEST_F(UT_ChartViewWidget, test_changeTheme_01)

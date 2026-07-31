@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="it_IT">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="it">
 <context>
     <name>App.About</name>
     <message>
@@ -81,7 +79,7 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
         <source>Max frequency</source>
-        <translation>Frequency</translation>
+        <translation>Frequenza</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
@@ -431,12 +429,12 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     <message>
         <location filename="../dbus/dbusalarmnotify.cpp" line="39"/>
         <source>Your CPU usage is higher than %1%!</source>
-        <translation>L&apos;uso della tua CPU è superiore al %1%!</translation>
+        <translation>L&apos;utilizzo della CPU è superiore a %1%!</translation>
     </message>
     <message>
         <location filename="../dbus/dbusalarmnotify.cpp" line="51"/>
         <source>Your memory usage is higher than %1%!</source>
-        <translation>L&apos;uso della memoria è superiore al %1%!</translation>
+        <translation>L&apos;utilizzo della memoria è superiore a %1%!</translation>
     </message>
     <message>
         <location filename="../dbus/dbusalarmnotify.cpp" line="71"/>
@@ -663,7 +661,7 @@ Sicuro di voler terminarla?</translation>
     <message>
         <location filename="../gui/accounts_widget.cpp" line="311"/>
         <source>Logout</source>
-        <translation>Disconnessione</translation>
+        <translation>Disconnetti</translation>
     </message>
 </context>
 <context>
@@ -1482,12 +1480,12 @@ Sicuro di voler terminarla?</translation>
     <message>
         <location filename="../model/system_service_table_model.h" line="21"/>
         <source>Start State</source>
-        <translation>Stato di Inizio</translation>
+        <translation>Stato di avvio</translation>
     </message>
     <message>
         <location filename="../model/system_service_table_model.h" line="25"/>
         <source>Start Tactic</source>
-        <translation>Tattica di Inizio</translation>
+        <translation>Tattica di avvio</translation>
     </message>
 </context>
 <context>
