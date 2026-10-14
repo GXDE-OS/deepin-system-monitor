@@ -1,0 +1,9 @@
+# 与 debian/postinst 相同：网络流量统计需要 cap_net_raw
+# Same as debian/postinst: per-process network statistics need cap_net_raw.
+post_install() {
+  setcap cap_net_raw+ep usr/bin/deepin-system-monitor || true
+}
+
+post_upgrade() {
+  post_install
+}

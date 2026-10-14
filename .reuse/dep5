@@ -24,7 +24,7 @@ Copyright: UnionTech Software Technology Co., Ltd.
 License: GPL-3.0-or-later
 
 # debian
-Files: debian/*
+Files: debian/* arch/*
 Copyright: None
 License: CC0-1.0
 

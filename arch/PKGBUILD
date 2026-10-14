@@ -1,0 +1,45 @@
+# Maintainer: CharOfString <root@charofstring.cc>
+pkgname=deepin-system-monitor-git
+pkgver=6.5.46
+pkgrel=1
+pkgdesc='Intuitive system monitor for GXDE'
+arch=('x86_64' 'aarch64')
+url="https://github.com/GXDE-OS/deepin-system-monitor"
+license=('GPL-3.0-or-later')
+depends=('dtk6core-git' 'dtk6gui-git' 'dtk6widget-git' 'qt6-base' 'qt6-svg' 'polkit-qt6' 'libpcap' 'icu'
+         'libnl' 'systemd-libs' 'libxcb' 'libxext' 'xcb-util' 'xcb-util-wm' 'libcap' 'hicolor-icon-theme'
+         'libgcc' 'libstdc++' 'glibc')
+# deepin-policy-ts-convert 与 deepin-desktop-ts-convert 来自 deepin-gettext-tools ・ deepin-policy-ts-convert and deepin-desktop-ts-convert come from deepin-gettext-tools.
+makedepends=('git' 'cmake' 'ninja' 'pkgconf' 'qt6-tools' 'gxde-dock-git' 'deepin-gettext-tools-git')
+optdepends=('deepin-service-manager-git: run the system monitor daemon plugin')
+provides=('deepin-system-monitor')
+conflicts=('deepin-system-monitor' 'gxde-system-monitor-git')
+install=deepin-system-monitor.install
+source=()
+sha512sums=()
+
+# 直接使用 PKGBUILD 所在的 git 仓库作为源码 ・ Build from the git checkout this PKGBUILD lives in.
+_srcroot() {
+  git -C "$startdir" rev-parse --show-toplevel
+}
+
+build() {
+  # 与 debian/rules 相同；守护进程插件装到 deepin-service-manager 查找插件的 /usr/lib/deepin-service-manager
+  # Same as debian/rules; the daemon plugin goes to /usr/lib/deepin-service-manager,
+  # where deepin-service-manager looks for plugins.
+  cmake -B build -S "$(_srcroot)" -GNinja \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_SAFETYTEST_ARG=CMAKE_SAFETYTEST_ARG_OFF \
+    -DQT_VERSION_MAJOR=6 \
+    -DAPP_VERSION="$pkgver" \
+    -DVERSION="$pkgver"
+  ninja -C build
+}
+
+package() {
+  DESTDIR="$pkgdir" ninja -C build install
+  # 与 debian/manpages 相同 ・ Same as debian/manpages.
+  install -Dm644 "$(_srcroot)/debian/deepin-system-monitor.1" "$pkgdir/usr/share/man/man1/deepin-system-monitor.1"
+}
