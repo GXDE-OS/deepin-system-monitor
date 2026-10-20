@@ -1,18 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pt_BR">
 <context>
     <name>App.About</name>
     <message>
         <location filename="../main.cpp" line="119"/>
         <location filename="../main.cpp" line="123"/>
         <source>System Monitor</source>
-        <translation>Monitor de Sistema</translation>
+        <translation>Monitor do Sistema</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="109"/>
         <source>System Monitor is a tool to monitor realtime system load, view and control processes and services running on your system.</source>
-        <translation>O Monitor de Sistema é uma ferramenta para monitorar a carga do sistema em tempo real, exibir e controlar processos e serviços em execução no sistema.</translation>
+        <translation>O Monitor do Sistema é uma ferramenta para monitorar a carga do sistema em tempo real, exibir e controlar processos e serviços em execução no sistema.</translation>
     </message>
 </context>
 <context>
@@ -80,7 +78,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="98"/>
         <source>Max frequency</source>
-        <translation>Frequency</translation>
+        <translation>Frequência</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="100"/>
@@ -95,7 +93,7 @@
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="106"/>
         <source>Sockets</source>
-        <translation>Sockets</translation>
+        <translation>Soquetes</translation>
     </message>
     <message>
         <location filename="../gui/cpu_summary_view_widget.h" line="110"/>
@@ -473,7 +471,7 @@
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="81"/>
         <source>Cached swap</source>
-        <translation>SWAP em cache</translation>
+        <translation>Swap em cache</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="85"/>
@@ -498,12 +496,12 @@
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="97"/>
         <source>Total swap</source>
-        <translation>SWAP total</translation>
+        <translation>Swap total</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="99"/>
         <source>Free swap</source>
-        <translation>SWAP livre</translation>
+        <translation>Swap livre</translation>
     </message>
     <message>
         <location filename="../gui/mem_summary_view_widget.cpp" line="103"/>
@@ -589,7 +587,7 @@
         <location filename="../gui/dialog/error_dialog.cpp" line="75"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Ok</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -890,7 +888,7 @@ Continuar?</translation>
         <location filename="../gui/gpu_detail_view_widget.cpp" line="280"/>
         <location filename="../memory_monitor.cpp" line="203"/>
         <source>Memory</source>
-        <translation>Memória</translation>
+        <translation>RAM</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="203"/>
@@ -899,7 +897,7 @@ Continuar?</translation>
         <location filename="../memory_monitor.cpp" line="214"/>
         <location filename="../memory_monitor.cpp" line="221"/>
         <source>Swap</source>
-        <translation>SWAP</translation>
+        <translation>Swap</translation>
     </message>
     <message>
         <location filename="../compact_memory_monitor.cpp" line="204"/>
@@ -930,13 +928,13 @@ Continuar?</translation>
         <location filename="../compact_network_monitor.cpp" line="160"/>
         <location filename="../network_monitor.cpp" line="218"/>
         <source>Total Received</source>
-        <translation>Total Baixado</translation>
+        <translation>Total recebido</translation>
     </message>
     <message>
         <location filename="../compact_network_monitor.cpp" line="165"/>
         <location filename="../network_monitor.cpp" line="223"/>
         <source>Total Sent</source>
-        <translation>Total Enviado</translation>
+        <translation>Total enviado</translation>
     </message>
     <message>
         <location filename="../gui/netif_item_view_widget.cpp" line="104"/>
@@ -1275,7 +1273,7 @@ Continuar?</translation>
     <message>
         <location filename="../model/process_table_model.h" line="22"/>
         <source>Memory</source>
-        <translation>Memória</translation>
+        <translation>RAM</translation>
     </message>
     <message>
         <location filename="../model/process_table_model.h" line="32"/>
@@ -1396,7 +1394,7 @@ Continuar?</translation>
     <message>
         <location filename="../gui/service_name_sub_input_dialog.cpp" line="38"/>
         <source>OK</source>
-        <translation>Ok</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../gui/service_name_sub_input_dialog.cpp" line="39"/>
@@ -1514,7 +1512,7 @@ Continuar?</translation>
         <location filename="../common/common.cpp" line="59"/>
         <location filename="../gui/main_window.cpp" line="138"/>
         <source>Force end application</source>
-        <translation>Forçar encerramento de aplicativo</translation>
+        <translation>Forçar encerramento</translation>
     </message>
     <message>
         <location filename="../gui/main_window.cpp" line="156"/>
@@ -1529,7 +1527,7 @@ Continuar?</translation>
     <message>
         <location filename="../gui/main_window.cpp" line="151"/>
         <source>View</source>
-        <translation>Visualização</translation>
+        <translation>Exibição</translation>
     </message>
 </context>
 <context>
