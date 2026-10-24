@@ -915,19 +915,19 @@ void CPUSet::read_cache_from_lscpu_cmd()
     QProcess process;
     process.start("lscpu", QStringList());
     process.waitForFinished(3000);
-    QString cache = process.readAllStandardOutput();
+    QString lscpuOutput = process.readAllStandardOutput();
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList cacheList = cache.split("\n", QString::SkipEmptyParts);
+    QStringList lscpuLines = lscpuOutput.split("\n", QString::SkipEmptyParts);
 #else
-    QStringList cacheList = cache.split("\n", Qt::SkipEmptyParts);
+    QStringList lscpuLines = lscpuOutput.split("\n", Qt::SkipEmptyParts);
 #endif
-    for (const QString &cacheLine : qAsConst(cacheList)) {
-        if (!cacheLine.contains("cache"))
+    for (const QString &line : qAsConst(lscpuLines)) {
+        if (!line.contains("cache", Qt::CaseInsensitive))
             continue;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        QStringList keyValue = cacheLine.split(":", QString::SkipEmptyParts);
+        QStringList keyValue = line.split(":", QString::SkipEmptyParts);
 #else
-        QStringList keyValue = cacheLine.split(":", Qt::SkipEmptyParts);
+        QStringList keyValue = line.split(":", Qt::SkipEmptyParts);
 #endif
         if (keyValue.count() > 1)
             d->m_info[keyValue.value(0).trimmed()] = keyValue.value(1).trimmed();
