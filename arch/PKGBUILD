@@ -1,7 +1,7 @@
 # Maintainer: CharOfString <root@charofstring.cc>
 pkgname=deepin-system-monitor-git
 pkgver=6.5.48
-pkgrel=1
+pkgrel=2
 pkgdesc='Intuitive system monitor for GXDE'
 arch=('x86_64' 'aarch64')
 url="https://github.com/GXDE-OS/deepin-system-monitor"
