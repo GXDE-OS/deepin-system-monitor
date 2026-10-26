@@ -5,10 +5,11 @@
 
 #include "gpu_monitor.h"
 
+#include "smooth_curve_generator.h"
 #include "gui/ui_common.h"
 #include "common/common.h"
 #include "model/gpu_info_model.h"
-#include "system/system_monitor.h"
+#include "gui/base/base_commandlink_button.h"
 
 #include <DApplication>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -18,6 +19,7 @@
 #endif
 #include <DPalette>
 #include <DStyle>
+#include <DFontSizeManager>
 
 #include <QDebug>
 #include <QPainter>
@@ -30,7 +32,6 @@
 DWIDGET_USE_NAMESPACE
 
 using namespace common;
-using namespace common::format;
 using namespace DDLog;
 
 GpuMonitor::GpuMonitor(QWidget *parent)
@@ -44,10 +45,13 @@ GpuMonitor::GpuMonitor(QWidget *parent)
 #endif
 
     int statusBarMaxWidth = common::getStatusBarMaxWidth();
-    setFixedWidth(statusBarMaxWidth);
-    setFixedHeight(240);
-    // Calculate ring position after widget size is set
-    ringCenterPointerX = statusBarMaxWidth - outsideRingRadius;
+    setFixedSize(statusBarMaxWidth, 240);
+    waveformsRenderOffsetX = (statusBarMaxWidth - 140) / 2;
+
+    gpuPercents = new QList<double>();
+    for (int i = 0; i < pointsNumber; i++) {
+        gpuPercents->append(0);
+    }
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     connect(dAppHelper, &DApplicationHelper::themeTypeChanged, this, &GpuMonitor::changeTheme);
@@ -58,16 +62,22 @@ GpuMonitor::GpuMonitor(QWidget *parent)
     changeTheme(m_themeType);
 
     m_animation = new QPropertyAnimation(this, "progress", this);
+    m_animation->setDuration(20);
     m_animation->setStartValue(0.0);
     m_animation->setEndValue(1.0);
-    m_animation->setDuration(10);
-    connect(m_animation, &QPropertyAnimation::valueChanged, [ = ]() {
+    m_animation->setEasingCurve(QEasingCurve::OutQuad);
+    connect(m_animation, &QVariantAnimation::valueChanged, [ = ]() {
         update();
     });
-    connect(m_animation, &QPropertyAnimation::finished, this, &GpuMonitor::onAnimationFinished);
 
     m_gpuInfoModel = GPUInfoModel::instance();
     connect(m_gpuInfoModel, &GPUInfoModel::modelUpdated, this, &GpuMonitor::updateStatus);
+
+    m_detailButton = new BaseCommandLinkButton(tr("Details"), this);
+    m_detailButton->setObjectName("GpuDetailButton");
+    m_detailButton->setAccessibleName("GpuDetailButton");
+    DFontSizeManager::instance()->bind(m_detailButton, DFontSizeManager::T8, QFont::Medium);
+    connect(m_detailButton, &BaseCommandLinkButton::clicked, this, &GpuMonitor::onDetailInfoClicked);
 
     changeFont(DApplication::font());
     connect(dynamic_cast<QGuiApplication *>(DApplication::instance()), &DApplication::fontChanged,
@@ -76,19 +86,59 @@ GpuMonitor::GpuMonitor(QWidget *parent)
 
 GpuMonitor::~GpuMonitor()
 {
+    delete gpuPercents;
 }
 
 void GpuMonitor::updateStatus()
 {
     qCDebug(app) << "GpuMonitor updateStatus";
-    m_lastGpuPercent = m_gpuInfoModel->gpuAllUtilization() / 100.0;
+    qreal gpuPercent = m_gpuInfoModel->gpuAllUtilization();
+    // 如果数据无效不更新
+    if (qIsNaN(gpuPercent)) {
+        qCWarning(app) << "gpuAllUtilization is nan";
+        return;
+    }
+
+    gpuPercents->append(gpuPercent);
+
+    if (gpuPercents->size() > pointsNumber) {
+        gpuPercents->pop_front();
+    }
+
+    QList<QPointF> points;
+
+    double gpuMaxHeight = 0;
+    for (int i = 0; i < gpuPercents->size(); i++) {
+        if (gpuPercents->at(i) > gpuMaxHeight) {
+            gpuMaxHeight = gpuPercents->at(i);
+        }
+    }
+
+    for (int i = 0; i < gpuPercents->size(); i++) {
+        if (gpuMaxHeight < gpuRenderMaxHeight) {
+            points.append(QPointF(i * 5 - 8, gpuPercents->at(i)));
+        } else {
+            points.append(
+                QPointF(i * 5 - 8, gpuPercents->at(i) * gpuRenderMaxHeight / gpuMaxHeight));
+        }
+    }
+
+    gpuPath = SmoothCurveGenerator::generateSmoothCurve(points);
+
     m_animation->start();
 }
 
-void GpuMonitor::onAnimationFinished()
+void GpuMonitor::onDetailInfoClicked()
 {
-    qCDebug(app) << "GpuMonitor onAnimationFinished";
-    m_lastGpuPercent = m_gpuInfoModel->gpuAllUtilization() / 100.0;
+    qCDebug(app) << "onDetailInfoClicked";
+    setDetailButtonVisible(false);
+    emit signalDetailInfoClicked();
+}
+
+void GpuMonitor::setDetailButtonVisible(bool visible)
+{
+    qCDebug(app) << "setDetailButtonVisible:" << visible;
+    m_detailButton->setVisible(visible);
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -136,7 +186,6 @@ void GpuMonitor::changeTheme(DGuiApplicationHelper::ColorType themeType)
 #endif
 
     textColor = palette.color(DPalette::Text);
-    summaryColor = palette.color(DPalette::TextTips);
 
     update();
 }
@@ -144,16 +193,27 @@ void GpuMonitor::changeTheme(DGuiApplicationHelper::ColorType themeType)
 void GpuMonitor::changeFont(const QFont &font)
 {
     qCDebug(app) << "GpuMonitor changeFont";
-    m_titleFont = font;
-    m_titleFont.setPointSizeF(m_titleFont.pointSizeF() + 12);
-    m_contentFont = font;
-    m_contentFont.setWeight(QFont::Medium);
-    m_contentFont.setPointSizeF(m_contentFont.pointSizeF() - 1);
-    m_subContentFont = font;
-    m_subContentFont.setPointSizeF(m_subContentFont.pointSizeF() - 1);
-    m_percentFont = font;
-    m_percentFont.setPointSizeF(m_percentFont.pointSizeF());
-    m_percentFont.setBold(true);
+    m_gpuUsageFont = font;
+    m_gpuUsageFont.setBold(true);
+    m_gpuUsageFont.setPointSizeF(m_gpuUsageFont.pointSizeF() + 3);
+
+    m_gpuDisplayFont = font;
+    m_gpuDisplayFont.setPointSizeF(m_gpuDisplayFont.pointSizeF() + 12);
+
+    resizeItemWidgetRect();
+    update();
+}
+
+void GpuMonitor::resizeItemWidgetRect()
+{
+    // qCDebug(app) << "resizeItemWidgetRect";
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    m_detailButton->setFixedSize(m_detailButton->fontMetrics().width(m_detailButton->text()) + 16, m_detailButton->fontMetrics().height() + 4);
+#else
+    m_detailButton->setFixedSize(m_detailButton->fontMetrics().horizontalAdvance(m_detailButton->text()) + 16, m_detailButton->fontMetrics().height() + 4);
+#endif
+    const QSize &detailtextSize =  m_detailButton->size();
+    m_detailButton->setGeometry(this->width() / 2 - detailtextSize.width() / 2 - 4, this->height() - detailtextSize.height() + 3, detailtextSize.width(), detailtextSize.height());
 }
 
 void GpuMonitor::paintEvent(QPaintEvent *)
@@ -161,130 +221,55 @@ void GpuMonitor::paintEvent(QPaintEvent *)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    // Recalculate ring position based on current width
-    ringCenterPointerX = rect().width() - outsideRingRadius;
+    int margin = 10;
+
+    QFontMetrics fm(m_gpuDisplayFont);
+    int titleWidth =
+        fm.size(Qt::TextSingleLine, DApplication::translate("Process.Graph.View", "GPU")).width();
 
     int iconSize = 24;
 
-    QString title = DApplication::translate("Process.Graph.View", "GPU");
-    QFontMetrics fm(m_titleFont);
-    QRect titleRect(rect().x() + iconSize, rect().y(),
-                    fm.size(Qt::TextSingleLine, title).width(), fm.height());
+    painter.setFont(m_gpuDisplayFont);
+    painter.setPen(QPen(textColor));
+    QRect gpuDisplayRect(((rect().x() + rect().width() - titleWidth) / 2),
+                         rect().y() + titleRenderOffsetY, titleWidth, fm.height());
+    painter.drawText(gpuDisplayRect, Qt::AlignCenter,
+                     DApplication::translate("Process.Graph.View", "GPU"));
 
-    // Draw icon
-    QRect iconRect(rect().x() - 4, titleRect.y() + qCeil((titleRect.height() - iconSize) / 2.) + 2,
+    QRect iconRect(gpuDisplayRect.x() - margin - iconSize + 6,
+                   gpuDisplayRect.y() + qCeil((gpuDisplayRect.height() - iconSize) / 2.) + 2,
                    iconSize, iconSize);
     m_icon.paint(&painter, iconRect);
 
-    // Draw title
-    painter.setPen(QPen(textColor));
-    painter.setFont(m_titleFont);
-    painter.drawText(titleRect, Qt::AlignLeft | Qt::AlignVCenter,
-                     fm.elidedText(title, Qt::ElideRight,
-                                   rect().width() - titleRect.x() - outsideRingRadius - 50));
+    auto gdiff = gpuPercents->last() - gpuPercents->at(gpuPercents->size() - 2);
+    double percent = (gpuPercents->at(gpuPercents->size() - 2) + m_progress * gdiff);
 
-    int spacing = 10;
-    int sectionSize = 6;
-
-    qreal gpuPercent = m_gpuInfoModel->gpuAllUtilization() / 100.0;
-    qreal currentPercent = m_lastGpuPercent + (gpuPercent - m_lastGpuPercent) * m_progress;
-
-    // Draw GPU utilization summary
-    QString gpuTitle = QString("%1 (%2%)")
-                       .arg(DApplication::translate("Process.Graph.View", "Utilization"))
-                       .arg(QString::number(currentPercent * 100, 'f', 1));
-
-    QString gpuContent;
-    int gpuCount = m_gpuInfoModel->gpuCount();
-    if (gpuCount > 0) {
-        gpuContent = QString("%1: %2").arg(m_gpuInfoModel->gpuName(0))
-                     .arg(m_gpuInfoModel->gpuVendor(0));
-    } else {
-        gpuContent = DApplication::translate("Process.Graph.View", "No GPU detected");
-    }
-
-    // Draw memory info if available
-    quint64 totalMem = m_gpuInfoModel->gpuTotalMemory();
-    quint64 usedMem = m_gpuInfoModel->gpuUsedMemory();
-    QString memTitle;
-    QString memContent;
-    if (totalMem > 0) {
-        qreal memPercent = m_gpuInfoModel->gpuAllMemoryUtilization();
-        memTitle = QString("%1 (%2%)")
-                   .arg(DApplication::translate("Process.Graph.View", "Memory"))
-                   .arg(QString::number(memPercent, 'f', 1));
-        memContent = QString("%1 / %2")
-                     .arg(formatUnit_memory_disk(usedMem, B, 1))
-                     .arg(formatUnit_memory_disk(totalMem, B, 1));
-    }
-
-    titleRect.translate(0, 7);
-    QFontMetrics fmGpu(m_contentFont);
-    QFontMetrics fmGpuStat(m_subContentFont);
-    QRect gpuRect(sectionSize * 2, titleRect.y() + titleRect.height(),
-                  fmGpu.size(Qt::TextSingleLine, gpuTitle).width(), fmGpu.height());
-    QRect gpuStatRect(gpuRect.x(), gpuRect.y() + gpuRect.height(),
-                      fmGpuStat.size(Qt::TextSingleLine, gpuContent).width(),
-                      fmGpuStat.height());
-    QRectF gpuIndicatorRect(0, gpuRect.y() + qCeil((gpuRect.height() - sectionSize) / 2.),
-                            sectionSize, sectionSize);
-
-    QPainterPath section;
-    section.addEllipse(gpuIndicatorRect);
-    painter.fillPath(section, memoryColor);
-
-    m_contentFont.setWeight(QFont::Medium);
-    painter.setFont(m_contentFont);
+    painter.setFont(m_gpuUsageFont);
     painter.setPen(QPen(numberColor));
-    painter.drawText(gpuRect, Qt::AlignLeft | Qt::AlignVCenter,
-                     fmGpu.elidedText(gpuTitle, Qt::ElideRight,
-                                      ringCenterPointerX - gpuRect.x() - outsideRingRadius));
+    painter.drawText(
+        QRect(rect().x(), rect().y() + percentRenderOffsetY, rect().width(), 30),
+        Qt::AlignCenter, QString("%1%").arg(QString::number(percent, 'f', 1)));
 
-    painter.setFont(m_subContentFont);
-    painter.setPen(QPen(summaryColor));
-    painter.drawText(gpuStatRect, Qt::AlignLeft | Qt::AlignVCenter, gpuContent);
-
-    // Draw memory summary if available
-    int lastY = gpuStatRect.y() + gpuStatRect.height();
-    if (totalMem > 0) {
-        QRect memRect(gpuRect.x(), gpuStatRect.y() + gpuStatRect.height() + spacing,
-                      fmGpu.size(Qt::TextSingleLine, memTitle).width(), fmGpu.height());
-        QRect memStatRect(memRect.x(), memRect.y() + memRect.height(),
-                          fmGpuStat.size(Qt::TextSingleLine, memContent).width(),
-                          fmGpuStat.height());
-
-        painter.setFont(m_contentFont);
-        painter.setPen(QPen(numberColor));
-        painter.drawText(memRect, memTitle);
-
-        painter.setFont(m_subContentFont);
-        painter.setPen(QPen(summaryColor));
-        painter.drawText(memStatRect, Qt::AlignLeft | Qt::AlignVCenter, memContent);
-
-        lastY = memStatRect.y() + memStatRect.height();
-    }
-
-    // Draw GPU utilization ring
-    drawLoadingRing(painter, rect().x() + ringCenterPointerX, rect().y() + ringCenterPointerY,
-                    outsideRingRadius, ringWidth, 270, 270, ringForegroundColor,
+    int centerX = rect().x() + rect().width() / 2;
+    int centerY = rect().y() + ringRenderOffsetY;
+    drawLoadingRing(painter, centerX, centerY, ringRadius, ringWidth, 270, 135, ringForegroundColor,
                     ringForegroundOpacity, ringBackgroundColor, ringBackgroundOpacity,
-                    currentPercent);
+                    percent / 100);
 
-    // Draw percent text in the ring
-    painter.setFont(m_percentFont);
-    painter.setPen(QPen(numberColor));
-    painter.drawText(QRect(rect().x() + ringCenterPointerX - insideRingRadius,
-                           rect().y() + ringCenterPointerY - insideRingRadius, insideRingRadius * 2,
-                           insideRingRadius * 2),
-                     Qt::AlignHCenter | Qt::AlignVCenter,
-                     QString("%1%").arg(QString::number(currentPercent * 100, 'f', 1)));
+    // clip internal area of the ring
+    QRect clipRect(centerX - ringRadius + ringWidth, centerY - ringRadius + ringWidth,
+                   (ringRadius - ringWidth) * 2, (ringRadius - ringWidth) * 2);
+    QPainterPath clip;
+    clipRect = clipRect.marginsRemoved({ringWidth, ringWidth, ringWidth, ringWidth});
+    clip.addRoundedRect(clipRect, clipRect.width(), clipRect.height());
+    painter.setClipPath(clip);
 
-    int fixedHeight = lastY;
-    if (ringCenterPointerY + outsideRingRadius > lastY) {
-        fixedHeight = ringCenterPointerY + outsideRingRadius;
-    }
-    const int alignedCpuHeight = 210;
-    setFixedHeight(qMax(fixedHeight + 1, alignedCpuHeight));
+    painter.translate(waveformsRenderOffsetX, waveformsRenderOffsetY);
+    painter.scale(1, -1);
+    painter.setPen(QPen(ringForegroundColor, 1.5));
+    painter.drawPath(gpuPath);
+
+    setFixedHeight(gpuDisplayRect.y() + gpuDisplayRect.height() + 1 + m_detailButton->fontMetrics().height());
 }
 
 void GpuMonitor::mouseReleaseEvent(QMouseEvent *ev)
@@ -292,6 +277,13 @@ void GpuMonitor::mouseReleaseEvent(QMouseEvent *ev)
     if (ev->button() == Qt::LeftButton) {
         emit clicked("MSG_GPU");
     }
+}
+
+void GpuMonitor::resizeEvent(QResizeEvent *event)
+{
+    // qCDebug(app) << "resizeEvent";
+    QWidget::resizeEvent(event);
+    resizeItemWidgetRect();
 }
 
 void GpuMonitor::mouseMoveEvent(QMouseEvent *event)

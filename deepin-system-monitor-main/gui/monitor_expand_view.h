@@ -7,6 +7,7 @@
 #define MONITOR_EXPAND_VIEW_H
 
 #include <DFrame>
+#include <DButtonBox>
 
 DWIDGET_USE_NAMESPACE
 
@@ -49,6 +50,12 @@ private:
     MemoryMonitor *m_memoryMonitor {};
     // Network monitor view
     NetworkMonitor *m_networkMonitor {};
+
+    // CPU / GPU tab switcher used in the expand view to switch between the
+    // CPU and GPU usage charts (avoids the two charts overlapping)
+    DButtonBox *m_cpuGpuTabBox {};
+    DButtonBoxButton *m_cpuTabBtn {};
+    DButtonBoxButton *m_gpuTabBtn {};
 };
 
 #endif  // MONITOR_EXPAND_VIEW_H

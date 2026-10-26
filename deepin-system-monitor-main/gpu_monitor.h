@@ -7,7 +7,9 @@
 #define GPU_MONITOR_H
 
 #include <QIcon>
+#include <QList>
 #include <QWidget>
+#include <QPainterPath>
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <DApplicationHelper>
@@ -19,9 +21,13 @@ DGUI_USE_NAMESPACE
 
 class QPropertyAnimation;
 class GPUInfoModel;
+class BaseCommandLinkButton;
 
 /**
- * @brief GPU monitor widget for the expand view (ring-based utilization display)
+ * @brief GPU monitor widget for the expand view.
+ *        Renders the same style as CpuMonitor (title + icon, big percent,
+ *        loading ring and a utilization waveform), showing only the total
+ *        GPU utilization.
  */
 class GpuMonitor : public QWidget
 {
@@ -34,6 +40,7 @@ public:
 
 signals:
     void clicked(QString msgCode);
+    void signalDetailInfoClicked();
 
 public slots:
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -42,10 +49,13 @@ public slots:
     void changeTheme(DGuiApplicationHelper::ColorType themeType);
 #endif
     void updateStatus();
-    void onAnimationFinished();
+    void onDetailInfoClicked();
+
+    void setDetailButtonVisible(bool visible);
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *ev) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
@@ -54,36 +64,38 @@ protected:
 
 private:
     void changeFont(const QFont &font);
+    void resizeItemWidgetRect();
 
 private:
     QIcon m_icon;
 
+    QList<double> *gpuPercents;
+    QPainterPath gpuPath;
+    QColor numberColor;
     QColor ringBackgroundColor;
     QColor ringForegroundColor {"#AA00FF"};
     QColor textColor;
-    QColor numberColor;
-    QColor summaryColor;
-    QColor memoryColor {"#AA00FF"};
-
     double ringBackgroundOpacity = 0.1;
     double ringForegroundOpacity = 1;
-    int outsideRingRadius = 90;
-    int insideRingRadius = 82;
+    int gpuRenderMaxHeight = 45;
+    int percentRenderOffsetY = 131;
+    int pointsNumber = 28;
+    int ringRadius = 90;
+    int ringRenderOffsetY = 86;
     int ringWidth = 8;
-    int ringCenterPointerX;
-    int ringCenterPointerY = 86;
-    int pointerRadius = 3;
+    int titleRenderOffsetY = 161;
+    int waveformsRenderOffsetX;
+    int waveformsRenderOffsetY = 96;
 
-    QFont m_titleFont;
-    QFont m_contentFont;
-    QFont m_subContentFont;
-    QFont m_percentFont;
+    QFont m_gpuUsageFont;
+    QFont m_gpuDisplayFont;
 
     qreal m_progress {};
-    qreal m_lastGpuPercent = 0.;
     QPropertyAnimation *m_animation {};
 
     GPUInfoModel *m_gpuInfoModel {};
+
+    BaseCommandLinkButton *m_detailButton {};
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     DApplicationHelper::ColorType m_themeType;

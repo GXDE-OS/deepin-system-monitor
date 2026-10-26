@@ -16,6 +16,7 @@
 
 #include <DPalette>
 #include <DStyle>
+#include <DButtonBox>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -44,11 +45,6 @@ MonitorExpandView::MonitorExpandView(QWidget *parent)
     m_networkMonitor = new NetworkMonitor(this);
 
     const int totalWidth = common::getStatusBarMaxWidth();
-    const int pairSpacing = 8;
-    const int cpuWidth = totalWidth * 63 / 100;
-    const int gpuWidth = totalWidth - cpuWidth - pairSpacing;
-    m_cpuMonitor->setFixedWidth(cpuWidth);
-    m_gpuMonitor->setFixedWidth(gpuWidth);
 
     // monitor view layout
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -59,26 +55,56 @@ MonitorExpandView::MonitorExpandView(QWidget *parent)
 #endif
     layout->setSpacing(0);
 
+    // CPU / GPU tab switcher: switch between the CPU and GPU usage chart inside
+    // the same area. Only one chart is shown at a time so they no longer
+    // overlap in the expand view, and each chart gets the full available width.
+    m_cpuGpuTabBox = new DButtonBox(this);
+    m_cpuGpuTabBox->setObjectName("CpuGpuTabBox");
+    m_cpuGpuTabBox->setAccessibleName("CpuGpuTabBox");
+    m_cpuTabBtn = new DButtonBoxButton("CPU", m_cpuGpuTabBox);
+    m_gpuTabBtn = new DButtonBoxButton("GPU", m_cpuGpuTabBox);
+    QList<DButtonBoxButton *> tabBtns;
+    tabBtns << m_cpuTabBtn << m_gpuTabBtn;
+    m_cpuGpuTabBox->setButtonList(tabBtns, true);
+    m_cpuTabBtn->setChecked(true);
+
     QWidget *cpuGpuRow = new QWidget(this);
-    QHBoxLayout *cpuGpuLayout = new QHBoxLayout(cpuGpuRow);
+    QVBoxLayout *cpuGpuLayout = new QVBoxLayout(cpuGpuRow);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     cpuGpuLayout->setMargin(0);
 #else
     cpuGpuLayout->setContentsMargins(0, 0, 0, 0);
 #endif
-    cpuGpuLayout->setSpacing(pairSpacing);
+    cpuGpuLayout->setSpacing(8);
+    cpuGpuLayout->addWidget(m_cpuGpuTabBox, 0, Qt::AlignLeft);
     cpuGpuLayout->addWidget(m_cpuMonitor);
     cpuGpuLayout->addWidget(m_gpuMonitor);
     cpuGpuRow->setFixedWidth(totalWidth);
 
+    // show CPU chart by default, hide GPU chart
+    m_cpuMonitor->setVisible(true);
+    m_gpuMonitor->setVisible(false);
+
+    connect(m_cpuTabBtn, &DButtonBoxButton::toggled, this, [=](bool checked) {
+        if (checked) {
+            m_cpuMonitor->setVisible(true);
+            m_gpuMonitor->setVisible(false);
+        }
+    });
+    connect(m_gpuTabBtn, &DButtonBoxButton::toggled, this, [=](bool checked) {
+        if (checked) {
+            m_cpuMonitor->setVisible(false);
+            m_gpuMonitor->setVisible(true);
+        }
+    });
+
     auto refreshGpuVisibility = [=]() {
         const bool hasGpu = GPUInfoModel::instance()->gpuCount() > 0;
-        m_gpuMonitor->setVisible(hasGpu);
-        if (hasGpu) {
-            m_cpuMonitor->setFixedWidth(cpuWidth);
-            m_gpuMonitor->setFixedWidth(gpuWidth);
-        } else {
-            m_cpuMonitor->setFixedWidth(totalWidth);
+        m_gpuTabBtn->setVisible(hasGpu);
+        if (!hasGpu) {
+            m_cpuTabBtn->setChecked(true);
+            m_cpuMonitor->setVisible(true);
+            m_gpuMonitor->setVisible(false);
         }
     };
     refreshGpuVisibility();
@@ -95,6 +121,12 @@ MonitorExpandView::MonitorExpandView(QWidget *parent)
     setLayout(layout);
 
     connect(m_cpuMonitor, &CpuMonitor::signalDetailInfoClicked, this, &MonitorExpandView::signalDetailInfoClicked);
+    // The GPU detail link should open the GPU detail page directly. Route it
+    // through the same MSG_GPU path used by clicking the GPU chart, instead of
+    // the last-selected-page logic in DetailViewStackedWidget::onDetailInfoClicked.
+    connect(m_gpuMonitor, &GpuMonitor::signalDetailInfoClicked, this, [this]() {
+        emit signalDetailInfoByDbus("MSG_GPU");
+    });
     // 连接dbus发来的信号
     connect(&DetailWidgetManager::getInstance(), &DetailWidgetManager::sigJumpToDetailWidget, this, [=](QString msgCode) {
         qCDebug(app) << "Received signal from DBus to show detail info:" << msgCode;
@@ -112,4 +144,5 @@ void MonitorExpandView::setDetailButtonVisible(bool visible)
 {
     qCDebug(app) << "Setting detail button visibility to:" << visible;
     m_cpuMonitor->setDetailButtonVisible(visible);
+    m_gpuMonitor->setDetailButtonVisible(visible);
 }
