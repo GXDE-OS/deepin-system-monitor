@@ -359,11 +359,9 @@ void ProcessPageWidget::onLoadLeftDataWidgetDelay()
     qCDebug(app) << "ProcessPageWidget onLoadLeftDataWidgetDelay";
     // compact view instance
     m_compactView = new MonitorCompactView(m_views);
-    connect(m_compactView, &MonitorCompactView::signalDetailInfoClicked, m_rightStackView, &DetailViewStackedWidget::onDetailInfoClicked);
     connect(m_compactView, &MonitorCompactView::signalDetailInfoByDbus, m_rightStackView, &DetailViewStackedWidget::onDbusSendMsgChangeDetailInfoWidget);
     // expand view instance
     m_expandView = new MonitorExpandView(m_views);
-    connect(m_expandView, &MonitorExpandView::signalDetailInfoClicked, m_rightStackView, &DetailViewStackedWidget::onDetailInfoClicked);
     connect(m_expandView, &MonitorExpandView::signalDetailInfoByDbus, m_rightStackView, &DetailViewStackedWidget::onDbusSendMsgChangeDetailInfoWidget);
     m_views->insertWidget(kDisplayModeCompact, m_compactView);
     m_views->insertWidget(kDisplayModeExpand, m_expandView);
@@ -375,11 +373,7 @@ void ProcessPageWidget::onLoadLeftDataWidgetDelay()
 void ProcessPageWidget::onDetailWidgetChanged(int index)
 {
     qCDebug(app) << "ProcessPageWidget onDetailWidgetChanged, index:" << index;
-    QWidget *curDetailWidget = m_rightStackView->widget(index);
-    if (m_compactView)
-        m_compactView->setDetailButtonVisible(m_processWidget == curDetailWidget);
-    if (m_expandView)
-        m_expandView->setDetailButtonVisible(m_processWidget == curDetailWidget);
+    // 紧凑/舒展视图的"详细信息"按钮保持始终可见，不随右侧详情页切换而隐藏
 }
 
 // event filter

@@ -120,10 +120,11 @@ MonitorExpandView::MonitorExpandView(QWidget *parent)
     // set monitor view layout
     setLayout(layout);
 
-    connect(m_cpuMonitor, &CpuMonitor::signalDetailInfoClicked, this, &MonitorExpandView::signalDetailInfoClicked);
-    // The GPU detail link should open the GPU detail page directly. Route it
-    // through the same MSG_GPU path used by clicking the GPU chart, instead of
-    // the last-selected-page logic in DetailViewStackedWidget::onDetailInfoClicked.
+    // CPU/GPU详情按钮都通过MSG_XXX直接跳转对应详情页，与点击图表区域的行为一致，
+    // 避免"打开上次详情页"导致切换不到对应页面
+    connect(m_cpuMonitor, &CpuMonitor::signalDetailInfoClicked, this, [this]() {
+        emit signalDetailInfoByDbus("MSG_CPU");
+    });
     connect(m_gpuMonitor, &GpuMonitor::signalDetailInfoClicked, this, [this]() {
         emit signalDetailInfoByDbus("MSG_GPU");
     });

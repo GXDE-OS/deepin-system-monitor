@@ -36,8 +36,6 @@ public:
     void setDetailButtonVisible(bool visible);
 
 signals:
-    void signalDetailInfoClicked();
-
     void signalDetailInfoByDbus(QString);
 
 

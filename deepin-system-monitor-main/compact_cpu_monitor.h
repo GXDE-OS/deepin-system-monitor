@@ -10,7 +10,6 @@
 #include <QPainterPath>
 
 class CPUInfoModel;
-class BaseCommandLinkButton;
 
 class CompactCpuMonitor : public QWidget
 {
@@ -20,18 +19,11 @@ public:
     explicit CompactCpuMonitor(QWidget *parent = nullptr);
     ~CompactCpuMonitor();
 
-public:
-    void setDetailButtonVisible(bool visible);
-
 signals:
-    void signalDetailInfoClicked();
     void clicked(QString msgCode);
 
 public slots:
     void updateStatus();
-
-private slots:
-    void onDetailInfoClicked();
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -47,7 +39,6 @@ protected:
 
 private:
     void changeFont(const QFont &font);
-    void resizeItemRect();
 
 private:
     QList<QList<qreal>> cpuPercents;
@@ -66,9 +57,7 @@ private:
     QFont m_cpuFont;
     QFont m_statFont;
 
-    QString m_detailText;
     CPUInfoModel *m_cpuInfomodel;
-    BaseCommandLinkButton *m_detailButton;
 };
 
 #endif

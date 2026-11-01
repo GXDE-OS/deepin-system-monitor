@@ -11,7 +11,6 @@
 #include "system/device_db.h"
 #include "model/cpu_info_model.h"
 #include "model/cpu_list_model.h"
-#include "gui/base/base_commandlink_button.h"
 
 #include <DApplication>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -21,7 +20,6 @@
 #endif
 #include <DPalette>
 #include <DStyleHelper>
-#include <DFontSizeManager>
 
 #include <QApplication>
 #include <QDebug>
@@ -33,10 +31,6 @@
 DWIDGET_USE_NAMESPACE
 using namespace common;
 using namespace DDLog;
-
-// additonPoses to align with the cpu text
-const int additionCPUPosX = 3;
-const int additionCPUPoxY = 3;
 
 // 通过 UseTotalCpuCurve 宏, 控制绘制CPU曲线方式
 // UseTotalCpuCurve: true , 绘制一条总的CPU占用曲线
@@ -86,14 +80,6 @@ CompactCpuMonitor::CompactCpuMonitor(QWidget *parent)
     m_cpuInfomodel = CPUInfoModel::instance();
     connect(m_cpuInfomodel, &CPUInfoModel::modelUpdated, this, &CompactCpuMonitor::updateStatus);
 
-    m_detailText = tr("Details");
-    m_detailButton = new BaseCommandLinkButton(m_detailText, this);
-    m_detailButton->setObjectName("CompactCpuDetailButton");
-    m_detailButton->setAccessibleName("CompactCpuDetailButton");
-    DFontSizeManager::instance()->bind(m_detailButton, DFontSizeManager::T8, QFont::Medium);
-    m_detailButton->setToolTip(m_detailText);
-    connect(m_detailButton, &BaseCommandLinkButton::clicked, this, &CompactCpuMonitor::onDetailInfoClicked);
-
     changeFont(DApplication::font());
     connect(dynamic_cast<QGuiApplication *>(DApplication::instance()), &DApplication::fontChanged,
             this, &CompactCpuMonitor::changeFont);
@@ -101,13 +87,6 @@ CompactCpuMonitor::CompactCpuMonitor(QWidget *parent)
 
 CompactCpuMonitor::~CompactCpuMonitor() {
     // qCDebug(app) << "CompactCpuMonitor destructor";
-}
-
-void CompactCpuMonitor::onDetailInfoClicked()
-{
-    qCDebug(app) << "onDetailInfoClicked";
-    setDetailButtonVisible(false);
-    emit signalDetailInfoClicked();
 }
 
 void CompactCpuMonitor::updateStatus()
@@ -177,28 +156,10 @@ void CompactCpuMonitor::updateStatus()
     update();
 }
 
-void CompactCpuMonitor::setDetailButtonVisible(bool visible)
-{
-    // qCDebug(app) << "setDetailButtonVisible:" << visible;
-    m_detailButton->setVisible(visible);
-}
-
 void CompactCpuMonitor::resizeEvent(QResizeEvent *event)
 {
     // qCDebug(app) << "resizeEvent";
     QWidget::resizeEvent(event);
-}
-
-void CompactCpuMonitor::resizeItemRect()
-{
-    // qCDebug(app) << "resizeItemRect";
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    m_detailButton->setFixedSize(m_detailButton->fontMetrics().width(m_detailButton->text()) + 12, m_detailButton->fontMetrics().height() + 4);
-#else
-    m_detailButton->setFixedSize(m_detailButton->fontMetrics().horizontalAdvance(m_detailButton->text()) + 12, m_detailButton->fontMetrics().height() + 4);
-#endif
-    const QSize &detailtextSize = m_detailButton->size();
-    m_detailButton->setGeometry(this->width() - detailtextSize.width() + additionCPUPosX, additionCPUPoxY, detailtextSize.width(), detailtextSize.height());
 }
 
 void CompactCpuMonitor::paintEvent(QPaintEvent *)
@@ -249,9 +210,6 @@ void CompactCpuMonitor::paintEvent(QPaintEvent *)
     QRect statRect(cpuRect.x() + cpuRect.width() + spacing, cpuRect.y(), fmStat.horizontalAdvance(cpuStatText),
                    fmStat.height() + 4);
 #endif
-
-    m_detailButton->setText(m_detailButton->fontMetrics().elidedText(m_detailText, Qt::ElideRight, this->width() - statRect.right() - 2 * spacing));
-    resizeItemRect();
 
     // draw section
     painter.setPen(sectionColor);
@@ -373,8 +331,6 @@ void CompactCpuMonitor::changeFont(const QFont &font)
     m_cpuFont.setPointSizeF(m_cpuFont.pointSizeF() - 1);
     m_statFont = font;
     m_statFont.setPointSizeF(m_statFont.pointSizeF() - 1);
-
-    resizeItemRect();
 }
 
 void CompactCpuMonitor::mouseReleaseEvent(QMouseEvent *ev)

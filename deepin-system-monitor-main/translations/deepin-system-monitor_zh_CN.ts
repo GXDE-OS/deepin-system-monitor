@@ -593,6 +593,14 @@
     </message>
 </context>
 <context>
+    <name>GpuMonitor</name>
+    <message>
+        <location filename="../gpu_monitor.cpp" line="76"/>
+        <source>Details</source>
+        <translation>详细信息</translation>
+    </message>
+</context>
+<context>
     <name>Help.Shortcut.System</name>
     <message>
         <location filename="../common/common.cpp" line="32"/>

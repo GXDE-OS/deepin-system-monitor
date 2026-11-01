@@ -100,7 +100,6 @@ MonitorCompactView::MonitorCompactView(QWidget *parent)
     // set frame layout
     setLayout(layout);
 
-    connect(m_cpuMonitor, &CompactCpuMonitor::signalDetailInfoClicked, this, &MonitorCompactView::signalDetailInfoClicked);
     // 连接dbus发来的信号
     connect(&DetailWidgetManager::getInstance(), &DetailWidgetManager::sigJumpToDetailWidget, this, [=](QString msgCode) {
         qCDebug(app) << "Received signal from DBus to show detail info:" << msgCode;
@@ -113,10 +112,4 @@ MonitorCompactView::MonitorCompactView(QWidget *parent)
     connect(m_memoryMonitor, &CompactMemoryMonitor::clicked, &DetailWidgetManager::getInstance(), &DetailWidgetManager::jumpDetailWidget);
     connect(m_networkMonitor, &CompactNetworkMonitor::clicked, &DetailWidgetManager::getInstance(), &DetailWidgetManager::jumpDetailWidget);
     connect(m_diskMonitor, &CompactDiskMonitor::clicked, &DetailWidgetManager::getInstance(), &DetailWidgetManager::jumpDetailWidget);
-}
-
-void MonitorCompactView::setDetailButtonVisible(bool visible)
-{
-    qCDebug(app) << "Setting detail button visibility to:" << visible;
-    m_cpuMonitor->setDetailButtonVisible(visible);
 }

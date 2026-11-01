@@ -89,7 +89,7 @@ CpuMonitor::~CpuMonitor()
 void CpuMonitor::onDetailInfoClicked()
 {
     qCDebug(app) << "onDetailInfoClicked";
-    setDetailButtonVisible(false);
+    // "详细信息"按钮保持始终可见，点击后不隐藏
     emit signalDetailInfoClicked();
 }
 
