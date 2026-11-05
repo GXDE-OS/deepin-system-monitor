@@ -38,10 +38,11 @@ signals:
     void signalDetailInfoByDbus(QString);
 
 private:
-    // Compact cpu view instance
+    // Compact cpu view instance (full-width row)
     CompactCpuMonitor *m_cpuMonitor {};
-    // Compact gpu view instance
-    CompactGpuMonitor *m_gpuMonitor {};
+    // Row holding one chart per detected GPU/NPU device (GPU1..N, NPU1..M)
+    QWidget *m_deviceRowWidget {};
+    QList<CompactGpuMonitor *> m_deviceMonitors;
     // Compact memory view instance
     CompactMemoryMonitor *m_memoryMonitor {};
     // Compact network view instance

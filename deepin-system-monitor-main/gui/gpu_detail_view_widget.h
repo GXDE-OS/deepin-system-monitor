@@ -18,20 +18,21 @@ class GpuDetailViewWidget : public BaseDetailViewWidget
     Q_OBJECT
 
 public:
-    explicit GpuDetailViewWidget(QWidget *parent = nullptr);
+    explicit GpuDetailViewWidget(int deviceIndex, bool isNpu = false, QWidget *parent = nullptr);
 
 public slots:
     void detailFontChanged(const QFont &font);
     void onModelUpdate();
 
 private:
+    int m_deviceIndex {0};
+    bool m_isNpu {false};
+
     QWidget *m_utilizationWidget {};
-    QLabel *m_gpuUtilizationTitleLabel {};
-    QLabel *m_npuUtilizationTitleLabel {};
-    ChartViewWidget *m_gpuUtilizationChartWidget {};
-    ChartViewWidget *m_npuUtilizationChartWidget {};
+    QLabel *m_utilizationTitleLabel {};
+    ChartViewWidget *m_utilizationChartWidget {};
     QLabel *m_memoryTitleLabel {};
-    ChartViewWidget *m_gpuMemoryChartWidget {};
+    ChartViewWidget *m_memoryChartWidget {};
     QTableView *m_deviceTable {};
     QAbstractTableModel *m_deviceModel {};
 };

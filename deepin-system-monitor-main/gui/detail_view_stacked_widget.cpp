@@ -20,9 +20,21 @@ using namespace DDLog;
 
 namespace {
 
-bool hasAvailableGpu()
+// 设备详情页的跳转消息码，如 MSG_GPU1 / MSG_NPU2；前缀固定 7 个字符，
+// 后缀为从 1 开始的设备编号
+int deviceIndexFromMsgCode(const QString &msgCode, bool *npu)
 {
-    return GPUInfoModel::instance()->gpuCount() > 0;
+    const QString upper = msgCode.toUpper();
+    *npu = upper.startsWith(QString("MSG_NPU"));
+    if (!upper.startsWith(QString("MSG_GPU")) && !(*npu))
+        return -1;
+
+    const QString suffix = upper.mid(7);
+    if (suffix.isEmpty())
+        return 0;  // 兼容旧消息码 MSG_GPU/MSG_NPU，跳到第一块设备
+    bool ok = false;
+    const int index = suffix.toInt(&ok) - 1;
+    return ok ? index : -1;
 }
 
 }
@@ -48,11 +60,10 @@ DetailViewStackedWidget::~DetailViewStackedWidget()
         delete m_cpudetailWidget;
         m_cpudetailWidget = nullptr;
     }
-    if (m_gpuDetailWidget) {
-        // qCDebug(app) << "Deleting GPU detail widget";
-        delete m_gpuDetailWidget;
-        m_gpuDetailWidget = nullptr;
-    }
+    qDeleteAll(m_gpuDetailWidgets);
+    m_gpuDetailWidgets.clear();
+    qDeleteAll(m_npuDetailWidgets);
+    m_npuDetailWidgets.clear();
     if (m_memDetailWidget) {
         // qCDebug(app) << "Deleting memory detail widget";
         delete m_memDetailWidget;
@@ -85,8 +96,31 @@ void DetailViewStackedWidget::onSwitchPageFinished()
         deleteDetailPage();
     } else {
         qCDebug(app) << "Current widget is a detail page, updating last detail widget name";
-        m_lastDteailWidgetName = this->currentWidget()->objectName();
+        QWidget *cur = this->currentWidget();
+        m_lastDteailWidgetName = cur ? cur->objectName() : QString();
+        // 设备详情页（GPU/NPU）记录对应设备，便于"上次的详情页"恢复
+        const QVariant deviceIndex = cur ? cur->property("deviceIndex") : QVariant();
+        if (deviceIndex.isValid()) {
+            m_lastDeviceIndex = deviceIndex.toInt();
+            m_lastDeviceIsNpu = cur->property("deviceIsNpu").toBool();
+        } else {
+            m_lastDeviceIndex = -1;
+        }
     }
+}
+
+void DetailViewStackedWidget::showDeviceDetailPage(int index, bool npu)
+{
+    auto &pages = npu ? m_npuDetailWidgets : m_gpuDetailWidgets;
+    QWidget *page = pages.value(index, nullptr);
+    if (page == nullptr) {
+        qCDebug(app) << "Device detail widget is null, creating new one, index:" << index << "npu:" << npu;
+        page = new GpuDetailViewWidget(index, npu, this);
+        pages.insert(index, page);
+        // 设备页集中在 CPU 页之后，切换通过指针完成，位置仅影响内部顺序
+        this->insertWidget(2, page);
+    }
+    this->setCurrent(page);
 }
 
 void DetailViewStackedWidget::onDbusSendMsgChangeDetailInfoWidget(QString msgCode)
@@ -104,19 +138,18 @@ void DetailViewStackedWidget::onDbusSendMsgChangeDetailInfoWidget(QString msgCod
         return;
     }
 
-    if (msgCode.compare(QString("MSG_GPU"), Qt::CaseInsensitive) == 0) {
-        if (!hasAvailableGpu()) {
-            qCDebug(app) << "GPU unavailable, ignore MSG_GPU";
+    // MSG_GPU（兼容旧消息码，跳到第一块 GPU）、MSG_GPU1/2...、MSG_NPU1/2...
+    bool isNpu = false;
+    const int deviceIndex = deviceIndexFromMsgCode(msgCode, &isNpu);
+    if (deviceIndex >= 0) {
+        const int availableCount = isNpu ? GPUInfoModel::instance()->npuCount()
+                                         : GPUInfoModel::instance()->gpuCount();
+        if (deviceIndex >= availableCount) {
+            qCDebug(app) << "Device unavailable, ignore message code:" << msgCode;
             return;
         }
-        qCDebug(app) << "Switching to GPU page";
-        if (m_gpuDetailWidget == nullptr) {
-            qCDebug(app) << "GPU detail widget is null, creating new one";
-            m_gpuDetailWidget = new GpuDetailViewWidget(this);
-            this->insertWidget(2, m_gpuDetailWidget);
-        }
-        qCDebug(app) << "Setting current widget to GPU detail widget";
-        this->setCurrent(m_gpuDetailWidget);
+        qCDebug(app) << "Switching to device detail page, index:" << deviceIndex << "npu:" << isNpu;
+        showDeviceDetailPage(deviceIndex, isNpu);
         return;
     }
 
@@ -161,17 +194,15 @@ void DetailViewStackedWidget::onDetailInfoClicked()
 {
     qCDebug(app) << "onDetailInfoClicked, last detail widget name was" << m_lastDteailWidgetName;
     if (m_lastDteailWidgetName == "GpuDetailViewWidget") {
-        if (!hasAvailableGpu()) {
+        const int availableCount = m_lastDeviceIsNpu ? GPUInfoModel::instance()->npuCount()
+                                                     : GPUInfoModel::instance()->gpuCount();
+        if (m_lastDeviceIndex < 0 || m_lastDeviceIndex >= availableCount) {
             qCDebug(app) << "GPU unavailable, fallback to CPU page";
             m_lastDteailWidgetName.clear();
         } else {
-        qCDebug(app) << "Switching to GPU page";
-        if (m_gpuDetailWidget == nullptr) {
-            qCDebug(app) << "GPU detail widget is null, creating new one";
-            m_gpuDetailWidget = new GpuDetailViewWidget(this);
-            this->insertWidget(2, m_gpuDetailWidget);
-        }
-        this->setCurrent(m_gpuDetailWidget);
+            qCDebug(app) << "Switching to device detail page, index:" << m_lastDeviceIndex
+                         << "npu:" << m_lastDeviceIsNpu;
+            showDeviceDetailPage(m_lastDeviceIndex, m_lastDeviceIsNpu);
             return;
         }
     } else if (m_lastDteailWidgetName == "MemDetailViewWidget") {
@@ -215,6 +246,44 @@ void DetailViewStackedWidget::onSwitchProcessPage()
     this->setCurrent(m_processWidget);
 }
 
+void DetailViewStackedWidget::refreshDeviceActions()
+{
+    if (m_menu == nullptr)
+        return;
+
+    // 移除旧的设备动作
+    for (QAction *act : m_gpuActs) {
+        m_menu->removeAction(act);
+        delete act;
+    }
+    m_gpuActs.clear();
+    for (QAction *act : m_npuActs) {
+        m_menu->removeAction(act);
+        delete act;
+    }
+    m_npuActs.clear();
+
+    // 按当前设备数量重建，插在"内存"项之前，顺序为 GPU1..N、NPU1..M
+    for (int i = 0; i < GPUInfoModel::instance()->gpuCount(); ++i) {
+        QAction *act = new QAction(GPUInfoModel::deviceDisplayName(i, false), m_menu);
+        act->setObjectName(QString("GpuAct%1").arg(i + 1));
+        act->setCheckable(true);
+        m_menu->insertAction(memAct, act);
+        if (m_actionGroup)
+            m_actionGroup->addAction(act);
+        m_gpuActs.append(act);
+    }
+    for (int i = 0; i < GPUInfoModel::instance()->npuCount(); ++i) {
+        QAction *act = new QAction(GPUInfoModel::deviceDisplayName(i, true), m_menu);
+        act->setObjectName(QString("NpuAct%1").arg(i + 1));
+        act->setCheckable(true);
+        m_menu->insertAction(memAct, act);
+        if (m_actionGroup)
+            m_actionGroup->addAction(act);
+        m_npuActs.append(act);
+    }
+}
+
 void DetailViewStackedWidget::onShowPerformMenu(QPoint pos)
 {
     qCDebug(app) << "onShowPerformMenu";
@@ -225,8 +294,6 @@ void DetailViewStackedWidget::onShowPerformMenu(QPoint pos)
         m_menu->setAccessibleName("Menu");
         cpuAct = m_menu->addAction(DApplication::translate("Process.Graph.View", "CPU"));
         cpuAct->setObjectName("CpuAct");
-        gpuAct = m_menu->addAction(DApplication::translate("Process.Graph.View", "GPU"));
-        gpuAct->setObjectName("GpuAct");
         memAct = m_menu->addAction(DApplication::translate("Process.Graph.Title", "Memory"));
         memAct->setObjectName("MemAct");
         netifAct = m_menu->addAction(DApplication::translate("Process.Graph.View", "Network"));
@@ -234,31 +301,24 @@ void DetailViewStackedWidget::onShowPerformMenu(QPoint pos)
         blockDevAct = m_menu->addAction(DApplication::translate("Process.Graph.View", "Disks"));
         blockDevAct->setObjectName("BlockDevAct");
 
-        QActionGroup *actionGroup = new QActionGroup(m_menu);
-        actionGroup->addAction(cpuAct);
-        actionGroup->addAction(gpuAct);
-        actionGroup->addAction(memAct);
-        actionGroup->addAction(netifAct);
-        actionGroup->addAction(blockDevAct);
+        m_actionGroup = new QActionGroup(m_menu);
+        m_actionGroup->addAction(cpuAct);
+        m_actionGroup->addAction(memAct);
+        m_actionGroup->addAction(netifAct);
+        m_actionGroup->addAction(blockDevAct);
 
         cpuAct->setCheckable(true);
-        gpuAct->setCheckable(true);
         memAct->setCheckable(true);
         netifAct->setCheckable(true);
         blockDevAct->setCheckable(true);
     }
 
-    const bool gpuAvailable = hasAvailableGpu();
-    gpuAct->setVisible(gpuAvailable);
-
-
+    // 按当前设备数量重建 GPU1..N / NPU1..M 菜单项
+    refreshDeviceActions();
 
     if (this->currentWidget() == m_cpudetailWidget) {
         qCDebug(app) << "Current widget is CPU, checking CPU action";
         cpuAct->setChecked(true);
-    } else if (this->currentWidget() == m_gpuDetailWidget) {
-        qCDebug(app) << "Current widget is GPU, checking GPU action";
-        gpuAct->setChecked(true);
     } else if (this->currentWidget() == m_memDetailWidget) {
         qCDebug(app) << "Current widget is Memory, checking Memory action";
         memAct->setChecked(true);
@@ -270,7 +330,15 @@ void DetailViewStackedWidget::onShowPerformMenu(QPoint pos)
         blockDevAct->setChecked(true);
     }
 
+    // 设备详情页对应菜单项打勾
+    for (int i = 0; i < m_gpuActs.size(); ++i)
+        m_gpuActs.at(i)->setChecked(this->currentWidget() == m_gpuDetailWidgets.value(i));
+    for (int i = 0; i < m_npuActs.size(); ++i)
+        m_npuActs.at(i)->setChecked(this->currentWidget() == m_npuDetailWidgets.value(i));
+
     QAction *resAct = m_menu->exec(pos);
+    if (resAct == nullptr)
+        return;
     if (resAct == cpuAct) {
         qCDebug(app) << "CPU action triggered";
         if (m_cpudetailWidget == nullptr) {
@@ -279,16 +347,18 @@ void DetailViewStackedWidget::onShowPerformMenu(QPoint pos)
             this->insertWidget(1, m_cpudetailWidget);
         }
         this->setCurrent(m_cpudetailWidget);
-    } else if (resAct == gpuAct) {
-        if (!hasAvailableGpu())
-            return;
-        qCDebug(app) << "GPU action triggered";
-        if (m_gpuDetailWidget == nullptr) {
-            qCDebug(app) << "GPU detail widget is null, creating new one";
-            m_gpuDetailWidget = new GpuDetailViewWidget(this);
-            this->insertWidget(2, m_gpuDetailWidget);
+    } else if (m_gpuActs.contains(resAct)) {
+        const int index = m_gpuActs.indexOf(resAct);
+        if (index < GPUInfoModel::instance()->gpuCount()) {
+            qCDebug(app) << "GPU action triggered, index:" << index;
+            showDeviceDetailPage(index, false);
         }
-        this->setCurrent(m_gpuDetailWidget);
+    } else if (m_npuActs.contains(resAct)) {
+        const int index = m_npuActs.indexOf(resAct);
+        if (index < GPUInfoModel::instance()->npuCount()) {
+            qCDebug(app) << "NPU action triggered, index:" << index;
+            showDeviceDetailPage(index, true);
+        }
     } else if (resAct == memAct) {
         qCDebug(app) << "Memory action triggered";
         if (m_memDetailWidget == nullptr) {
@@ -320,8 +390,13 @@ void DetailViewStackedWidget::deleteDetailPage()
 {
     qCDebug(app) << "Deleting all detail pages";
     DELETE_PAGE(m_cpudetailWidget);
-    DELETE_PAGE(m_gpuDetailWidget);
+    qDeleteAll(m_gpuDetailWidgets);
+    m_gpuDetailWidgets.clear();
+    qDeleteAll(m_npuDetailWidgets);
+    m_npuDetailWidgets.clear();
     DELETE_PAGE(m_memDetailWidget);
     DELETE_PAGE(m_netifDetailWidget);
     DELETE_PAGE(m_blockDevDetailWidget);
+    // 注意：不清除 m_lastDteailWidgetName/m_lastDeviceIndex，
+    // "上次的详情页"记忆需要跨页存活
 }

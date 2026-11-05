@@ -46,6 +46,14 @@ public:
     float gpuTemperature(int index) const;
     QString gpuName(int index) const;
     QString gpuVendor(int index) const;
+
+    // Returns the index-th available device (NPU when npu is true, otherwise
+    // GPU), or nullptr when out of range. Used for per-device UI display.
+    GPUInfo device(int index, bool npu) const;
+    // Display name of a device, e.g. "GPU1", "NPU2".
+    static QString deviceDisplayName(int index, bool npu);
+    // Message code used to jump to a device detail page, e.g. "MSG_GPU1".
+    static QString deviceMsgCode(int index, bool npu);
     
     GPUInfoSet *gpuInfoSet();
 

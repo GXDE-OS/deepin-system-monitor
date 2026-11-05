@@ -12,13 +12,13 @@
 
 using namespace DDLog;
 
-static GPUInfo filteredDeviceByIndex(GPUInfoSet *set, int index, bool npu)
+GPUInfo GPUInfoModel::device(int index, bool npu) const
 {
-    if (!set || index < 0)
+    if (!m_gpuInfoSet || index < 0)
         return nullptr;
 
     int matched {0};
-    const auto devices = set->gpuList();
+    const auto devices = m_gpuInfoSet->gpuList();
     for (const auto &device : devices) {
         if (!device || !device->isAvailable)
             continue;
@@ -29,6 +29,16 @@ static GPUInfo filteredDeviceByIndex(GPUInfoSet *set, int index, bool npu)
         matched++;
     }
     return nullptr;
+}
+
+QString GPUInfoModel::deviceDisplayName(int index, bool npu)
+{
+    return QString("%1%2").arg(npu ? "NPU" : "GPU").arg(index + 1);
+}
+
+QString GPUInfoModel::deviceMsgCode(int index, bool npu)
+{
+    return QString("MSG_%1%2").arg(npu ? "NPU" : "GPU").arg(index + 1);
 }
 
 Q_GLOBAL_STATIC(GPUInfoModel, theGPUInstance)
@@ -136,9 +146,7 @@ quint64 GPUInfoModel::gpuFreeMemory() const
 
 qreal GPUInfoModel::gpuUtilization(int index) const
 {
-    if (!m_gpuInfoSet)
-        return 0.0;
-    auto gpu = filteredDeviceByIndex(m_gpuInfoSet, index, false);
+    auto gpu = device(index, false);
     if (gpu)
         return gpu->gpuUtilization;
     return 0.0;
@@ -146,9 +154,7 @@ qreal GPUInfoModel::gpuUtilization(int index) const
 
 qreal GPUInfoModel::gpuMemoryUtilization(int index) const
 {
-    if (!m_gpuInfoSet)
-        return 0.0;
-    auto gpu = filteredDeviceByIndex(m_gpuInfoSet, index, false);
+    auto gpu = device(index, false);
     if (gpu)
         return gpu->memoryUtilization;
     return 0.0;
@@ -156,9 +162,7 @@ qreal GPUInfoModel::gpuMemoryUtilization(int index) const
 
 quint64 GPUInfoModel::gpuTotalMemory(int index) const
 {
-    if (!m_gpuInfoSet)
-        return 0;
-    auto gpu = filteredDeviceByIndex(m_gpuInfoSet, index, false);
+    auto gpu = device(index, false);
     if (gpu)
         return gpu->totalMemory;
     return 0;
@@ -166,9 +170,7 @@ quint64 GPUInfoModel::gpuTotalMemory(int index) const
 
 quint64 GPUInfoModel::gpuUsedMemory(int index) const
 {
-    if (!m_gpuInfoSet)
-        return 0;
-    auto gpu = filteredDeviceByIndex(m_gpuInfoSet, index, false);
+    auto gpu = device(index, false);
     if (gpu)
         return gpu->usedMemory;
     return 0;
@@ -176,9 +178,7 @@ quint64 GPUInfoModel::gpuUsedMemory(int index) const
 
 quint64 GPUInfoModel::gpuFreeMemory(int index) const
 {
-    if (!m_gpuInfoSet)
-        return 0;
-    auto gpu = filteredDeviceByIndex(m_gpuInfoSet, index, false);
+    auto gpu = device(index, false);
     if (gpu)
         return gpu->freeMemory;
     return 0;
@@ -186,9 +186,7 @@ quint64 GPUInfoModel::gpuFreeMemory(int index) const
 
 float GPUInfoModel::gpuTemperature(int index) const
 {
-    if (!m_gpuInfoSet)
-        return 0.0f;
-    auto gpu = filteredDeviceByIndex(m_gpuInfoSet, index, false);
+    auto gpu = device(index, false);
     if (gpu)
         return gpu->temperature;
     return 0.0f;
@@ -196,9 +194,7 @@ float GPUInfoModel::gpuTemperature(int index) const
 
 QString GPUInfoModel::gpuName(int index) const
 {
-    if (!m_gpuInfoSet)
-        return QString();
-    auto gpu = filteredDeviceByIndex(m_gpuInfoSet, index, false);
+    auto gpu = device(index, false);
     if (gpu)
         return gpu->name;
     return QString();
@@ -206,9 +202,7 @@ QString GPUInfoModel::gpuName(int index) const
 
 QString GPUInfoModel::gpuVendor(int index) const
 {
-    if (!m_gpuInfoSet)
-        return QString();
-    auto gpu = filteredDeviceByIndex(m_gpuInfoSet, index, false);
+    auto gpu = device(index, false);
     if (gpu)
         return gpu->vendor;
     return QString();

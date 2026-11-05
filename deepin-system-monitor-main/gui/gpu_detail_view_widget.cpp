@@ -103,11 +103,16 @@ private:
 
 }
 
-GpuDetailViewWidget::GpuDetailViewWidget(QWidget *parent)
+GpuDetailViewWidget::GpuDetailViewWidget(int deviceIndex, bool isNpu, QWidget *parent)
     : BaseDetailViewWidget(parent)
+    , m_deviceIndex(deviceIndex)
+    , m_isNpu(isNpu)
 {
     this->setObjectName("GpuDetailViewWidget");
-    setTitle(DApplication::translate("Process.Graph.View", "GPU"));
+    // 记录设备信息，供 DetailViewStackedWidget 恢复"上次的详情页"
+    this->setProperty("deviceIndex", deviceIndex);
+    this->setProperty("deviceIsNpu", isNpu);
+    setTitle(GPUInfoModel::deviceDisplayName(deviceIndex, isNpu));
 
     m_utilizationWidget = new QWidget(this);
     auto *utilizationLayout = new QGridLayout(m_utilizationWidget);
@@ -115,28 +120,27 @@ GpuDetailViewWidget::GpuDetailViewWidget(QWidget *parent)
     utilizationLayout->setHorizontalSpacing(12);
     utilizationLayout->setVerticalSpacing(6);
 
-    m_gpuUtilizationTitleLabel = new QLabel(DApplication::translate("Process.Graph.View", "GPU Utilization"), m_utilizationWidget);
-    m_npuUtilizationTitleLabel = new QLabel(DApplication::translate("Process.Graph.View", "NPU Utilization"), m_utilizationWidget);
+    const QString utilizationTitle = m_isNpu
+        ? DApplication::translate("Process.Graph.View", "NPU Utilization")
+        : DApplication::translate("Process.Graph.View", "GPU Utilization");
+    m_utilizationTitleLabel = new QLabel(utilizationTitle, m_utilizationWidget);
 
-    m_gpuUtilizationChartWidget = new ChartViewWidget(ChartViewWidget::ChartViewTypes::MEM_CHART, m_utilizationWidget);
-    m_gpuUtilizationChartWidget->setData1Color(QColor("#AA00FF"));
-    m_gpuUtilizationChartWidget->setMinimumHeight(180);
+    m_utilizationChartWidget = new ChartViewWidget(ChartViewWidget::ChartViewTypes::MEM_CHART, m_utilizationWidget);
+    // NPU 页使用与原 NPU 图表一致的蓝色，GPU 页保持紫色
+    m_utilizationChartWidget->setData1Color(m_isNpu ? QColor("#00A3FF") : QColor("#AA00FF"));
+    m_utilizationChartWidget->setMinimumHeight(180);
 
-    m_npuUtilizationChartWidget = new ChartViewWidget(ChartViewWidget::ChartViewTypes::MEM_CHART, m_utilizationWidget);
-    m_npuUtilizationChartWidget->setData1Color(QColor("#00A3FF"));
-    m_npuUtilizationChartWidget->setMinimumHeight(180);
-
-    utilizationLayout->addWidget(m_gpuUtilizationTitleLabel, 0, 0);
-    utilizationLayout->addWidget(m_npuUtilizationTitleLabel, 0, 1);
-    utilizationLayout->addWidget(m_gpuUtilizationChartWidget, 1, 0);
-    utilizationLayout->addWidget(m_npuUtilizationChartWidget, 1, 1);
+    utilizationLayout->addWidget(m_utilizationTitleLabel, 0, 0);
+    utilizationLayout->addWidget(m_utilizationChartWidget, 1, 0);
     utilizationLayout->setColumnStretch(0, 1);
-    utilizationLayout->setColumnStretch(1, 1);
 
-    m_memoryTitleLabel = new QLabel(DApplication::translate("Process.Graph.View", "GPU Memory Utilization"), this);
-    m_gpuMemoryChartWidget = new ChartViewWidget(ChartViewWidget::ChartViewTypes::MEM_CHART, this);
-    m_gpuMemoryChartWidget->setData1Color(QColor("#00C5C0"));
-    m_gpuMemoryChartWidget->setMinimumHeight(170);
+    const QString memoryUtilizationTitle = m_isNpu
+        ? DApplication::translate("Process.Graph.View", "NPU Memory Utilization")
+        : DApplication::translate("Process.Graph.View", "GPU Memory Utilization");
+    m_memoryTitleLabel = new QLabel(memoryUtilizationTitle, this);
+    m_memoryChartWidget = new ChartViewWidget(ChartViewWidget::ChartViewTypes::MEM_CHART, this);
+    m_memoryChartWidget->setData1Color(QColor("#00C5C0"));
+    m_memoryChartWidget->setMinimumHeight(170);
 
     m_deviceTable = new QTableView(this);
     m_deviceModel = new GPUSummaryTableModel(this);
@@ -155,7 +159,7 @@ GpuDetailViewWidget::GpuDetailViewWidget(QWidget *parent)
 
     m_centralLayout->addWidget(m_utilizationWidget);
     m_centralLayout->addWidget(m_memoryTitleLabel);
-    m_centralLayout->addWidget(m_gpuMemoryChartWidget);
+    m_centralLayout->addWidget(m_memoryChartWidget);
     m_centralLayout->addWidget(m_deviceTable);
 
     detailFontChanged(DApplication::font());
@@ -181,46 +185,34 @@ void GpuDetailViewWidget::detailFontChanged(const QFont &font)
 void GpuDetailViewWidget::onModelUpdate()
 {
     auto *gpuModel = GPUInfoModel::instance();
+    auto device = gpuModel->device(m_deviceIndex, m_isNpu);
 
-    const qreal gpuUtilization = gpuModel->gpuAllUtilization();
-    const qreal npuUtilization = gpuModel->npuAllUtilization();
-    const qreal gpuMemoryUtilization = gpuModel->gpuAllMemoryUtilization();
+    const qreal utilization = device ? qreal(device->gpuUtilization) : 0.0;
+    const qreal memoryUtilization = device ? qreal(device->memoryUtilization) : 0.0;
 
-    m_gpuUtilizationChartWidget->addData1(gpuUtilization / 100.0);
-    m_npuUtilizationChartWidget->addData1(npuUtilization / 100.0);
-    m_gpuMemoryChartWidget->addData1(gpuMemoryUtilization / 100.0);
+    m_utilizationChartWidget->addData1(utilization / 100.0);
+    m_memoryChartWidget->addData1(memoryUtilization / 100.0);
 
-    m_gpuUtilizationTitleLabel->setText(QString("%1 (%2%)")
-                                            .arg(DApplication::translate("Process.Graph.View", "GPU Utilization"))
-                                            .arg(QString::number(gpuUtilization, 'f', 1)));
+    const QString utilizationTitle = m_isNpu
+        ? DApplication::translate("Process.Graph.View", "NPU Utilization")
+        : DApplication::translate("Process.Graph.View", "GPU Utilization");
 
-    if (gpuModel->npuCount() > 0) {
-        m_npuUtilizationTitleLabel->setText(QString("%1 (%2%)")
-                                                .arg(DApplication::translate("Process.Graph.View", "NPU Utilization"))
-                                                .arg(QString::number(npuUtilization, 'f', 1)));
-    } else {
-        m_npuUtilizationTitleLabel->setText(QString("%1 (-)")
-                                                .arg(DApplication::translate("Process.Graph.View", "NPU Utilization")));
-    }
+    m_utilizationTitleLabel->setText(QString("%1 (%2%)")
+                                            .arg(utilizationTitle)
+                                            .arg(QString::number(utilization, 'f', 1)));
 
     setDetail(QString("%1 (%2%)")
-                  .arg(DApplication::translate("Process.Graph.View", "GPU Utilization"))
-                  .arg(QString::number(gpuUtilization, 'f', 1)));
+                  .arg(utilizationTitle)
+                  .arg(QString::number(utilization, 'f', 1)));
 
-    const auto devices = gpuModel->gpuList();
     QList<QPair<QString, QString>> tableEntries;
 
     auto addEntry = [&tableEntries](const QString &field, const QString &value) {
         tableEntries.append(qMakePair(field, value));
     };
 
-    int deviceIndex {0};
-    for (const auto &device : devices) {
-        if (!device || !device->isAvailable)
-            continue;
-
-        const QString type = device->isNpu ? "NPU" : "GPU";
-        const QString indexName = QString("%1 %2").arg(type).arg(deviceIndex++);
+    if (device) {
+        const QString indexName = GPUInfoModel::deviceDisplayName(m_deviceIndex, m_isNpu);
 
         const QString name = device->name.isEmpty() ? "-" : device->name;
         const QString vendor = device->vendor.isEmpty() ? "-" : device->vendor;

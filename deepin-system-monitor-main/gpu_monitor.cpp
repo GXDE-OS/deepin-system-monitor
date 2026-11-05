@@ -34,10 +34,14 @@ DWIDGET_USE_NAMESPACE
 using namespace common;
 using namespace DDLog;
 
-GpuMonitor::GpuMonitor(QWidget *parent)
+GpuMonitor::GpuMonitor(int deviceIndex, bool isNpu, QWidget *parent)
     : QWidget(parent)
+    , m_deviceIndex(deviceIndex)
+    , m_isNpu(isNpu)
 {
-    qCDebug(app) << "GpuMonitor constructor";
+    qCDebug(app) << "GpuMonitor constructor, device:" << deviceIndex << "isNpu:" << isNpu;
+    // NPU 使用与 NPU 详情图表一致的蓝色，GPU 保持紫色
+    ringForegroundColor = isNpu ? QColor("#00A3FF") : QColor("#AA00FF");
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto *dAppHelper = DApplicationHelper::instance();
 #else
@@ -89,13 +93,19 @@ GpuMonitor::~GpuMonitor()
     delete gpuPercents;
 }
 
+QString GpuMonitor::msgCode() const
+{
+    return GPUInfoModel::deviceMsgCode(m_deviceIndex, m_isNpu);
+}
+
 void GpuMonitor::updateStatus()
 {
     qCDebug(app) << "GpuMonitor updateStatus";
-    qreal gpuPercent = m_gpuInfoModel->gpuAllUtilization();
+    auto device = m_gpuInfoModel->device(m_deviceIndex, m_isNpu);
+    qreal gpuPercent = device ? qreal(device->gpuUtilization) : 0.0;
     // 如果数据无效不更新
     if (qIsNaN(gpuPercent)) {
-        qCWarning(app) << "gpuAllUtilization is nan";
+        qCWarning(app) << "gpu utilization is nan";
         return;
     }
 
@@ -132,7 +142,7 @@ void GpuMonitor::onDetailInfoClicked()
 {
     qCDebug(app) << "onDetailInfoClicked";
     // "详细信息"按钮保持始终可见，点击后不隐藏
-    emit signalDetailInfoClicked();
+    emit signalDetailInfoClicked(msgCode());
 }
 
 void GpuMonitor::setDetailButtonVisible(bool visible)
@@ -224,8 +234,9 @@ void GpuMonitor::paintEvent(QPaintEvent *)
     int margin = 10;
 
     QFontMetrics fm(m_gpuDisplayFont);
+    const QString deviceTitle = GPUInfoModel::deviceDisplayName(m_deviceIndex, m_isNpu);
     int titleWidth =
-        fm.size(Qt::TextSingleLine, DApplication::translate("Process.Graph.View", "GPU")).width();
+        fm.size(Qt::TextSingleLine, deviceTitle).width();
 
     int iconSize = 24;
 
@@ -233,8 +244,7 @@ void GpuMonitor::paintEvent(QPaintEvent *)
     painter.setPen(QPen(textColor));
     QRect gpuDisplayRect(((rect().x() + rect().width() - titleWidth) / 2),
                          rect().y() + titleRenderOffsetY, titleWidth, fm.height());
-    painter.drawText(gpuDisplayRect, Qt::AlignCenter,
-                     DApplication::translate("Process.Graph.View", "GPU"));
+    painter.drawText(gpuDisplayRect, Qt::AlignCenter, deviceTitle);
 
     QRect iconRect(gpuDisplayRect.x() - margin - iconSize + 6,
                    gpuDisplayRect.y() + qCeil((gpuDisplayRect.height() - iconSize) / 2.) + 2,
@@ -275,7 +285,7 @@ void GpuMonitor::paintEvent(QPaintEvent *)
 void GpuMonitor::mouseReleaseEvent(QMouseEvent *ev)
 {
     if (ev->button() == Qt::LeftButton) {
-        emit clicked("MSG_GPU");
+        emit clicked(msgCode());
     }
 }
 

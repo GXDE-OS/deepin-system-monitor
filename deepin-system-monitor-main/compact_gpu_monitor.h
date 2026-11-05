@@ -12,15 +12,21 @@
 class GPUInfoModel;
 
 /**
- * @brief Compact GPU monitor widget for the compact view (bar chart style)
+ * @brief Compact GPU/NPU monitor widget for the compact view (bar chart style)
  */
 class CompactGpuMonitor : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CompactGpuMonitor(QWidget *parent = nullptr);
+    explicit CompactGpuMonitor(int deviceIndex, bool isNpu = false, QWidget *parent = nullptr);
     ~CompactGpuMonitor();
+
+    // Message code used to jump to this device's detail page, e.g. "MSG_GPU1"
+    QString msgCode() const;
+
+    int deviceIndex() const { return m_deviceIndex; }
+    bool isNpu() const { return m_isNpu; }
 
 signals:
     void clicked(QString msgCode);
@@ -38,6 +44,9 @@ private:
     void getPainterPathByData(QList<double> *listData, QPainterPath &path, qreal maxValue);
 
 private:
+    int m_deviceIndex {0};
+    bool m_isNpu {false};
+
     QList<qreal> *gpuPercents;
     qreal m_gpuPercent {};
 
@@ -48,6 +57,7 @@ private:
     QPainterPath gpuPath;
 
     int renderMaxHeight = 80;
+    // 历史采样点数量；曲线横向间距在 paintEvent 中按实际图表宽度计算
     int pointsNumber = 25;
 
     QFont m_tagFont;

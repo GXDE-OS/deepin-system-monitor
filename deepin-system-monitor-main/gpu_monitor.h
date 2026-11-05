@@ -24,10 +24,10 @@ class GPUInfoModel;
 class BaseCommandLinkButton;
 
 /**
- * @brief GPU monitor widget for the expand view.
+ * @brief GPU/NPU monitor widget for the expand view.
  *        Renders the same style as CpuMonitor (title + icon, big percent,
- *        loading ring and a utilization waveform), showing only the total
- *        GPU utilization.
+ *        loading ring and a utilization waveform), showing one device's
+ *        utilization (per GPU/NPU index).
  */
 class GpuMonitor : public QWidget
 {
@@ -35,12 +35,18 @@ class GpuMonitor : public QWidget
     Q_PROPERTY(qreal progress READ progress WRITE setProgress)
 
 public:
-    explicit GpuMonitor(QWidget *parent = nullptr);
+    explicit GpuMonitor(int deviceIndex, bool isNpu = false, QWidget *parent = nullptr);
     ~GpuMonitor();
+
+    // Message code used to jump to this device's detail page, e.g. "MSG_GPU1"
+    QString msgCode() const;
+
+    int deviceIndex() const { return m_deviceIndex; }
+    bool isNpu() const { return m_isNpu; }
 
 signals:
     void clicked(QString msgCode);
-    void signalDetailInfoClicked();
+    void signalDetailInfoClicked(const QString &msgCode);
 
 public slots:
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -67,6 +73,9 @@ private:
     void resizeItemWidgetRect();
 
 private:
+    int m_deviceIndex {0};
+    bool m_isNpu {false};
+
     QIcon m_icon;
 
     QList<double> *gpuPercents;

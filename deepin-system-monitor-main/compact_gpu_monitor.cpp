@@ -29,10 +29,12 @@ DWIDGET_USE_NAMESPACE
 using namespace common;
 using namespace DDLog;
 
-CompactGpuMonitor::CompactGpuMonitor(QWidget *parent)
+CompactGpuMonitor::CompactGpuMonitor(int deviceIndex, bool isNpu, QWidget *parent)
     : QWidget(parent)
+    , m_deviceIndex(deviceIndex)
+    , m_isNpu(isNpu)
 {
-    qCDebug(app) << "CompactGpuMonitor constructor";
+    qCDebug(app) << "CompactGpuMonitor constructor, device:" << deviceIndex << "isNpu:" << isNpu;
     int statusBarMaxWidth = common::getStatusBarMaxWidth();
     setFixedWidth(statusBarMaxWidth);
     setFixedHeight(160);
@@ -43,6 +45,9 @@ CompactGpuMonitor::CompactGpuMonitor(QWidget *parent)
     for (int i = 0; i < pointsNumber; i++) {
         gpuPercents->append(0);
     }
+
+    // NPU 使用与 NPU 详情图表一致的蓝色，GPU 保持紫色
+    m_gpuColor = isNpu ? QColor("#00A3FF") : QColor("#AA00FF");
 
     m_gpuInfoModel = GPUInfoModel::instance();
     connect(m_gpuInfoModel, &GPUInfoModel::modelUpdated, this, &CompactGpuMonitor::updateStatus);
@@ -57,10 +62,16 @@ CompactGpuMonitor::~CompactGpuMonitor()
     delete gpuPercents;
 }
 
+QString CompactGpuMonitor::msgCode() const
+{
+    return GPUInfoModel::deviceMsgCode(m_deviceIndex, m_isNpu);
+}
+
 void CompactGpuMonitor::updateStatus()
 {
     qCDebug(app) << "CompactGpuMonitor updateStatus";
-    m_gpuPercent = m_gpuInfoModel->gpuAllUtilization();
+    auto device = m_gpuInfoModel->device(m_deviceIndex, m_isNpu);
+    m_gpuPercent = device ? qreal(device->gpuUtilization) : 0.0;
 
     gpuPercents->append(m_gpuPercent);
 
@@ -68,16 +79,7 @@ void CompactGpuMonitor::updateStatus()
         gpuPercents->pop_front();
     }
 
-    QList<QPointF> points;
-    for (int i = 0; i < gpuPercents->size(); i++) {
-        qreal val = gpuPercents->at(i);
-        if (val > renderMaxHeight)
-            val = renderMaxHeight;
-        points.append(QPointF(i * 5, val));
-    }
-
-    gpuPath = SmoothCurveGenerator::generateSmoothCurve(points);
-
+    // 曲线在 paintEvent 中按实际图表宽度生成，避免固定点距导致只画出半幅
     update();
 }
 
@@ -120,23 +122,28 @@ void CompactGpuMonitor::paintEvent(QPaintEvent *)
     QFontMetrics fm(m_tagFont);
     QFontMetrics fmStat(m_statFont);
 
-    QString gpuText = DApplication::translate("Process.Graph.View", "GPU");
-    QString gpuStatText = QString::number(m_gpuPercent, 'f', 1).append('%');
+    const QString gpuText = GPUInfoModel::deviceDisplayName(m_deviceIndex, m_isNpu);
+    const QString gpuStatText = QString::number(m_gpuPercent, 'f', 1).append('%');
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QRect tagRect(m_bulletSize * 2 + spacing - 2, 0, fm.width(gpuText), fm.height() + 4);
+    const int gpuTextWidth = fm.width(gpuText);
+    const int statTextWidth = fmStat.width(gpuStatText);
 #else
-    QRect tagRect(m_bulletSize * 2 + spacing - 2, 0, fm.horizontalAdvance(gpuText), fm.height() + 4);
+    const int gpuTextWidth = fm.horizontalAdvance(gpuText);
+    const int statTextWidth = fmStat.horizontalAdvance(gpuStatText);
 #endif
+
+    const int tagX = m_bulletSize * 2 + spacing - 2;
+    // 多个图表共占一行时宽度会变小，标签与百分比按可用空间裁剪
+    const int availableWidth = qMax(0, rect().width() - tagX - 2);
+    const int maxTagWidth = qMin(gpuTextWidth, qMax(0, (availableWidth - spacing) / 2));
+    const int maxStatWidth = qMax(0, availableWidth - maxTagWidth - spacing);
+
+    QRect tagRect(tagX, 0, maxTagWidth, fm.height() + 4);
     QRect sectionRect(0, tagRect.y() + qCeil((tagRect.height() - m_bulletSize) / 2.),
                       m_bulletSize, m_bulletSize);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QRect statRect(tagRect.x() + tagRect.width() + spacing, tagRect.y(), fmStat.width(gpuStatText),
-                   fmStat.height() + 4);
-#else
-    QRect statRect(tagRect.x() + tagRect.width() + spacing, tagRect.y(), fmStat.horizontalAdvance(gpuStatText),
-                   fmStat.height() + 4);
-#endif
+    QRect statRect(tagRect.x() + tagRect.width() + spacing, tagRect.y(),
+                   qMin(statTextWidth, maxStatWidth), fmStat.height() + 4);
 
     // draw section bullet
     painter.setPen(sectionColor);
@@ -147,12 +154,14 @@ void CompactGpuMonitor::paintEvent(QPaintEvent *)
     // draw GPU label
     painter.setPen(tagColor);
     painter.setFont(m_tagFont);
-    painter.drawText(tagRect, Qt::AlignLeft | Qt::AlignVCenter, gpuText);
+    painter.drawText(tagRect, Qt::AlignLeft | Qt::AlignVCenter,
+                     fm.elidedText(gpuText, Qt::ElideRight, tagRect.width()));
 
     // draw GPU stat
     painter.setPen(statColor);
     painter.setFont(m_statFont);
-    painter.drawText(statRect, Qt::AlignLeft | Qt::AlignVCenter, gpuStatText);
+    painter.drawText(statRect, Qt::AlignLeft | Qt::AlignVCenter,
+                     fmStat.elidedText(gpuStatText, Qt::ElideRight, statRect.width()));
 
     // draw grid frame
     QPen framePen;
@@ -202,6 +211,19 @@ void CompactGpuMonitor::paintEvent(QPaintEvent *)
     clip.addRect(gridFrame);
     painter.setClipPath(clip);
 
+    // 按当前网格宽度重算曲线，固定 5px 点距只会画出半幅图表
+    QList<QPointF> points;
+    const int dataCount = gpuPercents->size();
+    const qreal drawWidth = qMax(qreal(1), qreal(gridFrame.width() - 2 * penSize));
+    const qreal deltaX = dataCount > 1 ? drawWidth / (dataCount - 1) : 0;
+    for (int i = 0; i < dataCount; ++i) {
+        qreal val = gpuPercents->at(i);
+        if (val > renderMaxHeight)
+            val = renderMaxHeight;
+        points.append(QPointF(i * deltaX, val));
+    }
+    gpuPath = SmoothCurveGenerator::generateSmoothCurve(points);
+
     painter.translate(gridFrame.x() + penSize, gridFrame.y() + gridFrame.height() - penSize);
     painter.scale(1, -1);
 
@@ -215,7 +237,7 @@ void CompactGpuMonitor::paintEvent(QPaintEvent *)
 void CompactGpuMonitor::mouseReleaseEvent(QMouseEvent *ev)
 {
     if (ev->button() == Qt::LeftButton)
-        emit clicked("MSG_GPU");
+        emit clicked(msgCode());
 }
 
 void CompactGpuMonitor::mouseMoveEvent(QMouseEvent *event)

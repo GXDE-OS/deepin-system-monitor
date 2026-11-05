@@ -42,18 +42,18 @@ signals:
 private:
     // Cpu monitor view
     CpuMonitor *m_cpuMonitor {};
-    // Gpu monitor view
-    GpuMonitor *m_gpuMonitor {};
+    // Per-device monitor views (GPU1..N followed by NPU1..M), one shown at a time
+    QList<GpuMonitor *> m_deviceMonitors;
     // Memory monitor view
     MemoryMonitor *m_memoryMonitor {};
     // Network monitor view
     NetworkMonitor *m_networkMonitor {};
 
-    // CPU / GPU tab switcher used in the expand view to switch between the
-    // CPU and GPU usage charts (avoids the two charts overlapping)
+    // CPU / GPU1 / GPU2 / ... tab switcher used in the expand view to switch
+    // between the CPU and per-device GPU usage charts (avoids overlap)
     DButtonBox *m_cpuGpuTabBox {};
     DButtonBoxButton *m_cpuTabBtn {};
-    DButtonBoxButton *m_gpuTabBtn {};
+    QList<DButtonBoxButton *> m_deviceTabBtns;
 };
 
 #endif  // MONITOR_EXPAND_VIEW_H
