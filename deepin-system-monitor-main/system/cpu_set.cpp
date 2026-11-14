@@ -913,6 +913,12 @@ void CPUSet::read_cache_from_lscpu_cmd()
         return;   // 不要覆盖 dmidecode 获取的缓存信息
 
     QProcess process;
+    // lscpu 输出会随本地化变化（如中文环境下为“L1d 缓存：”，且冒号为全角），
+    // 导致按英文键名解析失败，这里强制使用 C locale 保证键名恒为 “L1d cache:” 等英文形式
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert("LC_ALL", "C");
+    env.insert("LANG", "C");
+    process.setProcessEnvironment(env);
     process.start("lscpu", QStringList());
     process.waitForFinished(3000);
     QString lscpuOutput = process.readAllStandardOutput();
@@ -922,7 +928,10 @@ void CPUSet::read_cache_from_lscpu_cmd()
     QStringList lscpuLines = lscpuOutput.split("\n", Qt::SkipEmptyParts);
 #endif
     for (const QString &line : qAsConst(lscpuLines)) {
-        if (!line.contains("cache", Qt::CaseInsensitive))
+        // 只匹配 “L1d cache”/“L1i cache”/“L2 cache”/“L3 cache” 键行，
+        // 避免把其它含 “cache” 字样的行（如 Vulnerability 描述）误当作缓存键
+        if (!line.startsWith("L1d cache") && !line.startsWith("L1i cache")
+            && !line.startsWith("L2 cache") && !line.startsWith("L3 cache"))
             continue;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QStringList keyValue = line.split(":", QString::SkipEmptyParts);

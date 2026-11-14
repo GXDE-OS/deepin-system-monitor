@@ -39,7 +39,7 @@
 // - read_overall_info(:579-652) 块解析→setIndex/setVendorId/setCpuFreq/setCoreId/setModelName/setCacheSize / 空输出→无条目
 // - read_lscpu(:654-969) 真实 liblscpu(仅冒烟) / 二次调用幂等 / 拓扑键
 // - read_dmi_cache_info(:782-908) specialComType==0 早退 / ==1 走dmidecode解析 / <=-1 且非特殊机型早退 / 守卫一次性
-// - read_cache_from_lscpu_cmd(:910-934) 守卫已置位→跳过 / lscpu缓存行解析 / 空输出
+// - read_cache_from_lscpu_cmd(:910-944) 守卫已置位→跳过 / lscpu缓存行解析 / 空输出
 // - update(:573-582) 首次→Current迁移Last / 二次→delta回退1 / percpu入库
 // - read_cpu_freq_range_by_cpu7(:159-194) sysfs缺失→(0,0) / 有序非负区间（主机不变式）
 // - 静态自由函数 first/max/avg_avaliable_cur_freq、lscpu_free_context 为内部链接，
