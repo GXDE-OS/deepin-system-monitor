@@ -1,19 +1,20 @@
 # Maintainer: CharOfString <root@charofstring.cc>
-pkgname=deepin-system-monitor-git
+pkgname=gxde-deepin-system-monitor
 pkgver=6.5.49
 pkgrel=2
 pkgdesc='Intuitive system monitor for GXDE'
 arch=('x86_64' 'aarch64')
 url="https://github.com/GXDE-OS/deepin-system-monitor"
 license=('GPL-3.0-or-later')
-depends=('dtk6core-git' 'dtk6gui-git' 'dtk6widget-git' 'qt6-base' 'qt6-svg' 'polkit-qt6' 'libpcap' 'icu'
+depends=('gxde-dtk6core' 'gxde-dtk6gui' 'gxde-dtk6widget' 'qt6-base' 'qt6-svg' 'polkit-qt6' 'libpcap' 'icu'
          'libnl' 'libxcb' 'xcb-util-wm' 'libcap' 'hicolor-icon-theme' 'libgcc' 'libstdc++' 'glibc')
 # deepin-policy-ts-convert 与 deepin-desktop-ts-convert 来自 deepin-gettext-tools ・ deepin-policy-ts-convert and deepin-desktop-ts-convert come from deepin-gettext-tools.
-makedepends=('git' 'cmake' 'ninja' 'pkgconf' 'qt6-tools' 'gxde-dock-git' 'deepin-gettext-tools-git' 'systemd'
+makedepends=('git' 'cmake' 'ninja' 'pkgconf' 'qt6-tools' 'gxde-dock' 'gxde-deepin-gettext-tools' 'systemd'
              'libxext' 'xcb-util')
-optdepends=('deepin-service-manager-git: run the system monitor daemon plugin')
-provides=('deepin-system-monitor')
-conflicts=('deepin-system-monitor' 'gxde-system-monitor-git')
+optdepends=('gxde-deepin-service-manager: run the system monitor daemon plugin')
+provides=('deepin-system-monitor' "deepin-system-monitor-git=$pkgver")
+conflicts=('deepin-system-monitor' 'gxde-system-monitor-git' 'deepin-system-monitor-git')
+replaces=('deepin-system-monitor-git')
 install=deepin-system-monitor.install
 source=()
 sha512sums=()
