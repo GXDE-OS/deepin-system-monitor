@@ -18,6 +18,7 @@ extern "C" {
 }
 
 #include <QMap>
+#include <QSet>
 #include <QByteArray>
 #include <QFile>
 #include <QTextStream>
@@ -417,6 +418,12 @@ int CPUSet::cpuCount() const
     return d->m_info.value("CPU(s)").toInt();
 }
 
+int CPUSet::onlineCpuCount() const
+{
+    // m_usageDB is refreshed from /proc/stat, so it follows CPU hotplug.
+    return d->m_usageDB.size();
+}
+
 int CPUSet::socketCount() const
 {
     qCDebug(app) << "Getting CPU socket count";
@@ -589,6 +596,8 @@ void CPUSet::read_stats()
     QByteArray line(BUFSIZ, '\0');
     int ncpu = 0;
     int nr;
+    // /proc/stat only lists online CPUs, track them to follow runtime hotplug.
+    QSet<QByteArray> onlineCpus;
 
     if (!(fp = fopen(PROC_PATH_STAT, "r"))) {
         qCWarning(app) << "Failed to open" << PROC_PATH_STAT << ":" << strerror(errno);
@@ -674,6 +683,7 @@ void CPUSet::read_stats()
 
                         d->m_statDB[stat->cpu] = stat;
                         d->m_usageDB[usage->cpu] = usage;
+                        onlineCpus.insert(cpu);
                     }
                 } else {
                     qCWarning(app) << "Failed to parse CPU" << ncpu << "stats from" << PROC_PATH_STAT;
@@ -700,6 +710,17 @@ void CPUSet::read_stats()
 
     if (ferror(fp)) {
         qCWarning(app) << "Error reading" << PROC_PATH_STAT << ":" << strerror(errno);
+    } else {
+        // A core missing from /proc/stat has been offlined. Remove its cached
+        // stats so downstream models stop reporting stale utilization.
+        const QList<QByteArray> cachedCpus = d->m_usageDB.keys();
+        for (const QByteArray &cpu : cachedCpus) {
+            if (!onlineCpus.contains(cpu)) {
+                d->m_usageDB.remove(cpu);
+                d->m_statDB.remove(cpu);
+                qCDebug(app) << "CPU core went offline:" << cpu;
+            }
+        }
     }
     qCDebug(app) << "Finished reading CPU stats.";
 }

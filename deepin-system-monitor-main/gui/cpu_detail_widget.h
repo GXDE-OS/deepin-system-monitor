@@ -93,8 +93,15 @@ public:
     //!
     void setMultiModeLayout(CPUInfoModel *model);
 
+private slots:
+    // Rebuild the grid when the number of online CPU cores changes.
+    void onModelUpdated();
+
 private:
+    void clearItems();
+
     bool m_isMutliCoreMode = false;
+    int m_cpuCount = 0;
 
     CPUInfoModel *m_cpuInfoModel {};
 };

@@ -34,6 +34,9 @@ public://info
 
     int cpuCount() const;
 
+    // Number of CPUs that are online right now (may change at runtime).
+    int onlineCpuCount() const;
+
     int socketCount() const;
 
     QString virtualization() const;

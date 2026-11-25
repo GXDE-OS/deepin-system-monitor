@@ -393,6 +393,9 @@ void CPUDetailWidget::detailFontChanged(const QFont &font)
 CPUDetailGrapTable::CPUDetailGrapTable(CPUInfoModel *model, QWidget *parent): QWidget(parent)
 {
     qCDebug(app) << "CPUDetailGrapTable constructor";
+    m_cpuInfoModel = model;
+    connect(m_cpuInfoModel, &CPUInfoModel::modelUpdated, this, &CPUDetailGrapTable::onModelUpdated);
+
     if (m_isMutliCoreMode) {
         qCDebug(app) << "Setting multi-core layout";
         setMultiModeLayout(model);
@@ -400,23 +403,48 @@ CPUDetailGrapTable::CPUDetailGrapTable(CPUInfoModel *model, QWidget *parent): QW
         qCDebug(app) << "Setting single-core layout";
         setSingleModeLayout(model);
     }
-    m_cpuInfoModel = model;
+}
+
+void CPUDetailGrapTable::clearItems()
+{
+    QLayout *oldLayout = layout();
+    if (!oldLayout)
+        return;
+
+    QLayoutItem *item = nullptr;
+    while ((item = oldLayout->takeAt(0)) != nullptr) {
+        QWidget *widget = item->widget();
+        delete item;
+        if (widget) {
+            widget->setParent(nullptr);
+            delete widget;
+        }
+    }
+    delete oldLayout;
+}
+
+void CPUDetailGrapTable::onModelUpdated()
+{
+    if (!m_isMutliCoreMode || !m_cpuInfoModel)
+        return;
+
+    // Prefer the model's online core list; fall back to sysconf before the
+    // first sample is available.
+    int cpuCount = m_cpuInfoModel->cpuPercentList().size();
+    if (cpuCount <= 0)
+        cpuCount = int(sysconf(_SC_NPROCESSORS_ONLN));
+
+    if (cpuCount <= 0 || cpuCount == m_cpuCount)
+        return;
+
+    qCDebug(app) << "CPU core count changed from" << m_cpuCount << "to" << cpuCount << ", rebuilding detail layout";
+    setMultiModeLayout(m_cpuInfoModel);
 }
 
 void CPUDetailGrapTable::setMutliCoreMode(bool isMutliCoreMode)
 {
     qCDebug(app) << "CPUDetailGrapTable::setMutliCoreMode" << isMutliCoreMode;
     m_isMutliCoreMode = isMutliCoreMode;
-    // 获取当前布局所有的子控件，删除子控件
-    QLayout *p = this->layout();
-    while (p->count()) {
-        QWidget *pWidget = p->itemAt(0)->widget();
-        pWidget->setParent(nullptr);
-        p->removeWidget(pWidget);
-        delete pWidget;
-    }
-    this->layout()->removeItem(this->layout()->itemAt(0));
-    delete this->layout();
     if (m_isMutliCoreMode) {
         qCDebug(app) << "Switching to multi-core layout";
         setMultiModeLayout(m_cpuInfoModel);
@@ -429,6 +457,8 @@ void CPUDetailGrapTable::setMutliCoreMode(bool isMutliCoreMode)
 void CPUDetailGrapTable::setSingleModeLayout(CPUInfoModel *model)
 {
     qCDebug(app) << "CPUDetailGrapTable::setSingleModeLayout";
+    clearItems();
+    m_cpuCount = 1;
     QGridLayout  *graphicsLayout = new QGridLayout(this);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     graphicsLayout->setMargin(0);
@@ -452,6 +482,7 @@ void CPUDetailGrapTable::setSingleModeLayout(CPUInfoModel *model)
 void CPUDetailGrapTable::setMultiModeLayout(CPUInfoModel *model)
 {
     qCDebug(app) << "CPUDetailGrapTable::setMultiModeLayout";
+    clearItems();
     QGridLayout  *graphicsLayout = new QGridLayout(this);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     graphicsLayout->setMargin(0);
@@ -461,7 +492,10 @@ void CPUDetailGrapTable::setMultiModeLayout(CPUInfoModel *model)
     graphicsLayout->setHorizontalSpacing(10);
     graphicsLayout->setVerticalSpacing(10);
 
-    int cpuCount = int(sysconf(_SC_NPROCESSORS_ONLN));
+    int cpuCount = model ? model->cpuPercentList().size() : 0;
+    if (cpuCount <= 0)
+        cpuCount = int(sysconf(_SC_NPROCESSORS_ONLN));
+    m_cpuCount = cpuCount;
 
     QList<QColor> cpuColors;
     cpuColors << "#1094D8"

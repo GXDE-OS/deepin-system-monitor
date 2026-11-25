@@ -81,13 +81,27 @@ void CPUInfoModel::updateModel()
 
     m_loadAvgSampleDB->addSample(new LoadAvgSampleFrame(m_sysInfo->uptime(), std::make_shared<struct load_avg_t>(*m_sysInfo->loadAvg())));
 
-    for (auto &cpuname : m_cpuSet->cpuLogicName()) {
+    const QList<QByteArray> onlineCpus = m_cpuSet->cpuLogicName();
+
+    // Drop samples of CPUs that have been offlined, otherwise cpuPercentList()
+    // keeps returning stale values and the detail view never follows hotplug.
+    const QList<QByteArray> cachedCpus = m_singleUsageSample.keys();
+    for (const QByteArray &cpuname : cachedCpus) {
+        if (!onlineCpus.contains(cpuname))
+            m_singleUsageSample.remove(cpuname);
+    }
+
+    for (const auto &cpuname : onlineCpus) {
+        const CPUUsage usage = m_cpuSet->usageDB(cpuname);
+        if (!usage)
+            continue;
+
         if (m_singleUsageSample.contains(cpuname)) {
-            m_singleUsageSample[cpuname]->addSample(new CPUUsageSampleFrame(m_sysInfo->uptime(), std::make_shared<struct cpu_usage_t>(*m_cpuSet->usageDB(cpuname))));
+            m_singleUsageSample[cpuname]->addSample(new CPUUsageSampleFrame(m_sysInfo->uptime(), std::make_shared<struct cpu_usage_t>(*usage)));
         } else {
             // qCDebug(app) << "Creating new usage sample for cpu:" << cpuname;
             auto smaple = std::make_shared<Sample<cpu_usage_t>>(m_period);
-            smaple->addSample(new CPUUsageSampleFrame(m_sysInfo->uptime(), std::make_shared<struct cpu_usage_t>(*m_cpuSet->usageDB(cpuname))));
+            smaple->addSample(new CPUUsageSampleFrame(m_sysInfo->uptime(), std::make_shared<struct cpu_usage_t>(*usage)));
             m_singleUsageSample.insert(cpuname, smaple);
         }
 

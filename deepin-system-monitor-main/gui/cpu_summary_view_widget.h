@@ -177,9 +177,13 @@ protected:
                     return m_model->cpuSet()->socketCount() == 0 ? "-" : QString::number(m_model->cpuSet()->socketCount());
                 break;
             case 3:
-                if (column == 0)
-                    return QString::number(m_model->cpuSet()->cpuCount());
-                else if (column == 1)
+                if (column == 0) {
+                    // Show the online core count so CPU hotplug is reflected.
+                    int count = m_model->cpuSet()->onlineCpuCount();
+                    if (count <= 0)
+                        count = m_model->cpuSet()->cpuCount();
+                    return QString::number(count);
+                } else if (column == 1)
                     return m_model->cpuSet()->virtualization();
                 break;
             case 4:
