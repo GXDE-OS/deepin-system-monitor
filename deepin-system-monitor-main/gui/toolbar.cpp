@@ -240,10 +240,10 @@ bool Toolbar::isSearchContentEmpty()
     qCDebug(app) << "Checking if search content is empty";
     if (searchEdit->text().isEmpty()) {
         qCDebug(app) << "Search content is empty";
-        return false;
+        return true;
     }
     qCDebug(app) << "Search content is not empty";
-    return true;
+    return false;
 }
 
 void Toolbar::setProcessButtonChecked(bool checked)
@@ -252,5 +252,8 @@ void Toolbar::setProcessButtonChecked(bool checked)
     if (checked) {
         qCDebug(app) << "Setting process button checked";
         m_procBtn->setChecked(true);
+    } else {
+        qCDebug(app) << "Setting process button unchecked";
+        m_procBtn->setChecked(false);
     }
 }

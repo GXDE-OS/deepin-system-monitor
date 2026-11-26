@@ -71,7 +71,6 @@ include_directories(${LIB_NL3_ROUTE_INCLUDE_DIRS})
 include_directories(${LIB_UDEV_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libsmartcols/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../)
 #include_directories(${DFrameworkDBus_INCLUDE_DIRS})  # chinalife
 
@@ -375,6 +374,7 @@ set(HPP_SYSTEM
     system/block_device_info_db.h
     system/device_db.h
     system/sys_info.h
+    system/dmi_info.h
     system/udev.h
     system/udev_device.h
     system/netlink.h
@@ -403,6 +403,7 @@ set(CPP_SYSTEM
     system/block_device.cpp
     system/block_device_info_db.cpp
     system/sys_info.cpp
+    system/dmi_info.cpp
     system/udev.cpp
     system/udev_device.cpp
     system/netlink.cpp
@@ -431,20 +432,7 @@ set(CPP_WM
 )
 
 set(LSCPU
-        3rdparty/libsmartcols/src/calculate.c
-        3rdparty/libsmartcols/src/cell.c
-        3rdparty/libsmartcols/src/column.c
-        3rdparty/libsmartcols/src/grouping.c
-        3rdparty/libsmartcols/src/init.c
-        3rdparty/libsmartcols/src/iter.c
-        3rdparty/libsmartcols/src/line.c
-        3rdparty/libsmartcols/src/print-api.c
-        3rdparty/libsmartcols/src/print.c
         3rdparty/lscpu.c
-        3rdparty/libsmartcols/src/symbols.c
-        3rdparty/libsmartcols/src/table.c
-        3rdparty/libsmartcols/src/version.c
-        3rdparty/libsmartcols/src/walk.c
         3rdparty/lscpu-arm.c
         3rdparty/lscpu-cpu.c
         3rdparty/lscpu-cputype.c
@@ -463,8 +451,6 @@ set(LSCPU
         3rdparty/fileutils.c
 )
 set(LSCPU_INCLUDE
-        3rdparty/libsmartcols/src/libsmartcols.h
-        3rdparty/libsmartcols/src/smartcolsP.h
         3rdparty/include/all-io.h
         3rdparty/include/encode.h
         3rdparty/include/minix.h
@@ -539,27 +525,6 @@ set(LSCPU_INCLUDE
         3rdparty/include/xalloc.h
         3rdparty/lscpu.h
         )
-set(DMIDECODE_HEADS
-            3rdparty/dmidecode/dmidecode.h
-            3rdparty/dmidecode/dmioem.h
-            3rdparty/dmidecode/dmiopt.h
-            3rdparty/dmidecode/dmioutput.h
-            3rdparty/dmidecode/types.h
-            3rdparty/dmidecode/util.h
-            3rdparty/dmidecode/version.h
-            3rdparty/dmidecode/vpdopt.h
-       )
-set(DMIDECODE
-            3rdparty/dmidecode/dmidecode.c
-            3rdparty/dmidecode/dmioem.c
-            3rdparty/dmidecode/dmiopt.c
-            3rdparty/dmidecode/dmioutput.c
-            3rdparty/dmidecode/util.c
-       )
-
-set(DMIDECODE_HEADS
-            3rdparty/displayjack/wayland_client.h
-       )
 
 set(APP_HPP
     ${CMAKE_HOME_DIRECTORY}/config.h
@@ -573,7 +538,6 @@ set(APP_HPP
     ${HPP_SYSTEM}
     ${HPP_WM}
     ${LSCPU_INCLUDE}
-    ${DMIDECODE_HEADS}
 )
 set(APP_CPP
     ${CPP_GLOBAL}
@@ -586,7 +550,6 @@ set(APP_CPP
     ${CPP_SYSTEM}
     ${CPP_WM}
     ${LSCPU}
-    ${DMIDECODE}
 )
 set(LIBS
     ${QT_NS}::Core

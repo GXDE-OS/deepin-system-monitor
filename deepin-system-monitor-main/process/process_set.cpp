@@ -107,7 +107,7 @@ ProcessSet::~ProcessSet()
     }
     
     if (m_config) {
-        m_config->deleteLater();
+        delete m_config;
         m_config = nullptr;
     }
 }
@@ -379,8 +379,6 @@ void ProcessSet::scanProcess()
         }
     }
 
-    m_recentProcStage.clear();
-
     // Group processes by AM instance for linglong apps
     groupProcessesByAMInstance();
 
@@ -427,11 +425,13 @@ Process ProcessSet::Iterator::next()
 void ProcessSet::Iterator::advance()
 {
     while ((m_dirent = readdir(m_dir.get()))) {
-        if (isdigit(m_dirent->d_name[0]))
-        if(pid_t(atoi(m_dirent->d_name)) < 10)
+        if (isdigit(m_dirent->d_name[0])) {
+            if (pid_t(atoi(m_dirent->d_name)) < 10) {
                 continue;
-        else 
-            break;
+            } else {
+                break;
+            }
+        }
     }
     // qCDebug(app) << "Iterator advanced to" << (m_dirent ? m_dirent->d_name : "end");
     if (!m_dirent && errno) {
@@ -441,7 +441,7 @@ void ProcessSet::Iterator::advance()
 
 std::weak_ptr<RecentProcStage> ProcessSet::getRecentProcStage(pid_t pid) const
 {
-    return m_recentProcStage[pid];
+    return m_recentProcStage.value(pid);
 }
 
 const Process ProcessSet::getProcessById(pid_t pid) const

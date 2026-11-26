@@ -1,6 +1,6 @@
 # Maintainer: CharOfString <root@charofstring.cc>
 pkgname=gxde-deepin-system-monitor
-pkgver=6.5.49
+pkgver=6.5.50
 pkgrel=3
 pkgdesc='Intuitive system monitor for GXDE'
 arch=('x86_64' 'aarch64')

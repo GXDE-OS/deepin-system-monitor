@@ -57,7 +57,7 @@ set(DTK_NS Dtk${DTK_VERSION_MAJOR})
 #系统监视器主应用
 ADD_SUBDIRECTORY(deepin-system-monitor-main)
 #系统监视器插件
-#ADD_SUBDIRECTORY(deepin-system-monitor-plugin)
+ADD_SUBDIRECTORY(deepin-system-monitor-plugin)
 #系统监视器插件弹出应用
 ADD_SUBDIRECTORY(deepin-system-monitor-plugin-popup)
 #系统监视器安全等级保护守护应用
@@ -66,6 +66,8 @@ ADD_SUBDIRECTORY(deepin-system-monitor-daemon)
 ADD_SUBDIRECTORY(deepin-system-monitor-server)
 #系统监视器后端提权处理服务
 ADD_SUBDIRECTORY(deepin-system-monitor-system-server)
+#dde-shell 系统监视器插件
+#ADD_SUBDIRECTORY(deepin-system-monitor-dde-shell-plugin)
 
 #单元测试
 if(DOTEST)

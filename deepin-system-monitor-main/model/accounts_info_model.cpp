@@ -48,7 +48,7 @@ AccountsInfoModel::AccountsInfoModel(QObject *parent)
     QDBusConnection::systemBus().connect(LoginService, LoginPath, LoginInterface, "SessionNew",
                                          this, SLOT(onSessionNew(QString, QDBusObjectPath)));
     QDBusConnection::systemBus().connect(LoginService, LoginPath, LoginInterface, "SessionRemoved",
-                                         this, SLOT(onSessionNew(QString, QDBusObjectPath)));
+                                         this, SLOT(onSessionRemoved(QString, QDBusObjectPath)));
 }
 
 AccountsInfoModel::~AccountsInfoModel()
@@ -109,8 +109,7 @@ void AccountsInfoModel::updateUserOnlineStatus()
 {
     m_onlineUsers.clear();
 
-    //异步获取SessionList
-    QDBusMessage message = m_LoginInter->call("ListSessions");
+    // 获取SessionList
     QDBusPendingReply<SessionInfoList> reply = m_LoginInter->asyncCall(QStringLiteral("ListSessions"));
     reply.waitForFinished();
     if (reply.isValid()) {
